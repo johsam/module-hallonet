@@ -1,0 +1,28 @@
+// Configuration file for "rrd4j" persistence module
+
+
+Strategies {
+    everyHour   : "0 0 * * * ?"
+    everyDay    : "0 0 0 * * ?"
+    everyMin    : "0 * * * * ?"
+    every15Min  : "*/15 * * * * ?"
+
+    // if no strategy is specified for an item entry below, the default list will be used
+    default = everyChange
+}
+
+
+Items {
+    // persist all items once a day and on every change and restore them from the db at startup
+    Nexa_1,Nexa_2,Nexa_3,Nexa_4 : strategy = everyChange, everyDay, restoreOnStartup
+
+    // additionally, persist all temperature and weather values
+
+    OutAvgLast : strategy = everyMin, everyChange, restoreOnStartup
+    OutMinLast : strategy = everyMin, everyChange, restoreOnStartup
+    OutMaxLast : strategy = everyMin, everyChange, restoreOnStartup
+    T_NU_last  : strategy = everyMin, everyChange, restoreOnStartup
+    
+    T_50_B500_last,T_52_8700_last,T_50_AC00_last,H_52_8700_last,T_50_0700_last : strategy = everyMin, everyChange, restoreOnStartup
+
+}

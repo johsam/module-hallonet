@@ -1,0 +1,248 @@
+Group All
+Group Inside (All)
+Group Outside (All)
+
+
+/*	Temperatur.nu	*/
+
+Number T_NU_last
+        "Temperatur.nu [%.2f °C]"
+        <ripan_tnu>
+        (Outside)
+
+/*	Hammock	*/
+
+Number T_50_B500_last
+        "Temperatur (H) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_50_B500_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,HammockMinToday)
+
+Number T_50_B500_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,HammockMaxToday)
+
+
+/*	Tujan	*/
+
+Number T_52_8700_last
+        "Temperatur (T) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_52_8700_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,TujanMinToday)
+
+Number T_52_8700_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,TujanMaxToday)
+
+Number H_52_8700_last
+        "Tujan [%d %%]"
+        <ripan_humidity>
+        (Outside)
+
+
+/*	Cycklarna	*/
+
+Number T_50_AC00_last
+        "Temperatur (C) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_50_AC00_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,CyklarnaMinToday)
+
+Number T_50_AC00_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,CyklarnaMaxToday)
+
+/*	Förrådet	*/
+
+Number T_50_0700_last
+        "Temperatur (F) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_50_0700_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,StorageMinToday)
+
+Number T_50_0700_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,StorageMaxToday)
+
+/*	Inomhus	*/
+
+Number T_52_9700_last
+        "Stora rummet [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+Number T_52_9700_min
+        "Kallast [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+Number T_52_9700_max
+        "Varmast [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+/*	Luftfuktighet inomhus */
+
+Number H_52_9700_last
+        "Stora rummet [%d %%]"
+        <ripan_humidity>
+        (Inside)
+
+
+/*	Tid for max min	*/
+
+String T_50_B500_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_B500_min_stamp "Klockan [%s]" <ripan_clock>
+String T_50_B500_max_stamp "Klockan [%s]" <ripan_clock>
+
+String T_52_8700_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_8700_min_stamp "Klockan [%s]" <ripan_clock>
+String T_52_8700_max_stamp "Klockan [%s]" <ripan_clock>
+String H_52_8700_last_stamp "Klockan [%s]" <ripan_clock>
+
+String T_50_AC00_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_AC00_min_stamp "Klockan [%s]" <ripan_clock>
+String T_50_AC00_max_stamp "Klockan [%s]" <ripan_clock>
+
+String T_52_9700_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_9700_min_stamp "Klockan [%s]" <ripan_clock>
+String T_52_9700_max_stamp "Klockan [%s]" <ripan_clock>
+String H_52_9700_last_stamp "Klockan [%s]" <ripan_clock>
+
+String T_50_0700_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_0700_min_stamp "Klockan [%s]" <ripan_clock>
+String T_50_0700_max_stamp "Klockan [%s]" <ripan_clock>
+
+/*	Grupper	*/
+
+Group:Number:AVG OutAvgLast
+        "Medel [%.1f °C]"
+        <ripan_new_temp>
+        (Outside)
+
+Group:Number:MIN OutMinLast
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX OutMaxLast
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+Group:Number:MIN OutMinToday
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX OutMaxToday
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+/*	Aliases	*/
+
+Group:Number:MIN HammockMinToday
+        "Hammock [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX HammockMaxToday
+        "Hammock [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+
+Group:Number:MIN TujanMinToday
+        "Tujan [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX TujanMaxToday
+        "Tujan [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+
+Group:Number:MIN CyklarnaMinToday
+        "Cycklarna [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX CyklarnaMaxToday
+        "Cycklarna [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+
+Group:Number:MIN StorageMinToday
+        "Förrådet [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX StorageMaxToday
+        "Förrådet [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+
+Switch Nexa_1
+    "Vid Tv:n"
+    (Lights)
+    {exec="ON:/usr/local/bin/nexa_one_on.sh 1, OFF:/usr/local/bin/nexa_one_off.sh 1"}
+
+Switch Nexa_2
+    "Vid köksfönstret"
+    (Lights)
+    {exec="ON:/usr/local/bin/nexa_one_on.sh 2, OFF:/usr/local/bin/nexa_one_off.sh 2"}
+
+Switch Nexa_3
+    "Ebbas rum"
+    (Lights)
+    {exec="ON:/usr/local/bin/nexa_one_on.sh 3, OFF:/usr/local/bin/nexa_one_off.sh 3"}
+
+Switch Nexa_4
+    "Julgranen"
+    (Lights)
+    {exec="ON:/usr/local/bin/nexa_one_on.sh 4, OFF:/usr/local/bin/nexa_one_off.sh 4"}
+
+String VoiceCommand
+
+
+String PI_uptime       "Uptime [%s]" <ripan_pi>
+String PI_loadavg      "Load Average [%s]" <ripan_pi>
+String PI_core_temp    "Core Temp [%s]" <ripan_pi>
+String PI_core_volts   "Core Volts [%s]" <ripan_pi>
+String PI_wifi_restart "Wifi [%s]"       <ripan_pi>
+
+String PI_openhab_load      "Load [%s]"      <ripan_openhab>
+String PI_openhab_restarted "Restarted [%s]" <ripan_openhab>
+String PI_openhab_status    "Status [%s]"    <ripan_openhab>
+
+String STATIC_timestamp     "Senaste JSON [%s]" <ripan_clock>
+String SQL_timestamp        "Senaste SQL [%s]"  <ripan_clock>
+
+String T_NU_last_info       "Senaste [%s]" <ripan_tnu>
+
+
