@@ -1,6 +1,6 @@
 class hallonet::params {
 
-    $openhab_version = '1.6.2'
+    $openhab_version = '1.5.1'
     $openhab_packages = ['openhab-runtime']
     
     $openhab_bindings = [
