@@ -14,12 +14,12 @@
         source => "puppet:///modules/${module_name}/openhab/sitemaps/ripan.sitemap",
     }
 
-    file {'openhab_sitemap_default':
-        ensure  => link,
-        path    => '/etc/openhab/configurations/sitemaps/default.sitemap',
-        target  => 'ripan.sitemap',
-        require => File['openhab_sitemap'],
-    }
+#    file {'openhab_sitemap_default':
+#        ensure  => link,
+#        path    => '/etc/openhab/configurations/sitemaps/default.sitemap',
+#        target  => 'ripan.sitemap',
+#        require => File['openhab_sitemap'],
+#    }
 
 
 
