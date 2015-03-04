@@ -61,7 +61,7 @@ class hallonet::openhab {
 
     exec {'openhab_file_perms':
         path        => '/usr/bin:/bin',
-        command     => 'chown -R openhab:openhab /usr/share/openhab/webapps',
+        command     => 'chown -R openhab:openhab /usr/share/openhab/webapps /var/lib/openhab /var/log/openhab',
         refreshonly => true
     }
 
