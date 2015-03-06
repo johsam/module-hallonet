@@ -9,15 +9,6 @@ class hallonet::rfxcmd::opt {
         mode  => '0755',
     }
 
-    group {'pi':
-        ensure => present,
-    }
-
-    user {'pi':
-        ensure => present,
-	groups => 'pi',
-    }
-
 
     package {$params::rfxcmd_packages:
         ensure  => installed,
