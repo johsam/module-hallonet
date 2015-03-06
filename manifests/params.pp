@@ -1,8 +1,9 @@
 class hallonet::params {
 
-    $rfxcmd_packages = [
-        'python-mysqldb',
-        'python-serial',
+    $base_packages = [
+        'nedit',
+        'lftp',
+        'multitail',
     ]
 
     $openhab_version = '1.5.1'
