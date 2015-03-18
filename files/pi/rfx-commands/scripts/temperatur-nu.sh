@@ -48,18 +48,23 @@ number="$(cat ${tmpfile})"
 
 if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	
+	#	Only 1 decimal to be safe...
+	
+	tnumber=$(echo "${number}" | awk '{printf("%.1f",$1);}')
 	
 	#	Report to temperatur.nu
 	
 	(
 	/usr/bin/curl \
 		-silent \
+		--fail \
 		--connect-timeout 15 \
 		--max-time        30 \
-		--url             "${temperaturUrl}${number}" \
+		--url             "${temperaturUrl}${tnumber}" \
 		--output          ${tmpfile}
 	) 2>&1 ; curlstatus=$?
 
+	cp ${tmpfile} /tmp/tnu.tmp
 
 	#	Check result
 	
