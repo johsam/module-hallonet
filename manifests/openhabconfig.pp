@@ -1,10 +1,11 @@
  class hallonet::openhabconfig {
     
+    require hallonet::params
     require hallonet::openhab
 
     File {
-        owner => 'openhab',
-        group => 'openhab',
+        owner => 'pi',
+        group => 'pi',
         mode  => '0644',
     }
 

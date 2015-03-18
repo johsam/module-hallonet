@@ -1,4 +1,9 @@
 class hallonet::openhab {
+   
+    File {
+        owner => 'root',
+        group => 'root',
+    }
 
     #
     #	apt configuration

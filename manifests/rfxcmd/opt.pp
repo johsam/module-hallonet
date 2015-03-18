@@ -6,7 +6,6 @@ class hallonet::rfxcmd::opt {
     File {
         owner => 'pi',
         group => 'pi',
-        mode  => '0755',
     }
 
 
@@ -27,6 +26,7 @@ class hallonet::rfxcmd::opt {
     file {'rfxcmd_var':
         ensure => directory,
         path   => '/var/rfxcmd',
+        mode   => '0775',
     }
 
 

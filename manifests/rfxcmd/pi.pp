@@ -6,7 +6,6 @@ class hallonet::rfxcmd::pi {
     File {
         owner => 'pi',
         group => 'pi',
-        mode  => '0755',
     }
 
 
