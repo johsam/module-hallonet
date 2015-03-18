@@ -4,6 +4,7 @@ class hallonet::params {
         'nedit',
         'lftp',
         'multitail',
+	'apt-file'
     ]
 
     $openhab_version = '1.5.1'
