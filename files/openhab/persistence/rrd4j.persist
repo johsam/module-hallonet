@@ -23,6 +23,6 @@ Items {
     OutMaxLast : strategy = everyMin, everyChange, restoreOnStartup
     T_NU_last  : strategy = everyMin, everyChange, restoreOnStartup
     
-    T_50_B500_last,T_52_8700_last,T_50_AC00_last,H_52_8700_last,T_50_0700_last : strategy = everyMin, everyChange, restoreOnStartup
+    T_50_B500_last,T_52_8700_last,T_50_AC00_last,H_52_8700_last,T_50_0700_last,T_50_E400_last : strategy = everyMin, everyChange, restoreOnStartup
 
 }

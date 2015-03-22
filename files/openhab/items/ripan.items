@@ -85,6 +85,25 @@ Number T_50_0700_max
         <ripan_small_red_temp>
         (Outside,OutMaxToday,StorageMaxToday)
 
+
+/*	Annas	*/
+
+Number T_50_E400_last
+        "Temperatur (A) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_50_E400_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,StorageMinToday)
+
+Number T_50_E400_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,StorageMaxToday)
+
+
 /*	Inomhus	*/
 
 Number T_52_9700_last
@@ -133,6 +152,10 @@ String H_52_9700_last_stamp "Klockan [%s]" <ripan_clock>
 String T_50_0700_last_stamp "Avläst [%s]" <ripan_clock>
 String T_50_0700_min_stamp "Klockan [%s]" <ripan_clock>
 String T_50_0700_max_stamp "Klockan [%s]" <ripan_clock>
+
+String T_50_E400_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_E400_min_stamp "Klockan [%s]" <ripan_clock>
+String T_50_E400_max_stamp "Klockan [%s]" <ripan_clock>
 
 /*	Grupper	*/
 

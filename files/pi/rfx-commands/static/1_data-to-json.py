@@ -57,36 +57,44 @@ args = parser.parse_args()
 
 sensorData = {}
 sensorAliases = {
-	'0700': {
-		'alias': 'Förrådet',
-		'location': 'outside',
-		'order': 1
+
+	"E400": {
+		"alias": "Anna:s",
+		"location": "outside",
+		"order": 0
 	},
 
-	'B500': {
-		'alias': 'Hammocken',
-		'location':
-		'outside',
-		'order': 2
+	"0700": {
+		"alias": "Förrådet",
+		"location": "outside",
+		"order": 1
 	},
 
-	'8700': {
-		'alias': 'Tujan',
-		'location': 'outside',
-		'order': 3
+	"B500": {
+		"alias": "Hammocken",
+		"location":
+		"outside",
+		"order": 2
 	},
 
-	'AC00': {
-		'alias': 'Cyklarna',
-		'location':'outside',
-		'order': 4
+	"8700": {
+		"alias": "Tujan",
+		"location": "outside",
+		"order": 3
 	},
 
-	'9700': {
-		'alias': 'Bokhyllan',
-		'location': 'inside',
-		'order': 5
+	"AC00": {
+		"alias": "Cyklarna",
+		"location":"outside",
+		"order": 4
+	},
+
+	"9700": {
+		"alias": "Bokhyllan",
+		"location": "inside",
+		"order": 5
 	}
+
 }
 
 result = {'success': True, 'sensors': []}

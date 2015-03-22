@@ -21,6 +21,6 @@ join (
 
 on maxt.data1 = i.data1 and maxt.mu = i.unixtime
 
-where i.data1 in ('B500','AC00','8700','9700','0700')
+where i.data1 in ('B500','AC00','8700','9700','0700','E400')
 
 order by i.datetime;

@@ -8,7 +8,13 @@ sitemap ripan label="Ripstigen" {
    Frame label="Utomhus just nu" {
         Text item=OutAvgLast valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"] {
    		
-		Frame label="Förrådet" {
+		Frame label="Anna:s" {
+        		Text item=T_50_E400_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_E400_last_stamp
+        		Text item=T_50_E400_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_E400_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+   		}
+   		Frame label="Förrådet" {
         		Text item=T_50_0700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_last_stamp
         		Text item=T_50_0700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -54,6 +60,16 @@ sitemap ripan label="Ripstigen" {
    Frame label="Utomhus idag" {
         Text item=OutMaxToday valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"] {
    		
+		Frame label="Anna:s" {
+			Text item=T_50_E400_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_E400_max_stamp
+		}	
+
+		Frame label="Förrådet" {
+			Text item=T_50_E400_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_E400_max_stamp
+		}	
+
 		Frame label="Förrådet" {
 			Text item=T_50_0700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_max_stamp
@@ -82,6 +98,11 @@ sitemap ripan label="Ripstigen" {
 	}
 
         Text item=OutMinToday valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"] {
+
+		Frame label="Anna:s" {
+			Text item=T_50_E400_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_E400_min_stamp
+		}	
 
 		Frame label="Förrådet" {
 			Text item=T_50_0700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
