@@ -66,11 +66,6 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Förrådet" {
-			Text item=T_50_E400_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_E400_max_stamp
-		}	
-
-		Frame label="Förrådet" {
 			Text item=T_50_0700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_max_stamp
 		}	
