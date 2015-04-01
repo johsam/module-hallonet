@@ -2,6 +2,9 @@
 import csv
 import argparse
 import json
+from datetime import *
+from dateutil.relativedelta import *
+from dateutil.parser import *
 
 #
 # Parse arguments
@@ -98,6 +101,7 @@ sensorAliases = {
 }
 
 result = {'success': True, 'sensors': []}
+now = datetime.now()
 
 
 #
@@ -173,8 +177,13 @@ with open(args.last_file, 'rb') as csvfile:
 			location = sensorAliases[sensorid]['location']
 			order = sensorAliases[sensorid]['order']
 
-		sensorData[sensorid]['order'] = order
+		# Check if datetime is stale
+		
+		delta=relativedelta(now,parse(datetime))
+		if delta.hours > 0 or delta.minutes > 30:
+			alias = alias + " ???"
 
+		sensorData[sensorid]['order'] = order
 		sensorData[sensorid]['sensor'] = {
 			'alias': alias,
 			'id': sensorid,
