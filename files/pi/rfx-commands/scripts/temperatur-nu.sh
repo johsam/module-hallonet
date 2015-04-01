@@ -37,17 +37,21 @@ temperaturHash="443da56c96fc336d3ba366eb9e685f0f"
 temperaturUrl="${temperaturBaseUrl}?hash=${temperaturHash}&t="
 now="$(date '+%F %T')"
 
+#	Get outdoor sensor from config file...
+
+source "${dir}/../sensors.cfg"
 
 #	Get Average number from sensors
 
-/usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 < ${sqlDir}/${sql} > "${tmpfile}" 2>&1
+/usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 \
+	-e "set @outdoors='${outdoors}'; source ${sqlDir}/${sql};" > "${tmpfile}" 2>&1
 
 number="$(cat ${tmpfile})"
 
 #	Is it a real float ?
 
 if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
-	
+
 	#	Only 1 decimal to be safe...
 	
 	tnumber=$(echo "${number}" | awk '{printf("%.1f",$1);}')

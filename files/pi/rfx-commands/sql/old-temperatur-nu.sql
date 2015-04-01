@@ -1,17 +1,33 @@
-select
-round(avg(i.data8),2)   as 'temperature'
+-- Average from min 2 temps
 
-from rfxcmd i
-join (
-    select
-        max(unixtime) as mu,data1
+set @unix_now := UNIX_TIMESTAMP();
 
-    from rfxcmd
+select round(avg(min2.temperature),2) as temperature from
+ 	(
+	
+	-- min 2 temps from all sensors
 
-    group by data1
-    ) as maxt
+	select
 
-on maxt.data1 = i.data1 and maxt.mu = i.unixtime
+	i.data8 as temperature
+	-- ,i.data1
+	-- ,i.datetime
+	-- ,i.unixtime
+	-- ,@unix_now - maxt.mu
 
-where i.data1 in ('B500','8700','0700','E400')
+	from rfxcmd i
+	
+	join (
+	    select max(unixtime) as mu,
+	    data1
+	    from rfxcmd
+	    group by data1
+	) as maxt
 
+	on maxt.data1 = i.data1 and maxt.mu = i.unixtime
+
+	where i.data1 in ('E400','0700','B500','8700','AC00')
+	    and @unix_now - maxt.mu < 3600
+
+	order by temperature ASC limit 2
+  	) as min2
