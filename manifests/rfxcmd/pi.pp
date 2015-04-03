@@ -50,4 +50,11 @@ class hallonet::rfxcmd::pi {
         mode   => '0644',
     }
 
+    file {'usr_local_bin_ttop':
+        path    => '/usr/local/bin/ttop.sh',
+        source  => "puppet:///modules/${module_name}/usr/local/bin/ttop.sh",
+        require => [File['rfx_commands']],
+        mode    => '0755',
+    }
+
 }
