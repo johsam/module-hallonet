@@ -4,6 +4,16 @@
 # description: rfxcmd daemon
 # processname: rfxcmd.py
 
+### BEGIN INIT INFO
+# Provides:          rfxcmd
+# Required-Start:    $syslog $remote_fs $network $time $mysql
+# Required-Stop:     $syslog $remote_fs $network $time $mysql
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start and stop the rfxcmd server daemon
+# Description:       Read data from rfxcom
+### END INIT INFO
+
 ##############################################################################
 #
 # Note, you might need to change the parameters below, the current settings
