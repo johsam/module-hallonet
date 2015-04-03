@@ -4,10 +4,13 @@ class hallonet::params {
         'nedit',
         'lftp',
         'multitail',
-	'apt-file'
+	'apt-file',
+	'python-pip',
+	'mlocate',
+	'lighttpd',
     ]
 
-    $openhab_version = '1.5.1'
+    $openhab_version = '1.6.2'
     $openhab_packages = ['openhab-runtime']
     
     $openhab_bindings = [
