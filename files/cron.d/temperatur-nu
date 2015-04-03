@@ -1,0 +1,1 @@
+*/5 * * * * pi /home/pi/rfx-commands/scripts/temperatur-nu.sh

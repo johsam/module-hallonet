@@ -26,7 +26,7 @@ class hallonet::rfxcmd::opt {
     file {'rfxcmd_var':
         ensure => directory,
         path   => '/var/rfxcmd',
-        mode   => '0775',
+        mode   => '0777',
     }
 
 
@@ -36,6 +36,16 @@ class hallonet::rfxcmd::opt {
         source  => "puppet:///modules/${module_name}/opt/rfxcmd",
         recurse => true,
         require => [File['rfxcmd_var','rfxcmd_initd'],Package[$params::rfxcmd_packages]]
+    }
+
+    file {'cron_sql_backup':
+        ensure => present,
+        path   => '/etc/cron.d/sql-backup',
+        source => "puppet:///modules/${module_name}/cron.d/sql-backup",
+        require => Package[$params::rfxcmd_packages],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
     }
 
 }
