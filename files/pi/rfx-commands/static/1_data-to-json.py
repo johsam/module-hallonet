@@ -180,7 +180,7 @@ with open(args.last_file, 'rb') as csvfile:
 		# Check if datetime is stale
 		
 		delta=relativedelta(now,parse(datetime))
-		if delta.hours > 0 or delta.minutes > 30:
+		if delta.days > 0 or delta.hours > 0 or delta.minutes > 30:
 			alias = alias + " ???"
 
 		sensorData[sensorid]['order'] = order
