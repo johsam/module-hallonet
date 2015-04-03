@@ -1,6 +1,6 @@
 #!/bin/bash
 
-umask 022
+umask 0011
 
 printf "$(date '+%F %T')\tstate\t($1 -> $2)\n" >> /var/rfxcmd/nexa-setstate.log
 
