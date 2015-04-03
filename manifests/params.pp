@@ -10,6 +10,10 @@ class hallonet::params {
 	'lighttpd',
     ]
 
+    $pip_packages = [
+        'py-dateutil',
+    ]
+
     $openhab_version = '1.6.2'
     $openhab_packages = ['openhab-runtime']
     
