@@ -1,6 +1,6 @@
--- Override by -e "set @outdoors='E400,0700,B500,8700,AC00'; source temperatur-nu.sql;"
+-- Override by -e "set @sensors_outdoor='AAAA,BBBB'; source temperatur-nu.sql;"
 
-set @outdoors := coalesce(@outdoors,'E400,0700,B500,8700,AC00');
+set @sensors_outdoor := coalesce(@sensors_outdoor,'0000,XXXX');
 
 -- Average from min 2 temps
 
@@ -31,7 +31,7 @@ select round(avg(min2.temperature),2) as temperature from
 
 	-- Only outdoor sensors and age < 1 hour
 
-	where find_in_set(i.data1,@outdoors) and @unix_now - maxt.mu < 3600
+	where @unix_now - maxt.mu < 3600 and find_in_set(i.data1,@sensors_outdoor) 
 
 	order by temperature ASC limit 2
    	) as min2

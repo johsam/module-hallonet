@@ -44,7 +44,7 @@ source "${dir}/../sensors.cfg"
 #	Get Average number from sensors
 
 /usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 \
-	-e "set @outdoors='${outdoors}'; source ${sqlDir}/${sql};" > "${tmpfile}" 2>&1
+	-e "set @sensors_outdoor='${sensors_outdoor}'; source ${sqlDir}/${sql};" > "${tmpfile}" 2>&1
 
 number="$(cat ${tmpfile})"
 
