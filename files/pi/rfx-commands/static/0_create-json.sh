@@ -75,6 +75,10 @@ printf "%s\t%s\t%s\n" "${1}" "${2}" "${3}"
 #	Collect info
 #
 
+#	Sensors variables: sensors_outdoor,sensors_indoor,sensors_humidity,sensors_all
+
+source ${scriptDir}/../sensors.cfg
+
 openHabPid=$(cat "${openhabPidFile}")
 
 
@@ -114,6 +118,9 @@ uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta
 #	temperatur.nu
 
 mysql tnu --skip-column-names -urfxuser -prfxuser1 < ${scriptDir}/sql/temp-nu.sql  > "${tnufile}"
+
+#	Last stamp
+
 mysql rfx --skip-column-names -urfxuser -prfxuser1 < ${scriptDir}/sql/last-stamp.sql > "${stampfile}"
 
 
@@ -136,6 +143,7 @@ formatSystemInfo "pi" "wifi_restart"		"${wifi_restart}"
 formatSystemInfo "static" "timestamp" "${now}" 
 
 #	Sql stuff
+
 cat "${tnufile}"
 cat "${stampfile}"
 
@@ -147,17 +155,27 @@ cat "${stampfile}"
 
 
 #
-#	Run the querys 
+#	Last, min and max temps
 #
 
-mysql rfx -urfxuser -prfxuser1 < ${scriptDir}/sql/last-temps.sql > "${lastfile}"
-mysql rfx -urfxuser -prfxuser1 < ${scriptDir}/sql/min-today.sql  > "${minfile}"
-mysql rfx -urfxuser -prfxuser1 < ${scriptDir}/sql/max-today.sql  > "${maxfile}"
+mysql rfx -urfxuser -prfxuser1 \
+	-e "set @sensors_all:='${sensors_all}'; source ${scriptDir}/sql/last-temps.sql;" > "${lastfile}"
 
-mysql rfx -urfxuser -prfxuser1 < ${scriptDir}/sql/min-humidity-today.sql > "${minhumfile}"
-mysql rfx -urfxuser -prfxuser1 < ${scriptDir}/sql/max-humidity-today.sql > "${maxhumfile}"
+mysql rfx -urfxuser -prfxuser1 \
+	-e "set @sensors_all:='${sensors_all}'; source ${scriptDir}/sql/min-today.sql;" > "${minfile}"
 
+mysql rfx -urfxuser -prfxuser1 \
+	-e "set @sensors_all:='${sensors_all}'; source ${scriptDir}/sql/max-today.sql;" > "${maxfile}"
 
+#
+#	Humidity
+#
+
+mysql rfx -urfxuser -prfxuser1 \
+	-e "set @sensors_humidity:='${sensors_humidity}'; source ${scriptDir}/sql/min-humidity-today.sql;" > "${minhumfile}"
+
+mysql rfx -urfxuser -prfxuser1 \
+	-e "set @sensors_humidity:='${sensors_humidity}'; source ${scriptDir}/sql/max-humidity-today.sql;" > "${maxhumfile}"
 
 
 #
@@ -165,14 +183,15 @@ mysql rfx -urfxuser -prfxuser1 < ${scriptDir}/sql/max-humidity-today.sql > "${ma
 #
 
 python -u ${scriptDir}/1_data-to-json.py \
-        --last-file "${lastfile}" \
-        --min-file  "${minfile}" \
-        --max-file  "${maxfile}" \
+        --last-file     "${lastfile}" \
+        --min-file      "${minfile}" \
+        --max-file      "${maxfile}" \
         --min-hum-file  "${minhumfile}" \
         --max-hum-file  "${maxhumfile}" \
         --system-file   "${systemfile}" \
 	
 ) > "${tmpfile}" && cat "${tmpfile}"
+
 
 
 exit 0

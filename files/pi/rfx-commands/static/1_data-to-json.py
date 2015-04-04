@@ -74,9 +74,14 @@ sensorAliases = {
 	},
 
 	"B500": {
+		"alias": "Hammocken(x)",
+		"location": "outside",
+		"order": 2
+	},
+
+	"7500": {
 		"alias": "Hammocken",
-		"location":
-		"outside",
+		"location": "outside",
 		"order": 2
 	},
 
