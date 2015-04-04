@@ -1,7 +1,7 @@
 <xml>
 <whitelist>
 	<sensor>0D01........................</sensor>
-	<sensor>085007..B500......</sensor>
+	<sensor>085007..7500......</sensor>
 	<sensor>085007..AC00......</sensor>
 	<sensor>085007..0700......</sensor>
 	<sensor>0A5209..8700..........</sensor>
