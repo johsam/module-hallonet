@@ -21,10 +21,10 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_0700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
    		Frame label="Hammocken" {
-        		Text item=T_50_B500_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_B500_last_stamp
-        		Text item=T_50_B500_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_B500_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_7500_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_7500_last_stamp
+        		Text item=T_50_7500_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_7500_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
 
    		Frame label="Tujan" {
@@ -71,8 +71,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Hammocken" {
-			Text item=T_50_B500_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_B500_max_stamp
+			Text item=T_50_7500_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_7500_max_stamp
 		}	
 		
 		Frame label="Tujan" {
@@ -105,8 +105,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Hammocken" {
-			Text item=T_50_B500_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_B500_min_stamp
+			Text item=T_50_7500_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_7500_min_stamp
 		}	
 		
 		Frame label="Tujan" {

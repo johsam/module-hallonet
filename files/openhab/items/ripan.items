@@ -12,17 +12,17 @@ Number T_NU_last
 
 /*	Hammock	*/
 
-Number T_50_B500_last
+Number T_50_7500_last
         "Temperatur (H) [%.1f °C]"
         <ripan_temp>
         (Outside,OutAvgLast,OutMinLast,OutMaxLast)
 
-Number T_50_B500_min
+Number T_50_7500_min
         "Kallast [%.1f °C]"
         <ripan_small_blue_temp>
         (Outside,OutMinToday,HammockMinToday)
 
-Number T_50_B500_max
+Number T_50_7500_max
         "Varmast [%.1f °C]"
         <ripan_small_red_temp>
         (Outside,OutMaxToday,HammockMaxToday)
@@ -131,9 +131,9 @@ Number H_52_9700_last
 
 /*	Tid for max min	*/
 
-String T_50_B500_last_stamp "Avläst [%s]" <ripan_clock>
-String T_50_B500_min_stamp "Klockan [%s]" <ripan_clock>
-String T_50_B500_max_stamp "Klockan [%s]" <ripan_clock>
+String T_50_7500_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_7500_min_stamp "Klockan [%s]" <ripan_clock>
+String T_50_7500_max_stamp "Klockan [%s]" <ripan_clock>
 
 String T_52_8700_last_stamp "Avläst [%s]" <ripan_clock>
 String T_52_8700_min_stamp "Klockan [%s]" <ripan_clock>
