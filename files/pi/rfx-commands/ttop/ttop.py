@@ -52,10 +52,10 @@ sensorAliases = {
         "temp": 0.0
     },
 
-    "B500": {
+
+    "7500": {
         "alias": "Hammocken",
-        "location":
-        "outside",
+        "location": "outside",
         "offset": 2,
         "stamp": "00:00:00",
         "temp": 0.0
@@ -162,7 +162,7 @@ def process_log_line(filename, line, stdscr):
                 stdscr.addstr(offset, aliasWidth * 2, temp)
 
                 row = row + 1
-        row = row + 1
+        # row = row + 1
 
     stdscr.move(last, 0)
     stdscr.refresh()
