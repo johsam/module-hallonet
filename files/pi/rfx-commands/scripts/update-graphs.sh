@@ -38,7 +38,7 @@ shift `expr $OPTIND - 1` ; OPTIND=1
 
 
 if [ ${donow} -eq 1 ] ; then
-	curl -s "http://localhost:8080/rrdchart.png?&items=T_52_8700_last,T_NU_last,T_50_0700_last,T_50_B500_last,T_50_AC00_last,T_50_E400_last&period=D&w=1024&h=442" > ${tmpfile}
+	curl -s "http://localhost:8080/rrdchart.png?&items=T_52_8700_last,T_NU_last,T_50_0700_last,T_50_7500_last,T_50_AC00_last,T_50_E400_last&period=D&w=1024&h=442" > ${tmpfile}
 	mv ${tmpfile} ${imageDir}/now.png
 fi
 
@@ -52,9 +52,9 @@ if [ ${do1w} -eq 1 ] ; then
 	mv ${tmpfile} ${imageDir}/1w.png
 fi
 
-#http://192.168.1.9/dash-temp/pi.html?s=B500&h=24&ws=15&ts=1
-#http://192.168.1.9/dash-temp/pi.html?s=B500&h=72&ws=30&ts=3
-#http://192.168.1.9/dash-temp/pi.html?s=B500&h=168&ws=60&ts=24
+#http://192.168.1.9/dash-temp/pi.html?s=7500&h=24&ws=15&ts=1
+#http://192.168.1.9/dash-temp/pi.html?s=7500&h=72&ws=30&ts=3
+#http://192.168.1.9/dash-temp/pi.html?s=7500&h=168&ws=60&ts=24
 
 
 
