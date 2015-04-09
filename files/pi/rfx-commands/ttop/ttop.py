@@ -135,8 +135,9 @@ def process_log_line(filename, line, stdscr):
             cnt = cnt + 1
 
     if cnt != 0:
-        sensorAliases['FFFF']['stamp'] = stamp
-        sensorAliases['FFFF']['temp'] = "{:.2f}".format(float(sum / cnt))
+        if sensorAliases['FFFF']['temp'] != "{:.2f}".format(float(sum / cnt)):
+	    sensorAliases['FFFF']['stamp'] = stamp
+            sensorAliases['FFFF']['temp'] = "{:.2f}".format(float(sum / cnt))
 
     stdscr.erase()
 
