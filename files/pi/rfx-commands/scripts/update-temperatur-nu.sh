@@ -68,7 +68,6 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 		--output          ${tmpfile}
 	) 2>&1 ; curlstatus=$?
 
-	cp ${tmpfile} /tmp/tnu.tmp
 
 	#	Check result
 	
