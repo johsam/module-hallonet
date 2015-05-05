@@ -124,7 +124,7 @@ def process_log_line(filename, line, stdscr):
     if id != '':
         if id in sensorAliases:
             sensorAliases[id]['stamp'] = stamp
-            sensorAliases[id]['temp'] = "{:.2f}".format(float(temp))
+            sensorAliases[id]['temp'] = "{:.1f}".format(float(temp))
 
     # Update average
     sum = 0.0
@@ -135,9 +135,9 @@ def process_log_line(filename, line, stdscr):
             cnt = cnt + 1
 
     if cnt != 0:
-        if sensorAliases['FFFF']['temp'] != "{:.2f}".format(float(sum / cnt)):
+        if sensorAliases['FFFF']['temp'] != "{:.1f}".format(float(sum / cnt)):
 	    sensorAliases['FFFF']['stamp'] = stamp
-            sensorAliases['FFFF']['temp'] = "{:.2f}".format(float(sum / cnt))
+            sensorAliases['FFFF']['temp'] = "{:.1f}".format(float(sum / cnt))
 
     stdscr.erase()
 
