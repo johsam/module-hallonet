@@ -58,7 +58,7 @@
 	
 	<!-- Socket server -->
 	<socketserver>yes</socketserver>
-	<sockethost>192.168.1.48</sockethost>
+	<sockethost>127.0.0.1</sockethost>
 	<socketport>55000</socketport>
 	
 	<!-- Whitelist -->

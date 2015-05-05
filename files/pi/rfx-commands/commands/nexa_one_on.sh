@@ -2,7 +2,7 @@
 
 umask 0011
 
-ipaddress=$(/usr/bin/facter ipaddress)
+ipaddress=127.0.0.1
 
 printf "$(date '+%F %T')\tsend\t(${1} -> on)\n" >> /var/rfxcmd/nexa-setstate.log
 
