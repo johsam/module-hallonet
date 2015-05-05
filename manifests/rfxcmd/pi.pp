@@ -86,4 +86,18 @@ class hallonet::rfxcmd::pi {
         mode    => '0755',
     }
 
+    file {'multitail':
+        ensure  => link,
+        require => [File['rfx_commands']],
+        path    => '/home/pi/mt.sh',
+        target  => '/home/pi/rfx-commands/commands/mt.sh',
+    }
+
+    file {'db_backup':
+        ensure  => link,
+        require => [File['rfx_commands']],
+        path    => '/home/pi/db-backup.sh',
+        target  => '/home/pi/rfx-commands/commands/db-backup.sh',
+    }
+
 }
