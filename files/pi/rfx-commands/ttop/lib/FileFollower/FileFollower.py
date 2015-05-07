@@ -13,7 +13,7 @@ def synchronized(lock):
 
 
 class FileFollower (threading.Thread):
-    def __init__(self, filename, queue, interval = 1.0):
+    def __init__(self, filename, queue, interval=1.0):
         threading.Thread.__init__(self)
         self._interval = interval
         self._filename = filename
