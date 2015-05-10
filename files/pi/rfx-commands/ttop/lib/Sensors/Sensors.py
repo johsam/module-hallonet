@@ -78,9 +78,14 @@ class SensorList(object):
         return avgtmp
 
     def settemp(self, id, temp, stamp='00:00:00'):
-        if id in self.sensors:
-            # Make sure temp is a float
+        global debugFile
+	if id in self.sensors:
+            
+	    # Make sure temp is a float
             temp = float(temp)
+            
+	    oldtemp = self.sensorFormatTemp(self.sensors[id]['temp'])
+	    newtemp = self.sensorFormatTemp(temp)
 
             self.sensors[id]['temp'] = temp
             self.sensors[id]['stamp'] = stamp
@@ -90,20 +95,23 @@ class SensorList(object):
                 for i in range(0, self.trendsize):
                     self.sensors[id]['trend'][i] = temp
             else:
-                self.sensors[id]['trend'].pop(0)
-                self.sensors[id]['trend'].append(temp)
+                if newtemp != oldtemp:
+		    self.sensors[id]['trend'].pop(0)
+                    self.sensors[id]['trend'].append(temp)
 
             offset = self.sensors[id]['offset']
 
             # Calculate average
 
             avgtmp = self.calcaverage(self.sensors[id]['location'])
+            d_avgtmp = self.sensorFormatTemp(avgtmp)
 
             # Update average for all average sensors
 
             for avgid in self.getsidsfromlocation(self.sensors[id]['location'] + '_average'):
-                oldtemp = self.getsensortemp(avgid)
-                if oldtemp != avgtmp:
+		d_oldtemp = self.sensorFormatTemp(self.getsensortemp(avgid))
+		
+		if d_oldtemp != d_avgtmp:
                     self.settemp(id=avgid, temp=avgtmp, stamp=stamp)
 
     def getsidsfromlocation(self, location):
@@ -125,12 +133,15 @@ class SensorList(object):
             return s['temp']
         return 0.0
 
+    def sensorFormatTemp(self, temp):
+        return "{:.1f}".format(float(temp))
+
     def getsensortempformatted(self, id):
         s = self.__getsensor(id)
-        result = 0.0
+        temp = 0.0
         if 'temp' in s:
-            result = s['temp']
-        return "{:.1f}".format(float(result)).rjust(7, ' ')
+            temp = s['temp']
+	return self.sensorFormatTemp(temp).rjust(7, ' ')
 
     def getsensorstamp(self, id):
         s = self.__getsensor(id)
@@ -149,6 +160,12 @@ class SensorList(object):
         if 'stamp' in s:
             return s['offset']
         return 0
+    
+    def resettrend(self):
+        for s in self.sensors:
+	    t = self.sensors[s]['temp']	    
+	    for i in range(0, self.trendsize):
+                    self.sensors[s]['trend'][i] = t
 
 
 def main():

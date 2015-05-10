@@ -1,7 +1,9 @@
 # vim: set fileencoding=utf-8 :
 import math, os, re, string, sys
 
-spark_chars = u"▁▂▃▄▅▆▇█"
+# spark_chars = u"▁▂▃▄▅▆▇"
+spark_chars = u"▁▁▂▃▄▅▆▇"  # Don't use last block, add another low
+
 """Eight unicode characters of (nearly) steadily increasing height."""
 
 def _convert_to_float(i):
