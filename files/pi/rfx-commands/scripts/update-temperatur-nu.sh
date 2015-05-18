@@ -98,12 +98,22 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last --data "${number}"
 
 	
-	#	Update data sent to temperatur.nu
+	#	Update openhab data sent to temperatur.nu
 	
 
 	last_temperatur_nu=$(awk '{print $2" -> "$3}' "${lastokfile}")
-
 	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last_info --data "${last_temperatur_nu}"
+
+
+	# Update openhab min/max info for temperatur.nu
+	
+	/usr/bin/mysql tnu --skip-column-names -urfxuser -prfxuser1 < ${dir}/../static/sql/temp-nu.sql > "${tmpfile}" 2>&1
+
+ 	min_tnu=$(awk -F'\t' '$2 ~ /min/ {print $3}' ${tmpfile})
+ 	max_tnu=$(awk -F'\t' '$2 ~ /max/ {print $3}' ${tmpfile})
+
+	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last_min --data "${min_tnu}"
+	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last_max --data "${max_tnu}"
 
 
 	#	Update sqlite database
