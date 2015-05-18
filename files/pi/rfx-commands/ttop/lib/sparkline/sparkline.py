@@ -1,8 +1,8 @@
 # vim: set fileencoding=utf-8 :
 import math, os, re, string, sys
 
-# spark_chars = u"▁▂▃▄▅▆▇"
-spark_chars = u"▁▁▂▃▄▅▆▇"  # Don't use last block, add another low
+spark_chars = u"▁▂▃▄▅▆▇"
+#spark_chars = u"▁▁▂▃▄▅▆▇"  # Don't use last block, add another low
 
 """Eight unicode characters of (nearly) steadily increasing height."""
 
