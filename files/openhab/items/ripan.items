@@ -267,5 +267,7 @@ String STATIC_timestamp     "Senaste JSON [%s]" <ripan_clock>
 String SQL_timestamp        "Senaste SQL [%s]"  <ripan_clock>
 
 String T_NU_last_info       "Senaste [%s]" <ripan_tnu>
+String T_NU_last_max        "Varmast [%s]" <ripan_small_red_temp>
+String T_NU_last_min        "Kallast [%s]" <ripan_small_blue_temp>
 
 

@@ -2,6 +2,8 @@ sitemap ripan label="Ripstigen" {
    
    Frame label="Temperatur.nu" {
         Text item=T_NU_last_info
+        Text item=T_NU_last_max
+        Text item=T_NU_last_min
    }
    
 
