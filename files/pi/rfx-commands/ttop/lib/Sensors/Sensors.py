@@ -134,7 +134,7 @@ class SensorList(object):
         return 0.0
 
     def sensorFormatTemp(self, temp):
-        return "{:.1f}".format(float(temp))
+        return "{:.1f}".format(round(float(temp),1))
 
     def getsensortempformatted(self, id):
         s = self.__getsensor(id)
