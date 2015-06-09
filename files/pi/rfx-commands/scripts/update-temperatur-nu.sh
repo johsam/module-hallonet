@@ -116,9 +116,9 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last_max --data "${max_tnu}"
 
 
-	#	Update sqlite database
+	#	Update graphite
 
-	/home/pi/rfx-commands/scripts/update-sqlite.sh '0000' ${number}
+	${dir}/to-graphite-temps.sh '0000' ${number}
 
 else 
 	

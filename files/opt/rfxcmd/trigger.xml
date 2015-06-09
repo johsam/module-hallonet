@@ -9,14 +9,14 @@
 </trigger>
 <trigger>
         <message>085007............</message>
-	<action>/home/pi/rfx-commands/scripts/update-sqlite.sh "$id$" "$temperature$"</action>
+	<action>/home/pi/rfx-commands/scripts/to-graphite-temps.sh "$id$" "$temperature$"</action>
 </trigger>
 <trigger>
         <message>0A5209..8700..........</message>
-	<action>/home/pi/rfx-commands/scripts/update-sqlite.sh "$id$" "$temperature$" "$humidity$"</action>
+	<action>/home/pi/rfx-commands/scripts/to-graphite-temps.sh "$id$" "$temperature$" "$humidity$"</action>
 </trigger>
 <trigger>
         <message>0A5209..9700..........</message>
-	<action>/home/pi/rfx-commands/scripts/update-sqlite.sh "$id$" "$temperature$" "$humidity$"</action>
+	<action>/home/pi/rfx-commands/scripts/to-graphite-temps.sh "$id$" "$temperature$" "$humidity$"</action>
 </trigger>
 </xml>
