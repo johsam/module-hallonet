@@ -1,4 +1,23 @@
 #!/bin/bash
+
+######################################################################
+#
+#	Catch signals...
+#
+######################################################################
+
+trap 'rm -f "${tmpfile}" > /dev/null 2>&1' 0
+trap "exit 2" 1 2 3 15
+
+######################################################################
+#
+#	Setup variables...
+#
+######################################################################
+
+[ -h "$0" ] && dir=$(dirname `readlink $0`) || dir=$( cd `dirname $0` && pwd)
+
+
 #echo "sensors.temperatures.$1 $2 $(date +%s)" | nc -q0 mint-black 2003
 
 
@@ -7,15 +26,10 @@ value="${2}"
 humidity="${3}"
 host=$(hostname)
 now="$(date +%s)"
- 
-containsElement () {
-  local e
-  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
-  return 1
-}
 
+#	Get sensor variables
 
-source /home/pi/rfx-commands/sensors.cfg
+source "${dir}/../sensors.cfg"
 
 #
 #	Convert to arrays
@@ -24,6 +38,20 @@ source /home/pi/rfx-commands/sensors.cfg
 outdoor=(${sensors_outdoor//,/ })
 indoor=(${sensors_indoor//,/ })
 hum=(${sensors_humidity//,/ })
+
+
+#-------------------------------------------------------------------------------
+#
+#	Function containsElement
+#
+#-------------------------------------------------------------------------------
+ 
+containsElement () {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
+
 
 # Handle temp part
 
@@ -52,41 +80,5 @@ if [ ${status} -eq 0 ] ; then
 	path="linux.${host}.sensors.${sensor_location}.${sensor_type}.${sensor} ${humidity} ${now}"
 	echo $path | nc -q0 mint-black 2003
 fi
-
-exit 0
-
-
-
-
-
-
-#
-#	echo -e "\u2193"
-#
-
-now=$(date +%s)
-sensorid=$1
-value=$2
-
-db="/var/rfxcmd/sqlite.db"
-
-
-/usr/bin/sqlite3 "${db}" <<- CAT_EOF
-	.timeout 10000
-	
-	insert into last select * from sensors where sensorid = '${sensorid}';
-	insert into sensors values(${now},'${sensorid}',${value});
-
-	-- Update the fake sensor FFFF
-	
-	insert into last select * from sensors where sensorid = 'FFFF';
-	insert into sensors values(
-		${now},
-		'FFFF',
-		(select avg(Temp) from real_rensors_v)
-	);
-
-CAT_EOF
-
 
 exit 0

@@ -59,6 +59,18 @@ class hallonet::rfxcmd::pi {
         group  => 'root',
         mode   => '0644',
     }
+
+
+    file {'graphite_core_temp':
+        ensure => present,
+        path   => '/etc/cron.d/graphite-core-temp',
+        source => "puppet:///modules/${module_name}/cron.d/graphite-core-temp",
+        require => [File['rfx_commands']],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+ 
     
     #
     #	Stuff for /usr/local/bin

@@ -22,4 +22,23 @@ class hallonet::packages ($base_packages = $hallonet::params::base_packages,$pip
         mode    => '0755',
     }
 
+
+    file {'collectd_conf':
+        path    => '/etc/collectd/collectd.conf',
+        source  => "puppet:///modules/${module_name}/collectd/collectd.conf",
+        require => Package['collectd'],
+        mode    => '0644',
+	owner   => 'root',
+	group   => 'root',
+	notify  => Service ['collectd']
+    }
+
+
+    service { 'collectd':
+    	ensure  => running,
+	enable  => true,
+	require => [Package['collectd'],File['collectd_conf']]
+    
+    }
+
 }

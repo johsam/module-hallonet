@@ -8,11 +8,15 @@
 	<action>/home/pi/rfx-commands/commands/nexa_setstate.sh "$unitcode$" "$command$"</action>
 </trigger>
 <trigger>
-        <message>085007..........XX</message>
+        <message>085007............</message>
 	<action>/home/pi/rfx-commands/scripts/update-sqlite.sh "$id$" "$temperature$"</action>
 </trigger>
 <trigger>
-        <message>0A5209..8700........XX</message>
-	<action>/home/pi/rfx-commands/scripts/update-sqlite.sh "$id$" "$temperature$"</action>
+        <message>0A5209..8700..........</message>
+	<action>/home/pi/rfx-commands/scripts/update-sqlite.sh "$id$" "$temperature$" "$humidity$"</action>
+</trigger>
+<trigger>
+        <message>0A5209..9700..........</message>
+	<action>/home/pi/rfx-commands/scripts/update-sqlite.sh "$id$" "$temperature$" "$humidity$"</action>
 </trigger>
 </xml>
