@@ -179,7 +179,7 @@ def ttop(stdscr):
     sensors.addsensor(id='0000', alias='Rapporterat', location='artificial')
 
     # Outdoor
-    sensors.addsensor(id='E400', alias='Anna:s', offset=0)
+    sensors.addsensor(id='3B00', alias='Anna:s', offset=0)
     sensors.addsensor(id='0700', alias='Förrådet', offset=1)
     sensors.addsensor(id='7500', alias='Hammocken', offset=2)
     sensors.addsensor(id='8700', alias='Tujan', offset=3)

@@ -172,39 +172,5 @@ def main():
 
     sensors = SensorList(trendsize=10)
 
-    sensors.addsensor(id='0000', alias='Rapporterat', location='artificial')
-
-    sensors.addsensor(id='E400', alias='Anna:s', offset=0)
-    sensors.addsensor(id='0700', alias='Förrådet', offset=1)
-    sensors.addsensor(id='B500', alias='Hammocken', offset=2)
-    sensors.addsensor(id='8700', alias='Tujan', offset=3)
-    sensors.addsensor(id='AC00', alias='Cyklarns', offset=4)
-    sensors.addaverage(id='FFFF', alias='Medel')
-
-    sensors.addsensor(id='9700', alias='Bokhyllan', location='inside')
-
-    # Set some temps
-
-    sensors.settemp(id='E400', stamp='10:00:00', temp=2.5)
-    sensors.settemp(id='E400', stamp='10:00:05', temp=2.1)
-    # sensors.settemp(id='E400',stamp='10:00:10',temp=1.9)
-    # sensors.settemp(id='E400',stamp='10:00:11',temp=2.3)
-    # sensors.settemp(id='E400',stamp='10:00:12',temp=2.2)
-
-    sensors.settemp(id='8700', stamp='10:00:20', temp=2)
-    # sensors.settemp(id='9700',stamp='10:00:10',temp=23.1)
-
-    # print json.dumps(sensors.sensors,sort_keys=True,indent=4)
-
-    for l in ['artificial', 'outside', 'outside_average', 'inside']:
-        print '=== ' + l + ' ==='
-        for id in sensors.getsidsfromlocation(l):
-            alias = sensors.getsensoralias(id)
-            temp = sensors.getsensortemp(id)
-            stamp = sensors.getsensorstamp(id)
-            trend = sensors.getsensorsparkline(id)
-            print alias, stamp, temp, trend
-
-
 if __name__ == "__main__":
     main()

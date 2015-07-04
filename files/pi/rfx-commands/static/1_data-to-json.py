@@ -61,7 +61,7 @@ args = parser.parse_args()
 sensorData = {}
 sensorAliases = {
 
-	"E400": {
+	"3B00": {
 		"alias": "Anna:s",
 		"location": "outside",
 		"order": 0

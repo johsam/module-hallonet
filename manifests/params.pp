@@ -24,8 +24,8 @@ class hallonet::params {
     ]
 
 
-    $myopenhab_version = '1.4.0'
-    $myopenhab = "org.openhab.io.myopenhab-${myopenhab_version}-SNAPSHOT.jar"
+    $myopenhab_version = '1.7.0'
+    $myopenhab = "org.openhab.io.myopenhab-${myopenhab_version}.jar"
 
 
     $rfxcmd_packages = [
