@@ -107,6 +107,8 @@ def process_log_line(filename, line, stdscr):
             sensors.settemp(id='FFF1', stamp=stamp, temp=float(humidity))
         if id == '9700':
             sensors.settemp(id='FFF0', stamp=stamp, temp=float(humidity))
+        if id == 'A700':
+            sensors.settemp(id='FFF2', stamp=stamp, temp=float(humidity))
 
     m = re_tnu.match(line)
     if m:
@@ -183,7 +185,8 @@ def ttop(stdscr):
     sensors.addsensor(id='0700', alias='Förrådet', offset=1)
     sensors.addsensor(id='7500', alias='Hammocken', offset=2)
     sensors.addsensor(id='8700', alias='Tujan', offset=3)
-    sensors.addsensor(id='AC00', alias='Cyklarna', offset=4)
+    sensors.addsensor(id='A700', alias='Komposten', offset=4)
+    sensors.addsensor(id='AC00', alias='Cyklarna', offset=5)
     # sensors.addaverage(id='FFFF', alias='Medel')
 
     # Indoor
@@ -195,9 +198,10 @@ def ttop(stdscr):
     # Average for outdoor
     sensors.addaverage(id='FFFF', alias='Medel')
 
-    # Pi
-    sensors.addsensor(id='FFF0', alias='Inomhus', location='humidity', offset=0)
-    sensors.addsensor(id='FFF1', alias='Utomhus', location='humidity', offset=1)
+    # Humidity
+    sensors.addsensor(id='FFF0', alias='Inomhus',   location='humidity', offset=0)
+    sensors.addsensor(id='FFF1', alias='Tujan',     location='humidity', offset=1)
+    sensors.addsensor(id='FFF2', alias='Komposten', location='humidity', offset=2)
 
     process_log_line("", "", stdscr)
 

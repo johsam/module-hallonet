@@ -37,6 +37,14 @@ sitemap ripan label="Ripstigen" {
         		Text item=H_52_8700_last
    		}
 
+  		Frame label="Komposten" {
+        		Text item=T_52_A700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_A700_last_stamp
+        		Text item=T_52_A700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_A700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=H_52_A700_last
+   		}
+
 
    		Frame label="Cycklarna" {
         		Text item=T_50_AC00_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -82,6 +90,11 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_52_8700_max_stamp
 		}	
 
+		Frame label="Komposten" {
+			Text item=T_52_A700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_A700_max_stamp
+		}	
+
 		Frame label="Cyklarna" {
 			Text item=T_50_AC00_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_AC00_max_stamp
@@ -116,6 +129,11 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_52_8700_min_stamp
 		}	
 
+		Frame label="Komposten" {
+			Text item=T_52_A700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_A700_min_stamp
+		}	
+
 		Frame label="Cyklarna" {
 			Text item=T_50_AC00_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_AC00_min_stamp
@@ -138,6 +156,7 @@ sitemap ripan label="Ripstigen" {
    Frame label="Luftfuktighet" {
         Text item=H_52_9700_last
         Text item=H_52_8700_last
+        Text item=H_52_A700_last
    }
 
    Frame label="Sensordata" {

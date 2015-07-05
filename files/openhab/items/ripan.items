@@ -50,6 +50,28 @@ Number H_52_8700_last
         <ripan_humidity>
         (Outside)
 
+/*	Komposten	*/
+
+Number T_52_A700_last
+        "Temperatur (K) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_52_A700_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,KompostenMinToday)
+
+Number T_52_A700_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,KompostenMaxToday)
+
+Number H_52_A700_last
+        "Komposten [%d %%]"
+        <ripan_humidity>
+        (Outside)
+
 
 /*	Cycklarna	*/
 
@@ -129,33 +151,41 @@ Number H_52_9700_last
         (Inside)
 
 
-/*	Tid for max min	*/
+/*	Tid for max min	typ 50*/
 
 String T_50_7500_last_stamp "Avläst [%s]" <ripan_clock>
-String T_50_7500_min_stamp "Klockan [%s]" <ripan_clock>
-String T_50_7500_max_stamp "Klockan [%s]" <ripan_clock>
-
-String T_52_8700_last_stamp "Avläst [%s]" <ripan_clock>
-String T_52_8700_min_stamp "Klockan [%s]" <ripan_clock>
-String T_52_8700_max_stamp "Klockan [%s]" <ripan_clock>
-String H_52_8700_last_stamp "Klockan [%s]" <ripan_clock>
+String T_50_7500_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_7500_max_stamp  "Klockan [%s]" <ripan_clock>
 
 String T_50_AC00_last_stamp "Avläst [%s]" <ripan_clock>
-String T_50_AC00_min_stamp "Klockan [%s]" <ripan_clock>
-String T_50_AC00_max_stamp "Klockan [%s]" <ripan_clock>
-
-String T_52_9700_last_stamp "Avläst [%s]" <ripan_clock>
-String T_52_9700_min_stamp "Klockan [%s]" <ripan_clock>
-String T_52_9700_max_stamp "Klockan [%s]" <ripan_clock>
-String H_52_9700_last_stamp "Klockan [%s]" <ripan_clock>
+String T_50_AC00_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_AC00_max_stamp  "Klockan [%s]" <ripan_clock>
 
 String T_50_0700_last_stamp "Avläst [%s]" <ripan_clock>
-String T_50_0700_min_stamp "Klockan [%s]" <ripan_clock>
-String T_50_0700_max_stamp "Klockan [%s]" <ripan_clock>
+String T_50_0700_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_0700_max_stamp  "Klockan [%s]" <ripan_clock>
 
 String T_50_3B00_last_stamp "Avläst [%s]" <ripan_clock>
-String T_50_3B00_min_stamp "Klockan [%s]" <ripan_clock>
-String T_50_3B00_max_stamp "Klockan [%s]" <ripan_clock>
+String T_50_3B00_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_3B00_max_stamp  "Klockan [%s]" <ripan_clock>
+
+
+/*	Tid for max min typ 52*/
+
+String T_52_8700_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_8700_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_8700_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_8700_last_stamp "Klockan [%s]" <ripan_clock>
+
+String T_52_9700_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_9700_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_9700_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_9700_last_stamp "Klockan [%s]" <ripan_clock>
+
+String T_52_A700_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_A700_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_A700_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_A700_last_stamp "Klockan [%s]" <ripan_clock>
 
 /*	Grupper	*/
 
@@ -197,6 +227,7 @@ Group:Number:MAX HammockMaxToday
         (Outside)
 
 
+
 Group:Number:MIN TujanMinToday
         "Tujan [%.1f °C]"
         <ripan_small_blue_temp>
@@ -208,6 +239,19 @@ Group:Number:MAX TujanMaxToday
         (Outside)
 
 
+
+Group:Number:MIN KompostenMinToday
+        "Tujan [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX KompostenMaxToday
+        "Tujan [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+
+
 Group:Number:MIN CyklarnaMinToday
         "Cycklarna [%.1f °C]"
         <ripan_small_blue_temp>
@@ -217,6 +261,7 @@ Group:Number:MAX CyklarnaMaxToday
         "Cycklarna [%.1f °C]"
         <ripan_small_red_temp>
         (Outside)
+
 
 
 Group:Number:MIN StorageMinToday

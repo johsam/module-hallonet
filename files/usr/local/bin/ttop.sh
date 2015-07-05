@@ -10,7 +10,7 @@ export TERM=xterm-256color
 
 # Resize window
 
-printf "\e[8;18;52t"
+printf "\e[8;20;52t"
 
 /home/pi/rfx-commands/ttop/ttop.py
 )

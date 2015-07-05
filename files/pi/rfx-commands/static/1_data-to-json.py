@@ -91,16 +91,23 @@ sensorAliases = {
 		"order": 3
 	},
 
-	"AC00": {
-		"alias": "Cyklarna",
+	"A700": {
+		"alias": "Komposten",
 		"location":"outside",
 		"order": 4
 	},
 
+	"AC00": {
+		"alias": "Cyklarna",
+		"location":"outside",
+		"order": 5
+	},
+	
+
 	"9700": {
 		"alias": "Bokhyllan",
 		"location": "inside",
-		"order": 5
+		"order": 6
 	}
 
 }
