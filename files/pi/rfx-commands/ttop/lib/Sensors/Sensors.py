@@ -25,6 +25,7 @@ class Sensor(object):
     location = ''
     offset = 0
     stamp = '00:00:00'
+    signal = ' '
     trend = []
     temp = 0.0
     trendsize = 0
@@ -77,10 +78,10 @@ class SensorList(object):
 
         return avgtmp
 
-    def settemp(self, id, temp, stamp='00:00:00'):
+    def settemp(self, id, temp, stamp='00:00:00',signal=' '):
         global debugFile
 	if id in self.sensors:
-            
+
 	    # Make sure temp is a float
             temp = float(temp)
             
@@ -89,6 +90,7 @@ class SensorList(object):
 
             self.sensors[id]['temp'] = temp
             self.sensors[id]['stamp'] = stamp
+            self.sensors[id]['signal'] = signal
 
             if self.sensors[id]['trendempty'] is True:
                 self.sensors[id]['trendempty'] = False
@@ -141,13 +143,27 @@ class SensorList(object):
         temp = 0.0
         if 'temp' in s:
             temp = s['temp']
-	return self.sensorFormatTemp(temp).rjust(7, ' ')
+	return self.sensorFormatTemp(temp).rjust(5, ' ')
+
+    def getsensorhistformatted(self, id):
+        s = self.__getsensor(id)
+        temp = 0.0
+        if 'temp' in s:
+	    temp = s['trend'][0]
+	    
+	return self.sensorFormatTemp(temp).rjust(5, ' ')
 
     def getsensorstamp(self, id):
         s = self.__getsensor(id)
         if 'stamp' in s:
             return s['stamp']
         return '00:00:00'
+
+    def getsensorsignal(self, id):
+        s = self.__getsensor(id)
+        if 'signal' in s:
+            return str(s['signal'])
+        return ' '
 
     def getsensorsparkline(self, id):
         s = self.__getsensor(id)

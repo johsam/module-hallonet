@@ -19,22 +19,26 @@ from Sensors import SensorList
 
 locale.setlocale(locale.LC_ALL, "")
 
-re_50 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});\d+;50;..;..;(....);\d;\d;(.*)')
-re_52 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});\d+;52;..;..;(....);\w+;(.*?);(\d+);\d+;\d+')
+re_50 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});\d+;50;..;..;(....);\d;(\d);(.*)')
+re_52 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});\d+;52;..;..;(....);\w+;(.*?);(\d+);\d;(\d)')
 re_tnu = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+\d+\s+\d+\s+(.*)')
 re_rest = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+PI_core_temp\s+\-\>\s+(\d{2,3}\.\d{2,3})')
 
-windowWidth = (14 * 4) - 4
-aliasWidth = 14
+trendsize = 14
+windowWidth = 56
+
+
+
 lock = threading.Lock()
 lineQueue = Queue.Queue()
-sensors = SensorList(trendsize=14)
+sensors = SensorList(trendsize=trendsize)
 
 frameColor = 32
 headerColor = 40
 
 aliasColor = 0
 stampColor = 245
+darkColor = 240
 
 sensorHeaders = [
     ("artificial", "Temperatur.nu"),
@@ -89,12 +93,14 @@ def process_log_line(filename, line, stdscr):
     row = 0
     lastRowUpdated = 1
     stamp = '00:00:00'
-
+    signal = ' '
+    
     m = re_50.match(line)
     if m:
         stamp = m.group(1)
         id = m.group(2)
-        temp = m.group(3)
+        signal = m.group(3)
+        temp = m.group(4)
 
     m = re_52.match(line)
     if m:
@@ -102,13 +108,14 @@ def process_log_line(filename, line, stdscr):
         id = m.group(2)
         temp = m.group(3)
         humidity = m.group(4)
+        signal = m.group(5)
 
 	if id == '8700':
-            sensors.settemp(id='FFF1', stamp=stamp, temp=float(humidity))
+            sensors.settemp(id='FFF1', stamp=stamp, temp=float(humidity),signal=signal)
         if id == '9700':
-            sensors.settemp(id='FFF0', stamp=stamp, temp=float(humidity))
+            sensors.settemp(id='FFF0', stamp=stamp, temp=float(humidity),signal=signal)
         if id == 'A700':
-            sensors.settemp(id='FFF2', stamp=stamp, temp=float(humidity))
+            sensors.settemp(id='FFF2', stamp=stamp, temp=float(humidity),signal=signal)
 
     m = re_tnu.match(line)
     if m:
@@ -123,7 +130,7 @@ def process_log_line(filename, line, stdscr):
         temp = m.group(2)
 
     if id != '':
-        sensors.settemp(id=id, stamp=stamp, temp=temp)
+        sensors.settemp(id=id, stamp=stamp, temp=temp,signal=signal)
         # debugFile.write(id + " -> " + stamp + " -> " + sensors.sensorFormatTemp(temp) + "\n")
 
     stdscr.erase()
@@ -136,8 +143,10 @@ def process_log_line(filename, line, stdscr):
 
         for rid in sensors.getsidsfromlocation(loc):
             alias = sensors.getsensoralias(rid)
+	    histtemp = sensors.getsensorhistformatted(rid)
             temp = sensors.getsensortempformatted(rid)
             stamp = sensors.getsensorstamp(rid)
+            signal = sensors.getsensorsignal(rid)
             trend = sensors.getsensorsparkline(rid)
             offset = startrow + sensors.getsensoroffset(rid)
             if id == rid:
@@ -145,16 +154,21 @@ def process_log_line(filename, line, stdscr):
 
             print_vbarsAt(stdscr, offset, windowWidth)
 
-            stdscr.addstr(offset, 2, alias, curses.color_pair(aliasColor))
-            stdscr.addstr(offset, aliasWidth, stamp, curses.color_pair(stampColor))
-            # if rid == '7500':
-                # stdscr.addstr(offset, aliasWidth * 2, trend, curses.color_pair(154))
-            # else:
-	        # stdscr.addstr(offset, aliasWidth * 2, trend)
-            
-	    stdscr.addstr(offset, aliasWidth * 2, trend)
+	    alias_colstart = 2
+	    signal_colstart = 14
+	    stamp_colstart = 16
+	    hist_colstart = 28
+	    trend_colstart = hist_colstart + 6
+	    temp_colstart = trend_colstart + trendsize + 1
 
-            stdscr.addstr(offset, (aliasWidth * 3) + 1, temp)
+            stdscr.addstr(offset, alias_colstart, alias, curses.color_pair(aliasColor))
+            stdscr.addstr(offset, signal_colstart, signal, curses.color_pair(darkColor))
+            stdscr.addstr(offset, stamp_colstart, stamp, curses.color_pair(stampColor))
+	    
+            stdscr.addstr(offset, hist_colstart, histtemp,curses.color_pair(darkColor))
+	    stdscr.addstr(offset, trend_colstart, trend)
+            stdscr.addstr(offset, temp_colstart, temp)
+	    
             row = row + 1
 
     offset = offset + 1
