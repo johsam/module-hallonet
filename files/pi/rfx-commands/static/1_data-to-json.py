@@ -61,6 +61,12 @@ args = parser.parse_args()
 sensorData = {}
 sensorAliases = {
 
+	"FFFF": {
+		"alias": "Temperatur.nu",
+		"location": "outside",
+		"order": -1
+	},
+
 	"3B00": {
 		"alias": "Anna:s",
 		"location": "outside",

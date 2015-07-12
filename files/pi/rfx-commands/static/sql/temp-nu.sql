@@ -28,7 +28,7 @@ order by datetime desc limit 1;
 
 
 --
--- Max
+-- Min
 --
 
 select

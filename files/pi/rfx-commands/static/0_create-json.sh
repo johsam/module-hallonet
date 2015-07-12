@@ -16,7 +16,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}" "${tnufile}" "${stampfile}" "${systemfile}" "${loadfile}" > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 ######################################################################
@@ -42,7 +42,6 @@ maxfile="/tmp/`basename $0`-$$-max.tmp"
 minhumfile="/tmp/`basename $0`-$$-minhum.tmp"
 maxhumfile="/tmp/`basename $0`-$$-maxhum.tmp"
 
-tnufile="/tmp/`basename $0`-$$-tnu.tmp"
 stampfile="/tmp/`basename $0`-$$-stamp.tmp"
 
 systemfile="/tmp/`basename $0`-$$-system.tmp"
@@ -115,9 +114,6 @@ uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
 
 
-#	temperatur.nu
-
-mysql tnu --skip-column-names -urfxuser -prfxuser1 < ${scriptDir}/sql/temp-nu.sql  > "${tnufile}"
 
 #	Last stamp
 
@@ -144,13 +140,10 @@ formatSystemInfo "static" "timestamp" "${now}"
 
 #	Sql stuff
 
-cat "${tnufile}"
 cat "${stampfile}"
 
 
 } > "${systemfile}"
-
-
 
 
 
@@ -166,6 +159,19 @@ mysql rfx -urfxuser -prfxuser1 \
 
 mysql rfx -urfxuser -prfxuser1 \
 	-e "set @sensors_all:='${sensors_all}'; source ${scriptDir}/sql/max-today.sql;" > "${maxfile}"
+
+
+#	Append tnu data i.e fake sensor FFFF
+
+mysql tnu -urfxuser -prfxuser1 --skip-column-names \
+	-e "source ${scriptDir}/sql/tnu-last-temp.sql;" >> "${lastfile}"
+
+mysql tnu -urfxuser -prfxuser1 --skip-column-names \
+	-e "source ${scriptDir}/sql/tnu-min-today.sql;" >> "${minfile}"
+
+mysql tnu -urfxuser -prfxuser1 --skip-column-names \
+	-e "source ${scriptDir}/sql/tnu-max-today.sql;" >> "${maxfile}"
+
 
 #
 #	Humidity

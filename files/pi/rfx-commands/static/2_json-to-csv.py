@@ -35,13 +35,13 @@ def processSection(s):
 def processSensors(a):
 	
 	def tp(t,st,si,v,ts):
-		d,s = ts.split();	# We on ly want the time
+		d,s = ts.split();	# We only want the time
 		print "T_" + str(st) + "_" + si + "_" + t + "\t" + str(v)
 		print "T_" + str(st) + "_" + si + "_" + t + "_stamp\t" + str(s)
 		
 
 	def th(t,st,si,v,ts):
-		d,s = ts.split();	# We on ly want the time
+		d,s = ts.split();	# We only want the time
 		print "H_" + str(st) + "_" + si + "_" + t + "\t" + str(v)
 		print "H_" + str(st) + "_" + si + "_" + t + "_stamp\t" + str(s)
 
@@ -50,6 +50,11 @@ def processSensors(a):
 
 		sensorid = i['sensor']['id']
 		sensortype = i['sensor']['type']
+		
+		# Skip fake sensor Temperatur.nu
+		
+		if sensorid == 'FFFF':
+			continue
 		
 		for t in ['last','min','max']:
 			value = i['temperature'][t]['value']
