@@ -55,8 +55,47 @@ parser.add_argument(
 	help='File containing system values'
 )
 
+parser.add_argument(
+	'--switch-file', required=True,
+	default='',
+	dest='switch_file',
+	help='File containing switch values'
+)
 
 args = parser.parse_args()
+
+
+switchData = {}
+switchAliases = {
+
+	"00D81332_1": {
+		"alias": "Tv:n",
+		"type":  "wall",
+		"order": 1
+	},
+	"00D81332_2": {
+		"alias": "Köksfönstret",
+		"type":  "wall",
+		"order": 2
+	},
+	"00D81332_3": {
+		"alias": "Ebbas rum",
+		"type":  "wall",
+		"order": 3
+	},
+	"00D81332_4": {
+		"alias": "Julgranen",
+		"type":  "wall",
+		"order": 4
+	},
+	"00CFDEEA_10": {
+		"alias": "Altanen",
+		"type":  "magnet",
+		"order": -1
+	}
+}
+
+
 
 sensorData = {}
 sensorAliases = {
@@ -118,7 +157,7 @@ sensorAliases = {
 
 }
 
-result = {'success': True, 'sensors': []}
+result = {'success': True, 'sensors': [],'switches': []}
 now = datetime.now()
 
 
@@ -167,6 +206,36 @@ def readSystemFile(filename):
 			result[section][key] = value.decode('iso8859-1')
 			
 
+#
+# Read switch file
+#
+
+with open(args.switch_file, 'rb') as csvfile:
+	sqlData = csv.DictReader(csvfile, dialect="excel-tab")
+
+	for row in sqlData:
+		sensorid = row['sensorid'] + '_' + row['subid']
+		timestamp = row['datetime']
+		state = row['state']
+		alias = 'n/a'
+		swtype = 'n/a'
+		order = 0
+		
+
+		if sensorid not in switchData:
+			switchData[sensorid] = {}
+
+		if sensorid in switchAliases:
+			alias = switchAliases[sensorid]['alias']
+			swtype = switchAliases[sensorid]['type']
+			order = switchAliases[sensorid]['order']
+
+		switchData[sensorid]['id'] = sensorid
+		switchData[sensorid]['alias'] = alias
+		switchData[sensorid]['order'] = order
+		switchData[sensorid]['type'] = swtype
+		switchData[sensorid]['timestamp'] = timestamp
+		switchData[sensorid]['state'] = state
 
 #
 # Read last data
@@ -269,12 +338,15 @@ readSystemFile(args.system_file)
 # Collect all data and output json...
 #
 
+for sensorid in switchData:
+	result['switches'].append(switchData[sensorid])
 
 
 for sensorid in sensorData:
 	result['sensors'].append(sensorData[sensorid])
 
 
+result['switches'] = sorted(result['switches'], key=lambda k: k['order']) 
 result['sensors'] = sorted(result['sensors'], key=lambda k: k['order']) 
 
 

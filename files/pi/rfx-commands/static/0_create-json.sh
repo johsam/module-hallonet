@@ -16,7 +16,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" "${switchfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 ######################################################################
@@ -47,6 +47,7 @@ stampfile="/tmp/`basename $0`-$$-stamp.tmp"
 systemfile="/tmp/`basename $0`-$$-system.tmp"
 
 loadfile="/tmp/`basename $0`-$$-oh-load.tmp"
+switchfile="/tmp/`basename $0`-$$-switches.tmp"
 
 
 openhabPidFile=/var/run/openhab.pid
@@ -147,6 +148,14 @@ cat "${stampfile}"
 
 
 
+
+#
+#	State of all switches
+#
+
+mysql rfx -urfxuser -prfxuser1 \
+	-e "set @switches_all:='${switches_all}'; source ${scriptDir}/sql/last-switches.sql;" > "${switchfile}"
+
 #
 #	Last, min and max temps
 #
@@ -195,6 +204,7 @@ python -u ${scriptDir}/1_data-to-json.py \
         --min-hum-file  "${minhumfile}" \
         --max-hum-file  "${maxhumfile}" \
         --system-file   "${systemfile}" \
+        --switch-file   "${switchfile}" \
 	
 ) > "${tmpfile}" && cat "${tmpfile}"
 

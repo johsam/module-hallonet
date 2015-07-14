@@ -316,3 +316,10 @@ String T_NU_last_max        "Varmast [%s]" <ripan_small_red_temp>
 String T_NU_last_min        "Kallast [%s]" <ripan_small_blue_temp>
 
 
+String M_00CFDEEA
+        "Altanen [%s]"
+        <ripan_door>
+        (Magnets)
+
+
+

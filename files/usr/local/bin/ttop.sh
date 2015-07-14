@@ -3,6 +3,7 @@
 (
 clear
 export TERM=xterm-256color
+source /home/pi/rfx-commands/settings.cfg
 
 #	Move window
 
@@ -12,7 +13,7 @@ export TERM=xterm-256color
 
 printf "\e[8;20;56t"
 
-/home/pi/rfx-commands/ttop/ttop.py
+/home/pi/rfx-commands/ttop/ttop.py --pubnub-subkey "${PUBNUB_SUBKEY}" --pubnub-pubkey "${PUBNUB_PUBKEY}" --pubnub-channel "${PUBNUB_CHANNEL}"
 )
 
 exit 0

@@ -2,6 +2,7 @@
 # coding=iso-8859-1
 
 import re
+import argparse
 import curses
 import curses.wrapper
 import threading
@@ -10,12 +11,51 @@ import sys
 import Queue
 
 from os import path
+from pubnub import Pubnub
 
 sys.path.append(path.dirname(path.abspath(__file__)) + '/lib')
 
 
 from FileFollower import FileFollower
 from Sensors import SensorList
+
+
+
+#
+# Parse arguments
+#
+
+parser = argparse.ArgumentParser(description='Simple top for sensors')
+
+parser.add_argument(
+	'--pubnub-subkey', required=True,
+	default='',
+	dest='pubnub_subkey',
+	help='Pubnub subscribe key'
+)
+
+
+parser.add_argument(
+	'--pubnub-pubkey', required=True,
+	default='',
+	dest='pubnub_pubkey',
+	help='Pubnub publish key'
+)
+
+parser.add_argument(
+	'--pubnub-channel', required=True,
+	default='',
+	dest='pubnub_channel',
+	help='Pubnub channel'
+)
+
+
+args = parser.parse_args()
+
+
+#
+#	Variables
+#
 
 locale.setlocale(locale.LC_ALL, "")
 
@@ -26,7 +66,6 @@ re_rest = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+PI_core_temp\s+\-
 
 trendsize = 14
 windowWidth = 56
-
 
 
 lock = threading.Lock()
@@ -48,6 +87,15 @@ sensorHeaders = [
     ("humidity", "Luftfuktighet"),
     ("pi", "Pi")
 ]
+
+
+pubnub = Pubnub(publish_key=args.pubnub_pubkey,
+                    subscribe_key=args.pubnub_subkey,
+                    secret_key='',
+                    cipher_key='',
+                    ssl_on=False
+)
+
 
 # debugFile = open('/tmp/ttop.log', 'w' ,0)
 
@@ -178,12 +226,30 @@ def process_log_line(filename, line, stdscr):
     stdscr.refresh()
 
 #
+# pn_send_status
+#
+
+def pn_send_status(status):
+    
+    msg = {}
+    msg['type'] = 'status'
+    msg['status'] = {'ttop': status}
+    
+    pubnub.publish(args.pubnub_channel, str(msg))
+ 
+
+
+#
 # Main program
 #
 
 
 def ttop(stdscr):
     stdscr.nodelay(True)
+
+
+    pn_send_status('started')
+
 
     # Color stuff
     curses.start_color()
@@ -213,7 +279,7 @@ def ttop(stdscr):
     sensors.addaverage(id='FFFF', alias='Medel')
 
     # Humidity
-    sensors.addsensor(id='FFF0', alias='Inomhus',   location='humidity', offset=0)
+    sensors.addsensor(id='FFF0', alias='Bokhyllan', location='humidity', offset=0)
     sensors.addsensor(id='FFF1', alias='Tujan',     location='humidity', offset=1)
     sensors.addsensor(id='FFF2', alias='Komposten', location='humidity', offset=2)
 
@@ -260,6 +326,10 @@ def ttop(stdscr):
     thread1.stop()
     thread2.stop()
     thread3.stop()
+
+    pn_send_status('stopped')
+
+
 
 # Run through wrapper...
 

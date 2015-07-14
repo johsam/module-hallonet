@@ -150,8 +150,10 @@ sitemap ripan label="Ripstigen" {
 
 
    Frame label="Inomhus" {
-        Text item=T_52_9700_last
+        Text  item=T_52_9700_last
+	Text  item=M_00CFDEEA
    }
+
 
    Frame label="Luftfuktighet" {
         Text item=H_52_9700_last

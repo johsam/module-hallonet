@@ -1165,8 +1165,8 @@ def decodePacket(message):
 					action = action.replace("$command$", command )
 					action = action.replace("$signal$", str(signal) )
 					logger.debug("Execute shell")
-					command = Command(action)
-					command.run(timeout=config.trigger_timeout)
+					run_command = Command(action)
+					run_command.run(timeout=config.trigger_timeout)
 					if config.trigger_onematch:
 						logger.debug("Trigger onematch active, exit trigger")
 						break
@@ -1229,15 +1229,15 @@ def decodePacket(message):
 					action = action.replace("$command$", command )
 					action = action.replace("$dimlevel$", dimlevel )
 					logger.debug("Execute shell")
-					command = Command(action)
-					command.run(timeout=config.trigger_timeout)
+					run_command = Command(action)
+					run_command.run(timeout=config.trigger_timeout)
 					if config.trigger_onematch:
 						logger.debug("Trigger onematch active, exit trigger")
 						break
 		
 		# DATABASE
 		if config.mysql_active or config.sqlite_active or config.pgsql_active:
-			insert_database(timestamp, unixtime_utc, packettype, subtype, seqnbr, 255, signal, sensor_id, 0, command, unitcode, int(dimlevel), 0, 0, 0, 0, 0, 0, 0, 0)
+			insert_database(timestamp, unixtime_utc, packettype, subtype, seqnbr, 255, signal, sensor_id, 0, str(command), unitcode, int(dimlevel), 0, 0, 0, 0, 0, 0, 0, 0)
 
 		# XPL
 		if config.xpl_active:
@@ -1316,8 +1316,8 @@ def decodePacket(message):
 					action = action.replace("$command$", command )
 					action = action.replace("$signal$", str(signal) )
 					logger.debug("Execute shell")
-					command = Command(action)
-					command.run(timeout=config.trigger_timeout)
+					run_command = Command(action)
+					run_command.run(timeout=config.trigger_timeout)
 					if config.trigger_onematch:
 						logger.debug("Trigger onematch active, exit trigger")
 						break
