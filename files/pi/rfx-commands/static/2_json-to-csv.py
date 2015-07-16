@@ -1,6 +1,8 @@
-# coding=utf-8
+# coding=iso-8859-1
 import argparse
 import json
+import re
+from dateutil.parser import *
 
 #
 # Parse arguments
@@ -30,6 +32,33 @@ def processSection(s):
 			value = value.encode('ascii','xmlcharrefreplace')
 			
 			print s.upper() + "_" + key + "\t" + value
+
+def processSwitches(a):
+	for i in a:
+
+		switchtype = i['type']
+	
+		if switchtype == 'magnet':
+			
+			switchalias = i['alias']
+						
+			switchid = i['id']
+			switchstate = i['state']
+			switchstamp = i['timestamp']
+			
+			parsed = parse(switchstamp)
+			stamp = parsed.strftime("%d/%m %T")
+			stamp = re.sub(r"\/0","/",stamp)
+			
+			status=u'\u00D6ppen'
+			
+			if switchstate == "Off":
+				status=u'St\u00E4ngd'
+			
+			status = status.encode('ascii','xmlcharrefreplace')
+
+			
+			print "M_" + switchid + "\t" + status + " " + stamp
 
 
 def processSensors(a):
@@ -79,6 +108,9 @@ with open(args.file) as data_file:
 
 	if 'sensors' in json_data:
 		processSensors(json_data['sensors'])
+
+	if 'switches' in json_data:
+		processSwitches(json_data['switches'])
 
 	processSection('pi')
 	processSection('static')

@@ -151,9 +151,13 @@ sitemap ripan label="Ripstigen" {
 
    Frame label="Inomhus" {
         Text  item=T_52_9700_last
-	Text  item=M_00CFDEEA
    }
 
+   Frame label="Dörrar och fönster" {
+	Text  item=M_03D242AA_16
+	Text  item=M_00CFDEEA_10
+	Text  item=M_00CFD656_10
+   }
 
    Frame label="Luftfuktighet" {
         Text item=H_52_9700_last

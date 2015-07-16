@@ -57,7 +57,7 @@ class Command(object):
 		
 		def timer_callback():
 			logger.debug("Thread timeout, terminate it")
-			if process.is_alive():
+			if self.process.is_alive():
 				try:
 					self.process.terminate()
 				except OSError as error:

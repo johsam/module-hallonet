@@ -70,29 +70,42 @@ switchAliases = {
 
 	"00D81332_1": {
 		"alias": "Tv:n",
-		"type":  "wall",
+		"type":  "light",
 		"order": 1
 	},
 	"00D81332_2": {
 		"alias": "Köksfönstret",
-		"type":  "wall",
+		"type":  "light",
 		"order": 2
 	},
 	"00D81332_3": {
 		"alias": "Ebbas rum",
-		"type":  "wall",
+		"type":  "light",
 		"order": 3
 	},
 	"00D81332_4": {
 		"alias": "Julgranen",
-		"type":  "wall",
+		"type":  "light",
 		"order": 4
+	},
+	
+	
+	"03D242AA_16": {
+		"alias": "Ytterdörren",
+		"type":  "magnet",
+		"order": -5
 	},
 	"00CFDEEA_10": {
 		"alias": "Altanen",
 		"type":  "magnet",
-		"order": -1
+		"order": -4
+	},
+	"00CFD656_10": {
+		"alias": "Förrådet",
+		"type":  "magnet",
+		"order": -3
 	}
+
 }
 
 
@@ -116,12 +129,6 @@ sensorAliases = {
 		"alias": "Förrådet",
 		"location": "outside",
 		"order": 1
-	},
-
-	"B500": {
-		"alias": "Hammocken(x)",
-		"location": "outside",
-		"order": 2
 	},
 
 	"7500": {

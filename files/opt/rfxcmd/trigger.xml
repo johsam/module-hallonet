@@ -27,4 +27,12 @@
         <message>0B1100..00CFDEEA........</message>
 	<action>/home/pi/rfx-commands/scripts/door-magnet.sh "$id$" "$command$" "$dimlevel$"</action>
 </trigger>
+<trigger>
+        <message>0B1100..00CFD656........</message>
+	<action>/home/pi/rfx-commands/scripts/door-magnet.sh "$id$" "$command$" "$dimlevel$"</action>
+</trigger>
+<trigger>
+        <message>0B1100..03D242AA........</message>
+	<action>/home/pi/rfx-commands/scripts/door-magnet.sh "$id$" "$command$" "$dimlevel$"</action>
+</trigger>
 </xml>

@@ -13,7 +13,7 @@
 #30 08 * * 1-5 pi /home/pi/rfx-commands/commands/nexa_setstate.sh 3 off
 #
 #30 17 * * * pi /home/pi/rfx-commands/commands/nexa_setstate.sh 3 on
-00 22 * * * pi /home/pi/rfx-commands/commands/nexa_setstate.sh 3 off
+00 23 * * * pi /home/pi/rfx-commands/commands/nexa_setstate.sh 3 off
 #
 #	Julgranen
 #
