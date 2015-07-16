@@ -25,6 +25,6 @@ join (
 
 on maxt.data1 = i.data1 and maxt.mu = i.unixtime
 
-where find_in_set(i.data1,@switches_all)
+where find_in_set(i.data1,@switches_all) and i.data3 in ('On','Off')
 
 order by i.datetime;

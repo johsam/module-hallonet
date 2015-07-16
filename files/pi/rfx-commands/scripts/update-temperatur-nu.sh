@@ -41,6 +41,12 @@ now="$(date '+%F %T')"
 
 source "${dir}/../sensors.cfg"
 
+# Get some settings and functions
+
+source "${dir}/../settings.cfg"
+source "${dir}/../functions.sh"
+
+
 #	Get Average number from sensors
 
 /usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 \
@@ -95,14 +101,14 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 
 	#	Update openhab for graph
 	
-	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last --data "${number}"
+	to_openhab "Temperatur.nu" "T_NU_last" "${number}" >> ${UPDATE_REST_LOG}
 
 	
 	#	Update openhab data sent to temperatur.nu
 	
 
 	last_temperatur_nu=$(awk '{print $2" -> "$3}' "${lastokfile}")
-	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last_info --data "${last_temperatur_nu}"
+	to_openhab "Temperatur.nu" "T_NU_last_info" "${last_temperatur_nu}" >> ${UPDATE_REST_LOG}
 
 
 	# Update openhab min/max info for temperatur.nu
@@ -112,8 +118,8 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
  	min_tnu=$(awk -F'\t' '$2 ~ /min/ {print $3}' ${tmpfile})
  	max_tnu=$(awk -F'\t' '$2 ~ /max/ {print $3}' ${tmpfile})
 
-	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last_min --data "${min_tnu}"
-	curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/T_NU_last_max --data "${max_tnu}"
+	to_openhab "Temperatur.nu" "T_NU_last_min" "${min_tnu}" >> ${UPDATE_REST_LOG}
+	to_openhab "Temperatur.nu" "T_NU_last_max" "${max_tnu}" >> ${UPDATE_REST_LOG}
 
 
 	#	Update graphite
