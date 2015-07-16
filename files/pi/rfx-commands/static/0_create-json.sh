@@ -170,7 +170,7 @@ mysql rfx -urfxuser -prfxuser1 \
 	-e "set @sensors_all:='${sensors_all}'; source ${scriptDir}/sql/max-today.sql;" > "${maxfile}"
 
 
-#	Append tnu data i.e fake sensor FFFF
+#	Append tnu data i.e fake sensor 0000
 
 mysql tnu -urfxuser -prfxuser1 --skip-column-names \
 	-e "source ${scriptDir}/sql/tnu-last-temp.sql;" >> "${lastfile}"

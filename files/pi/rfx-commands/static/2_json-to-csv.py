@@ -82,7 +82,7 @@ def processSensors(a):
 		
 		# Skip fake sensor Temperatur.nu
 		
-		if sensorid == 'FFFF':
+		if sensorid == '0000':
 			continue
 		
 		for t in ['last','min','max']:

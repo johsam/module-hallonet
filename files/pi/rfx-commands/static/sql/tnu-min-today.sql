@@ -1,7 +1,7 @@
 -- +---------------------+------------+----------+---------+
 -- | datetime            | packettype | sensorid | mintemp |
 -- +---------------------+------------+----------+---------+
--- | 2015-07-12 05:10:01 | 50         | FFFF     | 13.7000 |
+-- | 2015-07-12 05:10:01 | 50         | 0000     | 13.7000 |
 -- +---------------------+------------+----------+---------+
 
 set @today := CURDATE();
@@ -9,7 +9,7 @@ set @today := CURDATE();
 select
 	min(t.datetime) as "datetime" ,
 	"50"            as "packettype",
-	"FFFF"          as "sensorid",
+	"0000"          as "sensorid",
 	t.temp          as "mintemp"
 	
 	from tnu t 

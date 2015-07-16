@@ -1,7 +1,7 @@
 -- +---------------------+------------+----------+---------+
 -- | datetime            | packettype | sensorid | maxtemp |
 -- +---------------------+------------+----------+---------+
--- | 2015-07-12 10:30:01 | 50         | FFFF     | 17.1500 |
+-- | 2015-07-12 10:30:01 | 50         | 0000     | 17.1500 |
 -- +---------------------+------------+----------+---------+
 
 set @today := CURDATE();
@@ -9,7 +9,7 @@ set @today := CURDATE();
 select
 	max(t.datetime) as "datetime" ,
 	"50"            as "packettype",
-	"FFFF"          as "sensorid",
+	"0000"          as "sensorid",
 	t.temp          as "maxtemp"
 	
 	from tnu t 

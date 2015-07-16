@@ -26,10 +26,12 @@ value="${2}"
 humidity="${3}"
 host=$(hostname)
 now="$(date +%s)"
+now_full="$(date '+%F %T')"
 
-#	Get sensor variables
+#	Get sensor variables and settings
 
 source "${dir}/../sensors.cfg"
+source "${dir}/../settings.cfg"
 
 #
 #	Convert to arrays
@@ -71,6 +73,7 @@ path="linux.${host}.sensors.${sensor_location}.${sensor_type}.${sensor} ${value}
 echo $path | nc -q0 mint-black 2003
 
 
+
 # Is it an humidity sensor ?
 
 containsElement "${sensor}" "${hum[@]}" ; status=$?
@@ -80,5 +83,19 @@ if [ ${status} -eq 0 ] ; then
 	path="linux.${host}.sensors.${sensor_location}.${sensor_type}.${sensor} ${humidity} ${now}"
 	echo $path | nc -q0 mint-black 2003
 fi
+
+
+exit 0
+
+(
+${dir}/pubnub_publish.py \
+	--file "${JSON_FILE}" \
+	--pubnub-subkey "${PUBNUB_SUBKEY}" \
+	--pubnub-pubkey "${PUBNUB_PUBKEY}" \
+	--pubnub-channel "${PUBNUB_CHANNEL}" \
+	--sensor-id "${sensor}" \
+	--sensor-value "${value}" \
+	--stamp "${now_full}"
+) > /tmp/xxx.txt 2>&1
 
 exit 0

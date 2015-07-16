@@ -113,7 +113,7 @@ switchAliases = {
 sensorData = {}
 sensorAliases = {
 
-	"FFFF": {
+	"0000": {
 		"alias": "Temperatur.nu",
 		"location": "outside",
 		"order": -1

@@ -267,7 +267,6 @@ def ttop(stdscr):
     sensors.addsensor(id='8700', alias='Tujan', offset=3)
     sensors.addsensor(id='A700', alias='Komposten', offset=4)
     sensors.addsensor(id='AC00', alias='Cyklarna', offset=5)
-    # sensors.addaverage(id='FFFF', alias='Medel')
 
     # Indoor
     sensors.addsensor(id='9700', alias='Bokhyllan', location='inside')
