@@ -29,33 +29,42 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${settings} ]  && source ${settings}  || (echo "FATAL: Missing '${settings}', Aborting" ; exit 1)
 
 
+id=${1}
+command=${2}
+unitcode=${3}
+
+
 # Do it
 
 umask 0011
 
-log "trigger ($1 -> $2)" >> "${logfile}"
+log "trigger (${unitcode} -> ${command})" >> "${logfile}"
 
 
-id=$1
-onOff="$(echo "$2" | tr '[:lower:]' '[:upper:]')"
+onOff="$(echo "${command}" | tr '[:lower:]' '[:upper:]')"
 
 
 if [ "${onOff}" = "GROUP OFF" ] ; then
-	${0} 1 off
+	${0} ${id} Off 1
 	sleep 1
-	${0} 2 off
+	${0} ${id} Off 2
 	exit 0
 fi
 
 if [ "${onOff}" = "GROUP ON" ] ; then
-	${0} 1 on
+	${0} ${id} On 1
 	sleep 1
-	${0} 2 on
+	${0} ${id} On 2
 	exit 0
 fi
 
-#	Send it 
+#	Send it to openhab
 
-to_openhab "Light trigger" "Nexa_${id}" "${onOff}" >> ${UPDATE_REST_LOG}
+to_openhab "Light trigger" "Nexa_${unitcode}" "${onOff}" >> ${UPDATE_REST_LOG}
+
+#	Send it to pubnub
+
+${scriptDir}/pubnub/publish_switch.sh "${id}_${unitcode}" "${command}"
+
 
 exit 0

@@ -26,7 +26,6 @@ value="${2}"
 humidity="${3}"
 host=$(hostname)
 now="$(date +%s)"
-now_full="$(date '+%F %T')"
 
 #	Get sensor variables and settings
 
@@ -82,20 +81,12 @@ if [ ${status} -eq 0 ] ; then
 	sensor_type="humidity"
 	path="linux.${host}.sensors.${sensor_location}.${sensor_type}.${sensor} ${humidity} ${now}"
 	echo $path | nc -q0 mint-black 2003
+
+	${dir}/../triggers/pubnub/publish_temp.sh "${sensor}" "${value}" "${humidity}"
+
+else
+	${dir}/../triggers/pubnub/publish_temp.sh "${sensor}" "${value}"
 fi
 
-
-exit 0
-
-(
-${dir}/pubnub_publish.py \
-	--file "${JSON_FILE}" \
-	--pubnub-subkey "${PUBNUB_SUBKEY}" \
-	--pubnub-pubkey "${PUBNUB_PUBKEY}" \
-	--pubnub-channel "${PUBNUB_CHANNEL}" \
-	--sensor-id "${sensor}" \
-	--sensor-value "${value}" \
-	--stamp "${now_full}"
-) > /tmp/xxx.txt 2>&1
 
 exit 0

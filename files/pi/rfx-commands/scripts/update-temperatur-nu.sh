@@ -16,7 +16,7 @@ trap "exit 2" 1 2 3 15
 #
 ######################################################################
 
-[ -h "$0" ] && dir=$(dirname `readlink $0`) || dir=$( cd `dirname $0` && pwd)
+[ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
 
@@ -24,7 +24,7 @@ logfile="/var/rfxcmd/temperatur-nu.log"
 curlfile="/var/rfxcmd/temperatur-nu-status.log"
 lastokfile="/var/rfxcmd/temperatur-nu-last.log"
 
-sqlDir="${dir}/../sql"
+sqlDir="${scriptDir}/../sql"
 sql="temperatur-nu.sql"
 
 
@@ -39,12 +39,12 @@ now="$(date '+%F %T')"
 
 #	Get outdoor sensor from config file...
 
-source "${dir}/../sensors.cfg"
+source "${scriptDir}/../sensors.cfg"
 
 # Get some settings and functions
 
-source "${dir}/../settings.cfg"
-source "${dir}/../functions.sh"
+source "${scriptDir}/../settings.cfg"
+source "${scriptDir}/../functions.sh"
 
 
 #	Get Average number from sensors
@@ -57,6 +57,11 @@ number="$(cat ${tmpfile})"
 #	Is it a real float ?
 
 if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
+
+	#	Update graphite
+
+	${scriptDir}/to-graphite-temps.sh '0000' ${number}
+
 
 	#	Only 1 decimal to be safe...
 	
@@ -113,7 +118,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 
 	# Update openhab min/max info for temperatur.nu
 	
-	/usr/bin/mysql tnu --skip-column-names -urfxuser -prfxuser1 < ${dir}/../static/sql/temp-nu.sql > "${tmpfile}" 2>&1
+	/usr/bin/mysql tnu --skip-column-names -urfxuser -prfxuser1 < ${scriptDir}/../static/sql/temp-nu.sql > "${tmpfile}" 2>&1
 
  	min_tnu=$(awk -F'\t' '$2 ~ /min/ {print $3}' ${tmpfile})
  	max_tnu=$(awk -F'\t' '$2 ~ /max/ {print $3}' ${tmpfile})
@@ -122,9 +127,6 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	to_openhab "Temperatur.nu" "T_NU_last_max" "${max_tnu}" >> ${UPDATE_REST_LOG}
 
 
-	#	Update graphite
-
-	${dir}/to-graphite-temps.sh '0000' ${number}
 
 else 
 	

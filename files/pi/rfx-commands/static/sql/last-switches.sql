@@ -1,6 +1,6 @@
 -- Override by -e "set @switches_all='AAAA,BBBB'; source last-switches.sql;"
 
-set @switches_all := coalesce(@switches_all,'00CFDEEA,00CFD656,00D81332');
+set @switches_all := coalesce(@switches_all,'00CFDEEA,00CFD656,03D242AA,00D81332');
 
 
 select
@@ -15,16 +15,16 @@ from rfxcmd i
 join (
     select
         data1,
-        max(unixtime) as mu
+        max(id) as mi
 
     from rfxcmd 
     
     where packettype = '11'
     group by data1,data4
-    ) as maxt
+    ) as maxid
 
-on maxt.data1 = i.data1 and maxt.mu = i.unixtime
+on maxid.data1 = i.data1 and maxid.mi = i.id
 
 where find_in_set(i.data1,@switches_all) and i.data3 in ('On','Off')
 
-order by i.datetime;
+order by i.id;

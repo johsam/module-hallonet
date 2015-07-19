@@ -16,13 +16,11 @@ trap "exit 2" 1 2 3 15
 ######################################################################
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
-logfile="/var/rfxcmd/door-magnet.log"
-shortnow=$(date "+%d/%m %T" | sed -e 's/\/0/\//g')
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
-functions=${scriptDir}/../functions.sh
-settings=${scriptDir}/../settings.cfg
+functions=${scriptDir}/../../functions.sh
+settings=${scriptDir}/../../settings.cfg
 
 # Sanity checks
 
@@ -30,33 +28,20 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${settings} ]  && source ${settings}  || (echo "FATAL: Missing '${settings}', Aborting" ; exit 1)
 
 
-#	Create logfile if needed
+switch_id=${1}
+switch_state=${2}
+now_full="$(date '+%F %T')"
 
-umask 022
-
-[ ! -r ${logfile} ] && touch ${logfile} && chown pi:pi ${logfile}
-
-
-# Log parameters to file
-
-msg=$(printf "$1\t$2\t$3")
-log "${msg}" >> ${logfile}
-
-
-#	Send it to openhab
-
-status="Stängd ${shortnow}" ; [ "${2}" = "On" ] && status="Öppen ${shortnow}"	
-
-to_openhab "Magnet trigger" "M_${1}_${4}" "${status}" >> ${UPDATE_REST_LOG}
-
-
-#	Send it to graphite
-
-switch_to_graphite "${1}_${4}" "${2}"
-
-
+#
 #	Send it to pubnub
+#
 
-${scriptDir}/pubnub/publish_switch.sh "${1}_${4}" "${2}"
-
+${scriptDir}/publish_to_pubnub.py \
+	--file           "${JSON_FILE}" \
+	--pubnub-subkey  "${PUBNUB_SUBKEY}" \
+	--pubnub-pubkey  "${PUBNUB_PUBKEY}" \
+	--pubnub-channel "${PUBNUB_CHANNEL}" \
+	--switch-id      "${switch_id}" \
+	--switch-state   "${switch_state}" \
+	--stamp          "${now_full}"
 exit 0

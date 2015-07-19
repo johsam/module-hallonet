@@ -70,8 +70,17 @@ class hallonet::rfxcmd::pi {
         group  => 'root',
         mode   => '0644',
     }
- 
-    
+
+    file {'magnets_to_graphite':
+        ensure => present,
+        path   => '/etc/cron.d/magnets-to-graphite',
+        source => "puppet:///modules/${module_name}/cron.d/magnets-to-graphite",
+        require => [File['rfx_commands']],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+  
     #
     #	Stuff for /usr/local/bin
     #
