@@ -121,4 +121,15 @@ class hallonet::rfxcmd::pi {
         target  => '/home/pi/rfx-commands/commands/db-backup.sh',
     }
 
+
+    file {'pubnubmgr_initd':
+        ensure => present,
+        path   => '/etc/init.d/pubnubmgr',
+        source => "puppet:///modules/${module_name}/init.d/pubnubmgr",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
+
 }

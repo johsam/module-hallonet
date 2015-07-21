@@ -9,6 +9,7 @@ import threading
 import locale
 import sys
 import Queue
+import socket
 
 from os import path
 from pubnub import Pubnub
@@ -230,13 +231,13 @@ def process_log_line(filename, line, stdscr):
 #
 
 def pn_send_status(status):
+    ip = [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
     
     msg = {}
     msg['type'] = 'status'
-    msg['status'] = {'ttop': status}
+    msg['status'] = {'application': 'ttop', 'state': status ,'ip': ip}
     
-    pubnub.publish(args.pubnub_channel, str(msg))
- 
+    pubnub.publish(args.pubnub_channel, msg)
 
 
 #

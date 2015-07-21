@@ -38,4 +38,9 @@ log "send  (${1} -> on)" >> /var/rfxcmd/nexa-setstate.log
 
 /opt/rfxcmd/rfxsend.py -s ${ipaddress} -r "0B11000000D813320${1}010F00"
 
+#	Sent to pubnub
+
+${dir}/../triggers/pubnub/publish_switch.sh "00D81332_${1}" On
+
+
 exit 0

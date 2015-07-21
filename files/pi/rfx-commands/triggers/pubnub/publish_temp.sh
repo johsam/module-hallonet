@@ -27,6 +27,9 @@ settings=${scriptDir}/../../settings.cfg
 [ -r ${functions} ] && source ${functions} || (echo "FATAL: Missing '${functions}', Aborting" ; exit 1)
 [ -r ${settings} ]  && source ${settings}  || (echo "FATAL: Missing '${settings}', Aborting" ; exit 1)
 
+# Only allow publish if android app hallonet is running
+
+[ ! -r "${PUBNUB_ALLOWPUBLISH}" ] && exit 0
 
 sensor_id=${1}
 sensor_temp=${2}
