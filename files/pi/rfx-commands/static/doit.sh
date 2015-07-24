@@ -42,40 +42,40 @@ csvtmpfile="/tmp/sensors.csv"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
+functions=${scriptDir}/../functions.sh
+settings=${scriptDir}/../settings.cfg
 
-#-------------------------------------------------------------------------------
+# Sanity checks
+
+[ -r ${functions} ] && source ${functions} || (echo "FATAL: Missing '${functions}', Aborting" ; exit 1)
+[ -r ${settings} ]  && source ${settings}  || (echo "FATAL: Missing '${settings}', Aborting" ; exit 1)
+
 #
-#	Function log
+#	Start collecting data
 #
-#-------------------------------------------------------------------------------
-
-function log ()
-{
-printf "%s %s\n" "$(date '+%F %T')" "${1}"
-}
-
-
 
 log "Collecting data..."
 ${scriptDir}/0_create-json.sh > ${jsontmpfile}
 
-log "Uploading json..."
-lftp -c "open -u surjohan,yadast ftp.bredband.net; put -O static ${jsontmpfile}" 
+log "Backup $(basename ${savetojson}) to NAS..."
+cp ${jsontmpfile} ${savetojson}
 
+log "Uploading json..."
+upload_static static ${jsontmpfile}
+
+
+#	Openhab
 
 log "Convert json to csv..."
 python -u ${scriptDir}/2_json-to-csv.py --file ${jsontmpfile} > ${csvtmpfile}
+
+log "Backup $(basename ${savetocsv}) to NAS..."
+cp ${csvtmpfile} ${savetocsv}
 
 
 log "Upload csv to openhab..."
 
 python -u ${scriptDir}/3_csv-to-openhab.py --file ${csvtmpfile}
 
-#	Backup
-
-log "Backup to NAS..."
-
-cp ${jsontmpfile} ${savetojson}
-cp ${csvtmpfile} ${savetocsv}
 
 exit 0

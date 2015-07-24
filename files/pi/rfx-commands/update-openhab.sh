@@ -16,23 +16,22 @@ trap "exit 2" 1 2 3 15
 #
 ######################################################################
 
-[ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
-
 tmpfile="/tmp/`basename $0`-$$.tmp"
 counterfile="/var/rfxcmd/update-openhab.counter"
 
-#-------------------------------------------------------------------------------
+[ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
+
+functions=${scriptDir}/functions.sh
+settings=${scriptDir}/settings.cfg
+
+# Sanity checks
+
+[ -r ${functions} ] && source ${functions} || (echo "FATAL: Missing '${functions}', Aborting" ; exit 1)
+[ -r ${settings} ]  && source ${settings}  || (echo "FATAL: Missing '${settings}', Aborting" ; exit 1)
+
 #
-#	Function log
+#	Start work
 #
-#-------------------------------------------------------------------------------
-
-function log ()
-{
-printf "%s %s\n" "$(date '+%F %T')" "${1}"
-}
-
-
 
 (
 
@@ -48,7 +47,6 @@ perl -i -pe 's/(\d+)/$1 + 1/e' "${counterfile}"
 log "Starting job..."
 
 ${scriptDir}/static/doit.sh
-
 
 
 #
@@ -107,12 +105,12 @@ fi
 #
 
 log "Check for openhab restart..."
-lftp -c "open -u surjohan,yadast ftp.bredband.net; cd static ;find restart-openhab.run" > /dev/null 2>&1; status=$?
 
+find_static static restart-openhab.run ; status=$?
 
 if [ ${status} -eq 0 ] ; then
 	log "Restarting openhab..."
-	lftp -c "open -u surjohan,yadast ftp.bredband.net; rm static/restart-openhab.run" > /dev/null 2>&1; status=$?
+	rm_static static/restart-openhab.run ; status=$?
 	sudo service openhab restart
 	log "restarted" >> /var/rfxcmd/openhab-status.log
 fi

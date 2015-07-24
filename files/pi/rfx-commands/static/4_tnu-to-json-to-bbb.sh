@@ -38,8 +38,19 @@ trap "exit 2" 1 2 3 15
 tmpfile="/tmp/`basename $0`-$$.tmp"
 sqlFile=${scriptDir}/sql/temp-nu-avg.sql
 
+[ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
+
+functions=${scriptDir}/../functions.sh
+settings=${scriptDir}/../settings.cfg
+
+# Sanity checks
+
+[ -r ${functions} ] && source ${functions} || (echo "FATAL: Missing '${functions}', Aborting" ; exit 1)
+[ -r ${settings} ]  && source ${settings}  || (echo "FATAL: Missing '${settings}', Aborting" ; exit 1)
+
 displayhours=24
 windowsize=15
+
 
 #
 #	Parse parameter(s)
@@ -60,20 +71,6 @@ shift `expr $OPTIND - 1` ; OPTIND=1
 
 
 jsontmpfile="/tmp/tnu-${displayhours}-ws${windowsize}.json"
-
-
-
-
-#-------------------------------------------------------------------------------
-#
-#	Function log
-#
-#-------------------------------------------------------------------------------
-
-function log ()
-{
-printf "%s %s\n" "$(date '+%F %T')" "${1}"
-}
 
 
 
@@ -99,7 +96,7 @@ awk -F'\t' -v "formats=tl"  -f ${scriptDir}/tsv2json-with-formats.awk "${tmpfile
 
 log "Uploading file '$(basename ${jsontmpfile})' to ftp.bredband.net"
 
-lftp -c "open -u surjohan,yadast ftp.bredband.net; put -O static/graphs/ ${jsontmpfile}" 
+upload_static static/graphs ${jsontmpfile}
 
 #
 #	Save to NAS

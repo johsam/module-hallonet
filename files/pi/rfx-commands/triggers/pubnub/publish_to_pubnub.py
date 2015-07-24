@@ -103,51 +103,51 @@ def publish_switch(s):
     ps = {}
     ps['type'] = 'switch'
     ps['switch'] = s
-
+    
     pubnub.publish(args.pubnub_channel, ps)
 
 
 def processSensors(a, id, value, humidity, stamp):
 
-    for i in a:
-        sensorid = i['sensor']['id']
+    for i, item in enumerate(a):
+        sensorid = a[i]['sensor']['id']
         if sensorid == id:
-            i['temperature']['last']['timestamp'] = stamp
-            i['temperature']['last']['value'] = float(value)
+            a[i]['temperature']['last']['timestamp'] = stamp
+            a[i]['temperature']['last']['value'] = float(value)
 
-            if float(value) >= float(i['temperature']['max']['value']):
-                i['temperature']['max']['value'] = float(value)
-                i['temperature']['max']['timestamp'] = stamp
+            if float(value) >= float(a[i]['temperature']['max']['value']):
+                a[i]['temperature']['max']['value'] = float(value)
+                a[i]['temperature']['max']['timestamp'] = stamp
 
-            if float(value) <= float(i['temperature']['min']['value']):
-                i['temperature']['min']['value'] = float(value)
-                i['temperature']['min']['timestamp'] = stamp
+            if float(value) <= float(a[i]['temperature']['min']['value']):
+                a[i]['temperature']['min']['value'] = float(value)
+                a[i]['temperature']['min']['timestamp'] = stamp
 
             # Humidity
 
-            if 'humidity' in i and humidity != '':
-                i['humidity']['last']['timestamp'] = stamp
-                i['humidity']['last']['value'] = float(humidity)
+            if 'humidity' in a[i] and humidity != '':
+                a[i]['humidity']['last']['timestamp'] = stamp
+                a[i]['humidity']['last']['value'] = float(humidity)
 
-                if float(humidity) >= float(i['humidity']['max']['value']):
-                    i['humidity']['max']['value'] = float(humidity)
-                    i['humidity']['max']['timestamp'] = stamp
+                if float(humidity) >= float(a[i]['humidity']['max']['value']):
+                    a[i]['humidity']['max']['value'] = float(humidity)
+                    a[i]['humidity']['max']['timestamp'] = stamp
 
-                if float(humidity) <= float(i['humidity']['min']['value']):
-                    i['humidity']['min']['value'] = float(humidity)
-                    i['humidity']['min']['timestamp'] = stamp
+                if float(humidity) <= float(a[i]['humidity']['min']['value']):
+                    a[i]['humidity']['min']['value'] = float(humidity)
+                    a[i]['humidity']['min']['timestamp'] = stamp
 
-            publish_sensor(i)
+            publish_sensor(a[i])
             break
 
 
 def processSwitches(a, id, state, stamp):
-    for i in a:
-        swid = i['id']
+    for i, item in enumerate(a):
+	swid = a[i]['id']
         if swid == id:
-            i['timestamp'] = stamp
-            i['state'] = state
-            publish_switch(i)
+            a[i]['timestamp'] = stamp
+            a[i]['state'] = state
+            publish_switch(a[i])
             break
 
 
@@ -172,7 +172,9 @@ with open(args.file) as data_file:
     if args.sensor_id != '':
         if 'sensors' in json_data:
             processSensors(json_data['sensors'], args.sensor_id, args.sensor_value, args.sensor_humidity, args.stamp)
+            print json.dumps(json_data,indent=4, sort_keys=True, encoding="utf-8") 
 
     if args.switch_id != '':
         if 'switches' in json_data:
             processSwitches(json_data['switches'], args.switch_id, args.switch_state, args.stamp)
+            print json.dumps(json_data,indent=4, sort_keys=True, encoding="utf-8") 

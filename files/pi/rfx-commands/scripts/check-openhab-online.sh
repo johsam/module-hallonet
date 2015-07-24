@@ -69,7 +69,8 @@ if [ ${status} -eq 0 ] ; then
 		#
 		
 		touch "${restartfile}"
-		lftp -c "open -u surjohan,yadast ftp.bredband.net; put -O static ${restartfile}" 
+		upload_static static ${restartfile}
+
 		
 		reportStatus "offline"
 	else
