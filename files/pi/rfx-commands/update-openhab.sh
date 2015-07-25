@@ -41,7 +41,7 @@ settings=${scriptDir}/settings.cfg
 
 [ ! -r "${counterfile}" ] && echo "0" > "${counterfile}"
 
-perl -i -pe 's/(\d+)/$1 + 1/e' "${counterfile}"
+perl -i -pe 's/(\d+)/($1 + 1) % 144/e' "${counterfile}"
 
 
 log "Starting job..."

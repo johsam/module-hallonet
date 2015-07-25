@@ -66,7 +66,7 @@ re_tnu = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+\d+\s+\d+\s+(.*)')
 re_rest = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+PI_core_temp\s+\-\>\s+(\d{2,3}\.\d{2,3})')
 
 trendsize = 14
-windowWidth = 56
+windowWidth = 58
 
 
 lock = threading.Lock()
@@ -204,9 +204,9 @@ def process_log_line(filename, line, stdscr):
             print_vbarsAt(stdscr, offset, windowWidth)
 
 	    alias_colstart = 2
-	    signal_colstart = 14
-	    stamp_colstart = 16
-	    hist_colstart = 28
+	    signal_colstart = 16
+	    stamp_colstart = signal_colstart + 2
+	    hist_colstart = stamp_colstart + 12
 	    trend_colstart = hist_colstart + 6
 	    temp_colstart = trend_colstart + trendsize + 1
 
@@ -263,11 +263,12 @@ def ttop(stdscr):
 
     # Outdoor
     sensors.addsensor(id='3B00', alias='Anna:s', offset=0)
-    sensors.addsensor(id='0700', alias='Förrådet', offset=1)
-    sensors.addsensor(id='7500', alias='Hammocken', offset=2)
-    sensors.addsensor(id='8700', alias='Tujan', offset=3)
-    sensors.addsensor(id='A700', alias='Komposten', offset=4)
-    sensors.addsensor(id='AC00', alias='Cyklarna', offset=5)
+    sensors.addsensor(id='0700', alias='Förrådet (T)', offset=1)
+    sensors.addsensor(id='B700', alias='Förrådet (G)', offset=2)
+    sensors.addsensor(id='7500', alias='Hammocken', offset=3)
+    sensors.addsensor(id='8700', alias='Tujan', offset=4)
+    sensors.addsensor(id='A700', alias='Komposten', offset=5)
+    sensors.addsensor(id='AC00', alias='Cyklarna', offset=6)
 
     # Indoor
     sensors.addsensor(id='9700', alias='Bokhyllan', location='inside')
@@ -280,8 +281,9 @@ def ttop(stdscr):
 
     # Humidity
     sensors.addsensor(id='FFF0', alias='Bokhyllan', location='humidity', offset=0)
-    sensors.addsensor(id='FFF1', alias='Tujan',     location='humidity', offset=1)
-    sensors.addsensor(id='FFF2', alias='Komposten', location='humidity', offset=2)
+    sensors.addsensor(id='FFF1', alias='Förrådet (G)',location='humidity', offset=1)
+    sensors.addsensor(id='FFF2', alias='Tujan', location='humidity', offset=2)
+    sensors.addsensor(id='FFF3', alias='Komposten', location='humidity', offset=3)
 
     process_log_line("", "", stdscr)
 

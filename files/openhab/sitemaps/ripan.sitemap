@@ -16,13 +16,19 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_3B00_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_3B00_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
-   		Frame label="Förrådet" {
+   		Frame label="Förrådet Tak" {
         		Text item=T_50_0700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_last_stamp
         		Text item=T_50_0700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
-   		Frame label="Hammocken" {
+    		Frame label="Förrådet Golv" {
+        		Text item=T_52_B700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_B700_last_stamp
+        		Text item=T_52_B700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_B700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+   		}
+  		Frame label="Hammocken" {
         		Text item=T_50_7500_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_7500_last_stamp
         		Text item=T_50_7500_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -53,11 +59,6 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_AC00_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
 
-   		Frame label="Sensordata" {
-        		Text item=STATIC_timestamp
-        		Text item=SQL_timestamp
-   		}
-
 	}
 	
 	Text item=OutMaxLast valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -75,9 +76,14 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_3B00_max_stamp
 		}	
 
-		Frame label="Förrådet" {
+		Frame label="Förrådet Tak" {
 			Text item=T_50_0700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_max_stamp
+		}	
+		
+		Frame label="Förrådet Golv" {
+			Text item=T_52_B700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_B700_max_stamp
 		}	
 
 		Frame label="Hammocken" {
@@ -99,11 +105,6 @@ sitemap ripan label="Ripstigen" {
 			Text item=T_50_AC00_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_AC00_max_stamp
 		}	
-
-   		Frame label="Sensordata" {
-        		Text item=STATIC_timestamp
-        		Text item=SQL_timestamp
-   		}
 		
 	}
 
@@ -114,9 +115,14 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_3B00_min_stamp
 		}	
 
-		Frame label="Förrådet" {
+		Frame label="Förrådet Tak" {
 			Text item=T_50_0700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_min_stamp
+		}	
+		
+		Frame label="Förrådet Golv" {
+			Text item=T_52_B700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_B700_min_stamp
 		}	
 
 		Frame label="Hammocken" {
@@ -138,12 +144,6 @@ sitemap ripan label="Ripstigen" {
 			Text item=T_50_AC00_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_AC00_min_stamp
 		}	
-
-   		Frame label="Sensordata" {
-        		Text item=STATIC_timestamp
-        		Text item=SQL_timestamp
-   		}
-
 	}
    }
 
@@ -159,16 +159,16 @@ sitemap ripan label="Ripstigen" {
 	Text  item=M_00CFD656_10
    }
 
-   Frame label="Luftfuktighet" {
+   Frame label="Luftfuktighet Inne" {
         Text item=H_52_9700_last
-        Text item=H_52_8700_last
+   }
+
+   Frame label="Luftfuktighet Ute" {
+        Text item=H_52_B700_last
+	Text item=H_52_8700_last
         Text item=H_52_A700_last
    }
 
-   Frame label="Sensordata" {
-        Text item=STATIC_timestamp
-        Text item=SQL_timestamp
-   }
 
    Frame label="Lampor" {
         Switch item=Nexa_1
@@ -191,6 +191,10 @@ sitemap ripan label="Ripstigen" {
         Text item=PI_openhab_restarted
    }
    
+   Frame label="Sensordata" {
+        Text item=STATIC_timestamp
+        Text item=SQL_timestamp
+   }
 
    Frame label="Grafik" {
         //Chart item=T_52_8700_last period=1d service=rrd4j refresh=300
@@ -204,9 +208,9 @@ sitemap ripan label="Ripstigen" {
 		Image url="http://localhost/openhab/1w.png"
 	}
 	
-	Text label="Flot (mysql)..." icon="chart" {
-		Image url="http://localhost/flot-graph.png"
-	}
+	//Text label="Flot (mysql)..." icon="chart" {
+	//	Image url="http://localhost/flot-graph.png"
+	//}
 	   
    }
 

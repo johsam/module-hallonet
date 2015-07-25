@@ -126,40 +126,46 @@ sensorAliases = {
 	},
 
 	"0700": {
-		"alias": "Förrådet",
+		"alias": "Förrådet tak",
 		"location": "outside",
 		"order": 1
+	},
+
+	"B700": {
+		"alias": "Förrådet golv",
+		"location": "outside",
+		"order": 2
 	},
 
 	"7500": {
 		"alias": "Hammocken",
 		"location": "outside",
-		"order": 2
+		"order": 3
 	},
 
 	"8700": {
 		"alias": "Tujan",
 		"location": "outside",
-		"order": 3
+		"order": 4
 	},
 
 	"A700": {
 		"alias": "Komposten",
 		"location":"outside",
-		"order": 4
+		"order": 5
 	},
 
 	"AC00": {
 		"alias": "Cyklarna",
 		"location":"outside",
-		"order": 5
+		"order": 6
 	},
 	
 
 	"9700": {
 		"alias": "Bokhyllan",
 		"location": "inside",
-		"order": 6
+		"order": 7
 	}
 
 }

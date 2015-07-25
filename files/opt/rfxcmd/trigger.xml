@@ -24,6 +24,10 @@
 	<action>/home/pi/rfx-commands/scripts/to-graphite-temps.sh "$id$" "$temperature$" "$humidity$"</action>
 </trigger>
 <trigger>
+        <message>0A5209..B700..........</message>
+	<action>/home/pi/rfx-commands/scripts/to-graphite-temps.sh "$id$" "$temperature$" "$humidity$"</action>
+</trigger>
+<trigger>
         <message>0B1100..00CFDEEA........</message>
 	<action>/home/pi/rfx-commands/triggers/magnets.sh "$id$" "$command$" "$dimlevel$" "$unitcode$"</action>
 </trigger>

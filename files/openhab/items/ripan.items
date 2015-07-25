@@ -90,22 +90,44 @@ Number T_50_AC00_max
         <ripan_small_red_temp>
         (Outside,OutMaxToday,CyklarnaMaxToday)
 
-/*	Förrådet	*/
+/*	Förrådet Taket	*/
 
 Number T_50_0700_last
-        "Temperatur (F) [%.1f °C]"
+        "Temperatur (Ft) [%.1f °C]"
         <ripan_temp>
         (Outside,OutAvgLast,OutMinLast,OutMaxLast)
 
 Number T_50_0700_min
         "Kallast [%.1f °C]"
         <ripan_small_blue_temp>
-        (Outside,OutMinToday,StorageMinToday)
+        (Outside,OutMinToday,StorageRoofMinToday)
 
 Number T_50_0700_max
         "Varmast [%.1f °C]"
         <ripan_small_red_temp>
-        (Outside,OutMaxToday,StorageMaxToday)
+        (Outside,OutMaxToday,StorageRoofMaxToday)
+
+/*	Förrådet Golvet	*/
+
+Number T_52_B700_last
+        "Temperatur (Fg) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_52_B700_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,StorageGroundMinToday)
+
+Number T_52_B700_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,StorageGroundMaxToday)
+
+Number H_52_B700_last
+        "Förrådet Golv [%d %%]"
+        <ripan_humidity>
+        (Outside)
 
 
 /*	Annas	*/
@@ -118,12 +140,12 @@ Number T_50_3B00_last
 Number T_50_3B00_min
         "Kallast [%.1f °C]"
         <ripan_small_blue_temp>
-        (Outside,OutMinToday,StorageMinToday)
+        (Outside,OutMinToday,AnnasMinToday)
 
 Number T_50_3B00_max
         "Varmast [%.1f °C]"
         <ripan_small_red_temp>
-        (Outside,OutMaxToday,StorageMaxToday)
+        (Outside,OutMaxToday,AnnasMaxToday)
 
 
 /*	Inomhus	*/
@@ -186,6 +208,12 @@ String T_52_A700_last_stamp "Avläst [%s]" <ripan_clock>
 String T_52_A700_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_A700_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_A700_last_stamp "Klockan [%s]" <ripan_clock>
+
+String T_52_B700_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_B700_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_B700_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_B700_last_stamp "Klockan [%s]" <ripan_clock>
+
 
 /*	Grupper	*/
 
@@ -264,13 +292,23 @@ Group:Number:MAX CyklarnaMaxToday
 
 
 
-Group:Number:MIN StorageMinToday
-        "Förrådet [%.1f °C]"
+Group:Number:MIN StorageRoofMinToday
+        "Förrådet (T) [%.1f °C]"
         <ripan_small_blue_temp>
         (Outside)
 
-Group:Number:MAX StorageMaxToday
-        "Förrådet [%.1f °C]"
+Group:Number:MAX StorageRoofMaxToday
+        "Förrådet (T) [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+Group:Number:MIN StorageGroundMinToday
+        "Förrådet (G) [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX StorageGoundMaxToday
+        "Förrådet (G) [%.1f °C]"
         <ripan_small_red_temp>
         (Outside)
 
