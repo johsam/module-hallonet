@@ -101,10 +101,10 @@ class hallonet::rfxcmd::pi {
     }
 
     file {'usr_local_bin_ttop':
-        path    => '/usr/local/bin/ttop.sh',
-        source  => "puppet:///modules/${module_name}/usr/local/bin/ttop.sh",
+        ensure  => link,
         require => [File['rfx_commands']],
-        mode    => '0755',
+        path    => '/usr/local/bin/ttop.sh',
+        target  => '/home/pi/rfx-commands/ttop/ttop.sh',
     }
 
     file {'multitail':
