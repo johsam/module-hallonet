@@ -27,6 +27,7 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_52_B700_last_stamp
         		Text item=T_52_B700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_52_B700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=H_52_B700_last
    		}
   		Frame label="Hammocken" {
         		Text item=T_50_7500_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
