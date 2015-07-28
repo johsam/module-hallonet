@@ -11,7 +11,7 @@ source /home/pi/rfx-commands/settings.cfg
 
 # Resize window
 
-printf "\e[8;22;58t"
+printf "\e[8;24;58t"
 
 /home/pi/rfx-commands/ttop/ttop.py --pubnub-subkey "${PUBNUB_SUBKEY}" --pubnub-pubkey "${PUBNUB_PUBKEY}" --pubnub-channel "${PUBNUB_CHANNEL}"
 )

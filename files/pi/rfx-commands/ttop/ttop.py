@@ -84,6 +84,7 @@ sensorHeaders = [
     ("artificial", "Temperatur.nu"),
     ("outside", "Utomhus"),
     ("outside_average", "Medel Utomhus"),
+    ("outside_median", "Median Utomhus"),
     ("inside", "Inomhus"),
     ("humidity", "Luftfuktighet"),
     ("pi", "Pi")
@@ -159,12 +160,14 @@ def process_log_line(filename, line, stdscr):
         humidity = m.group(4)
         signal = m.group(5)
 
-	if id == '8700':
-            sensors.settemp(id='FFF1', stamp=stamp, temp=float(humidity),signal=signal)
         if id == '9700':
             sensors.settemp(id='FFF0', stamp=stamp, temp=float(humidity),signal=signal)
-        if id == 'A700':
+	if id == 'B700':
+            sensors.settemp(id='FFF1', stamp=stamp, temp=float(humidity),signal=signal)
+        if id == '8700':
             sensors.settemp(id='FFF2', stamp=stamp, temp=float(humidity),signal=signal)
+        if id == 'A700':
+            sensors.settemp(id='FFF3', stamp=stamp, temp=float(humidity),signal=signal)
 
     m = re_tnu.match(line)
     if m:
@@ -278,6 +281,9 @@ def ttop(stdscr):
 
     # Average for outdoor
     sensors.addaverage(id='FFFF', alias='Medel')
+
+    # median for outdoor
+    sensors.addmedian(id='EEEE', alias='Median')
 
     # Humidity
     sensors.addsensor(id='FFF0', alias='Bokhyllan', location='humidity', offset=0)

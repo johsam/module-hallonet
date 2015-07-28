@@ -69,7 +69,7 @@ switchData = {}
 switchAliases = {
 
 	"00D81332_1": {
-		"alias": "Tv:n",
+		"alias": "Vid Tv:n",
 		"type":  "light",
 		"order": 1
 	},
@@ -112,12 +112,23 @@ switchAliases = {
 
 sensorData = {}
 sensorAliases = {
+	
+	# Not real sensors
 
 	"0000": {
 		"alias": "Temperatur.nu",
 		"location": "outside",
-		"order": -1
+		"order": -100
 	},
+
+	"0001": {
+		"alias": "Median (*)",
+		"location": "outside",
+		"order": 100
+	},
+
+
+	# Outside sensors
 
 	"3B00": {
 		"alias": "Anna:s",
@@ -126,13 +137,13 @@ sensorAliases = {
 	},
 
 	"0700": {
-		"alias": "Förrådet tak",
+		"alias": "Förrådets Tak",
 		"location": "outside",
 		"order": 1
 	},
 
 	"B700": {
-		"alias": "Förrådet golv",
+		"alias": "Förrådets Golv",
 		"location": "outside",
 		"order": 2
 	},
@@ -161,6 +172,7 @@ sensorAliases = {
 		"order": 6
 	},
 	
+	# Inside sensors
 
 	"9700": {
 		"alias": "Bokhyllan",
@@ -194,6 +206,9 @@ def readFile(filename, section, colname, dictkey):
 
 			if section not in sensorData[sensorid]:
 				sensorData[sensorid][section] = {}
+
+			if dictkey not in sensorData[sensorid][section]:
+				sensorData[sensorid][section][dictkey] = {}
 
 			sensorData[sensorid][section][dictkey]['value'] = float(colvalue)
 			sensorData[sensorid][section][dictkey]['timestamp'] = datetime

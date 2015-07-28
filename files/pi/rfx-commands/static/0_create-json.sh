@@ -181,6 +181,11 @@ mysql tnu -urfxuser -prfxuser1 --skip-column-names \
 mysql tnu -urfxuser -prfxuser1 --skip-column-names \
 	-e "source ${scriptDir}/sql/tnu-max-today.sql;" >> "${maxfile}"
 
+#	Append median data i.e fake sensor 0001
+
+mysql rfx -urfxuser -prfxuser1 --skip-column-names \
+	-e "set @sensors_outdoor:='${sensors_outdoor}'; source ${scriptDir}/sql/median-outdoor.sql;" >> "${lastfile}"
+ 
 
 #
 #	Humidity

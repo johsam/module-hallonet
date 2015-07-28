@@ -58,6 +58,9 @@ class SensorList(object):
     def addaverage(self, id, alias, location='outside', trendsize=trendsize):
         self.sensors[id] = dict(Sensor(alias=alias, location=location + '_average', trendsize=self.trendsize))
 
+    def addmedian(self, id, alias, location='outside', trendsize=trendsize):
+        self.sensors[id] = dict(Sensor(alias=alias, location=location + '_median', trendsize=self.trendsize))
+
     def calcaverage(self, location):
         sum = 0.0
         count = 0
@@ -77,6 +80,30 @@ class SensorList(object):
         # print count, sum, avgtmp
 
         return avgtmp
+
+    def median(self,numbers):
+        return (sorted(numbers)[int(round((len(numbers) - 1) / 2.0))] + sorted(numbers)[int(round((len(numbers) - 1) // 2.0))]) / 2.0
+
+    def calcmedian(self, location):
+	median = 0.0
+	values = []
+	
+        # All sensors matching location
+
+        for c in self.getsidsfromlocation(location):
+            s = self.__getsensor(c)
+            values.append(s['temp'])
+ 
+	median = self.median(values)
+	
+	#import json
+	#debugFile = open('/tmp/ttop.log', 'a' ,0)
+	#debugFile.write(json.dumps(location));
+	#debugFile.write(json.dumps(sorted(values)));
+	#debugFile.write(json.dumps(median));
+	#debugFile.write("\n");
+
+	return median
 
     def settemp(self, id, temp, stamp='00:00:00',signal=' '):
         global debugFile
@@ -103,7 +130,11 @@ class SensorList(object):
 
             offset = self.sensors[id]['offset']
 
-            # Calculate average
+            
+	    if self.sensors[id]['location'] != 'outside':
+	        return
+	    
+	    # Calculate average
 
             avgtmp = self.calcaverage(self.sensors[id]['location'])
             d_avgtmp = self.sensorFormatTemp(avgtmp)
@@ -115,6 +146,21 @@ class SensorList(object):
 		
 		if d_oldtemp != d_avgtmp:
                     self.settemp(id=avgid, temp=avgtmp, stamp=stamp)
+
+           # Calculate median
+
+            mediantmp = self.calcmedian(self.sensors[id]['location'])
+            d_mediantmp = self.sensorFormatTemp(mediantmp)
+
+            # Update average for all median sensors
+
+            for medid in self.getsidsfromlocation(self.sensors[id]['location'] + '_median'):
+		d_oldtemp = self.sensorFormatTemp(self.getsensortemp(medid))
+		
+		if d_oldtemp != d_mediantmp:
+                    self.settemp(id=medid, temp=mediantmp, stamp=stamp)
+
+
 
     def getsidsfromlocation(self, location):
         result = []
