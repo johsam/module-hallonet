@@ -184,6 +184,7 @@ sitemap ripan label="Ripstigen" {
         Text item=PI_loadavg
         Text item=PI_uptime
         Text item=PI_wifi_restart
+        Text item=PI_public_ip
    }
 
    Frame label="Openhab info" {

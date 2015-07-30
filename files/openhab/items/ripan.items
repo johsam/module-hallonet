@@ -173,6 +173,25 @@ Number H_52_9700_last
         (Inside)
 
 
+
+/*	Median utomhus	*/
+
+Number T_50_0001_last
+        "Median [%.1f °C]"
+        <ripan_temp>
+        (Outside)
+
+Number T_50_0001_min
+        "Kallast [%.1f °C]"
+        <ripan_temp>
+        (Outside)
+
+Number T_50_0001_max
+        "Varmast [%.1f °C]"
+        <ripan_temp>
+        (Outside)
+
+
 /*	Tid for max min	typ 50*/
 
 String T_50_7500_last_stamp "Avläst [%s]" <ripan_clock>
@@ -191,6 +210,9 @@ String T_50_3B00_last_stamp "Avläst [%s]" <ripan_clock>
 String T_50_3B00_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_50_3B00_max_stamp  "Klockan [%s]" <ripan_clock>
 
+String T_50_0001_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_0001_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_0001_max_stamp  "Klockan [%s]" <ripan_clock>
 
 /*	Tid for max min typ 52*/
 
@@ -341,6 +363,7 @@ String PI_loadavg      "Load Average [%s]" <ripan_pi>
 String PI_core_temp    "Core Temp [%s]" <ripan_pi>
 String PI_core_volts   "Core Volts [%s]" <ripan_pi>
 String PI_wifi_restart "Wifi [%s]"       <ripan_pi>
+String PI_public_ip    "Ip [%s]"         <ripan_pi>
 
 String PI_openhab_load      "Load [%s]"      <ripan_openhab>
 String PI_openhab_restarted "Restarted [%s]" <ripan_openhab>
