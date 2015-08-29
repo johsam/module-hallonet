@@ -94,15 +94,15 @@ awk -F'\t' -v "formats=tl"  -f ${scriptDir}/tsv2json-with-formats.awk "${tmpfile
 #	And upload it
 #
 
-log "Uploading file '$(basename ${jsontmpfile})' to ftp.bredband.net"
+log "Uploading file '$(basename ${jsontmpfile})' to static webroot"
 
 upload_static static/graphs ${jsontmpfile}
 
 #
-#	Save to NAS
+#	Save static
 #
 
-cp ${jsontmpfile} /mnt/nas-backup/statics/
+backup_to_static ${jsontmpfile}
 
 exit 0
 

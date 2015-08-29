@@ -4,7 +4,7 @@
 #00 06 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  2
 #15 08 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 off 2
 #
-#15 17 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 "group on"  1
+15 18 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 "group on"  1
 30 23 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 "group off" 1
 #
 #	Ebbas rum
@@ -20,5 +20,5 @@
 #00 06 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  4
 #15 08 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 off 4
 #
-#25 16 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  4
+#45 17 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  4
 #45 23 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 off 4

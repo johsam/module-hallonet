@@ -6,7 +6,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}"  > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${statictempfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 
@@ -19,6 +19,7 @@ trap "exit 2" 1 2 3 15
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
+statictempfile="/tmp/temperatur.txt"
 
 logfile="/var/rfxcmd/temperatur-nu.log"
 curlfile="/var/rfxcmd/temperatur-nu-status.log"
@@ -46,8 +47,7 @@ source "${scriptDir}/../sensors.cfg"
 source "${scriptDir}/../settings.cfg"
 source "${scriptDir}/../functions.sh"
 
-
-#	Get Average number from sensors
+#	Get Median number from 4 coldest sensors
 
 /usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 \
 	-e "set @sensors_outdoor='${sensors_outdoor}'; source ${sqlDir}/${sql};" > "${tmpfile}" 2>&1
@@ -58,6 +58,12 @@ number="$(cat ${tmpfile})"
 
 if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 
+	#	Save temp for web static
+	
+	cp ${tmpfile} ${statictempfile}
+	upload_static static ${statictempfile}
+
+	
 	#	Update graphite
 
 	${scriptDir}/to-graphite-temps.sh '0000' ${number}
@@ -134,6 +140,22 @@ else
 	
 	printf "${now}\tn/a\tn/a\tn/a\n" >> ${logfile}
 fi
+
+
+
+
+#
+#	Get Median number from all sensors
+#
+
+/usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 \
+	-e "set @sensors_outdoor='${sensors_outdoor}'; source ${scriptDir}/../static/sql/median-outdoor.sql;" > "${tmpfile}" 2>&1
+
+number="$(awk '{print $5}' ${tmpfile})"
+
+#	Update graphite
+
+${scriptDir}/to-graphite-temps.sh '0001' ${number}
 
 
 

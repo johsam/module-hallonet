@@ -92,3 +92,45 @@ lftp -c "my_upload; cd ${dir} ;find ${file}" > /dev/null 2>&1; status=$?
 return ${status}
 }
 
+
+
+
+#-------------------------------------------------------------------------------
+#
+#	Function backup_to_static file
+#
+#-------------------------------------------------------------------------------
+
+function backup_to_static ()
+{
+local file="${1}"
+local dest="${STATIC_DIR}/$(basename ${file})"
+
+if [ -w "${STATIC_DIR}" ] ; then
+	
+	if [ "${file}" != "${dest}" ] ; then
+		#logger "${file} -> ${dest}"
+		cp -p ${file} "${STATIC_DIR}/"
+		log "Saved '$(basename ${file})' to static" >> ${UPDATE_REST_LOG}
+	fi
+else
+	logger "Could not write to '${STATIC_DIR}'"
+fi
+
+
+#	NAS
+
+if [ -w "${STATIC_NASDIR}" ] ; then
+	cp ${file} "${STATIC_NASDIR}/"
+	log "Saved '$(basename ${file})' to NAS" >> ${UPDATE_REST_LOG}
+
+else 
+	logger "Could not write to '${STATIC_NASDIR}'"
+fi
+
+
+return 0
+}
+
+
+

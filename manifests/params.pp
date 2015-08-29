@@ -9,6 +9,7 @@ class hallonet::params {
 	'mlocate',
 	'lighttpd',
 	'collectd',
+	'bc',
     ]
 
     $pip_packages = [

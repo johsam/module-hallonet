@@ -62,9 +62,9 @@ sensor_type="temperatures"
 containsElement "${sensor}" "${outdoor[@]}" && sensor_location="outdoor"
 containsElement "${sensor}" "${indoor[@]}" && sensor_location="indoor"
 
-# Special case for 0000 , temperatur.nu 
+# Special cases for 0000 => temperatur.nu 0001 => Median outside
 
-if [ "${sensor}" = "0000" ] ; then 
+if [ "${sensor}" = "0000" ] || [ "${sensor}" = "0001" ]; then 
 	sensor_location="artificial"
 fi
 
@@ -83,6 +83,14 @@ if [ ${status} -eq 0 ] ; then
 	echo $path | nc -q0 mint-black 2003
 
 	${dir}/../triggers/pubnub/publish_temp.sh "${sensor}" "${value}" "${humidity}"
+	
+	# Update dewpoint
+	
+	sensor_type="dewpoint"
+	dewpoint=$(${dir}/calc_dewpoint.sh "${value}" "${humidity}")
+	
+	path="linux.${host}.sensors.${sensor_location}.${sensor_type}.${sensor} ${dewpoint} ${now}"
+	echo $path | nc -q0 mint-black 2003
 
 else
 	${dir}/../triggers/pubnub/publish_temp.sh "${sensor}" "${value}"

@@ -121,6 +121,19 @@ uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta
 mysql rfx --skip-column-names -urfxuser -prfxuser1 < ${scriptDir}/sql/last-stamp.sql > "${stampfile}"
 
 
+# 	Public ip
+
+public_ip="???"
+curl -s --connect-timeout 5 --max-time 5 "https://api.ipify.org" > "${tmpfile}" 2>/dev/null
+
+if [ -s "${tmpfile}" ] ; then
+	public_ip=$(cat "${tmpfile}")
+fi
+
+#	Last boot
+
+last_boot=$(who -b | awk '{print $3" "$4":00"}')
+
 #
 #	Create the systemfile
 #
@@ -136,6 +149,8 @@ formatSystemInfo "pi" "core_temp"		"${core_temp}"
 formatSystemInfo "pi" "core_volts"		"${core_volts}"
 formatSystemInfo "pi" "loadavg"			"${loadavg}"
 formatSystemInfo "pi" "wifi_restart"		"${wifi_restart}"
+formatSystemInfo "pi" "public_ip"		"${public_ip}"
+formatSystemInfo "pi" "last_boot"		"${last_boot}"
 
 formatSystemInfo "static" "timestamp" "${now}" 
 

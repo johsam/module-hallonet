@@ -34,11 +34,8 @@ trap "exit 2" 1 2 3 15
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
 
-savetojson="/mnt/nas-backup/statics/sensors.json"
-savetocsv="/mnt/nas-backup/statics/openhab.csv"
-
 jsontmpfile="/tmp/sensors.json"
-csvtmpfile="/tmp/sensors.csv"
+csvtmpfile="/tmp/openhab.csv"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
@@ -57,8 +54,9 @@ settings=${scriptDir}/../settings.cfg
 log "Collecting data..."
 ${scriptDir}/0_create-json.sh > ${jsontmpfile}
 
-log "Backup $(basename ${savetojson}) to NAS..."
-cp ${jsontmpfile} ${savetojson}
+log "Backup $(basename ${jsontmpfile}) to NAS..."
+backup_to_static ${jsontmpfile}
+
 
 log "Uploading json..."
 upload_static static ${jsontmpfile}
@@ -69,8 +67,8 @@ upload_static static ${jsontmpfile}
 log "Convert json to csv..."
 python -u ${scriptDir}/2_json-to-csv.py --file ${jsontmpfile} > ${csvtmpfile}
 
-log "Backup $(basename ${savetocsv}) to NAS..."
-cp ${csvtmpfile} ${savetocsv}
+log "Backup $(basename ${csvtmpfile}) to NAS..."
+backup_to_static ${csvtmpfile}
 
 
 log "Upload csv to openhab..."

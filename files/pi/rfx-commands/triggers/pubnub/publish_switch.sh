@@ -63,6 +63,7 @@ python -mjson.tool "${tmpfile}" > /dev/null 2>&1; status=$?
 if [ "${status}" -eq 0 ] ; then
 	cp ${tmpfile} "${JSON_FILE}"
 	upload_static static ${JSON_FILE}
+	backup_to_static ${JSON_FILE}
 fi 
  
 exit 0
