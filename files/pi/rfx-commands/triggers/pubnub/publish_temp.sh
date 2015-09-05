@@ -35,6 +35,7 @@ settings=${scriptDir}/../../settings.cfg
 sensor_id=${1}
 sensor_temp=${2}
 sensor_humidity=${3}
+sensor_signal=${4}
 now_full="$(date '+%F %T')"
 
 # Only allow publish if android app hallonet is running, But allow id 0000
@@ -43,36 +44,51 @@ if [ "${sensor_id}" != "0000" ] ; then
 	[ ! -r "${PUBNUB_ALLOWPUBLISH}" ] && exit 0
 fi
 
-#
-#	Send it to pubnub
-#
-
-{
-${scriptDir}/publish_to_pubnub.py \
-	--file            "${JSON_FILE}" \
-	--pubnub-subkey   "${PUBNUB_SUBKEY}" \
-	--pubnub-pubkey   "${PUBNUB_PUBKEY}" \
-	--pubnub-channel  "${PUBNUB_CHANNEL}" \
-	--sensor-id       "${sensor_id}" \
-	--sensor-value    "${sensor_temp}" \
-	--sensor-humidity "${sensor_humidity}" \
-	--stamp           "${now_full}"
-} > "${tmpfile}" 2>> "${logfile}"
 
 #
-#	Did we get a proper json back ?, If so upload it, but only if id is 0000
+#	Use flock to prevent multiple sensors to manipulate sensors.json
 #
 
-if [ "${sensor_id}" = "0000" ] ; then
+(
+	flock -x -w 30 200 || {logger "Failed to aquire lock for ${sensor_id}"; exit 1;}
+	#logger "$$ -> Aquired lock temp ${sensor_id} -> ${SECONDS}"
 
-	python -mjson.tool "${tmpfile}" > /dev/null 2>&1; status=$?
- 
-	if [ "${status}" -eq 0 ] ; then
-		cp ${tmpfile} "${JSON_FILE}"
-		upload_static static ${JSON_FILE}
-		backup_to_static ${JSON_FILE}
+	#
+	#	Send it to pubnub
+	#
+
+	{
+	${scriptDir}/publish_to_pubnub.py \
+		--file            "${JSON_FILE}" \
+		--pubnub-subkey   "${PUBNUB_SUBKEY}" \
+		--pubnub-pubkey   "${PUBNUB_PUBKEY}" \
+		--pubnub-channel  "${PUBNUB_CHANNEL}" \
+		--sensor-id       "${sensor_id}" \
+		--sensor-value    "${sensor_temp}" \
+		--sensor-humidity "${sensor_humidity}" \
+		--stamp           "${now_full}" \
+		--signal          "${sensor_signal}"
+	} > "${tmpfile}" 2>> "${logfile}"
+
+	#
+	#	Did we get a proper json back ?, If so upload it, but only if id is 0000
+	#
+
+	if [ "${sensor_id}" = "0000" ] ; then
+
+		python -mjson.tool "${tmpfile}" > /dev/null 2>&1; status=$?
+
+		if [ "${status}" -eq 0 ] ; then
+
+			cp ${tmpfile} "${JSON_FILE}"
+			upload_static static ${JSON_FILE}
+			backup_to_static ${JSON_FILE}
+		fi
+
 	fi
+	
+	#logger "$$ -> Jobe done temp ${sensor_id}"
 
-fi
+) 200> /var/lock/sensor.lock
 
 exit 0

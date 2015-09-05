@@ -54,12 +54,19 @@ settings=${scriptDir}/../settings.cfg
 log "Collecting data..."
 ${scriptDir}/0_create-json.sh > ${jsontmpfile}
 
-log "Backup $(basename ${jsontmpfile}) to NAS..."
-backup_to_static ${jsontmpfile}
-
+#
+#	Use flock to prevent any script to manipulate sensors.json
+#
+(
+flock -x -w 30 200 || {logger "Failed to aquire lock for ${jsontmpfile}"; exit 1;}
 
 log "Uploading json..."
 upload_static static ${jsontmpfile}
+
+log "Backup $(basename ${jsontmpfile}) to NAS..."
+backup_to_static ${jsontmpfile}
+
+) 200> /var/lock/sensor.lock
 
 
 #	Openhab

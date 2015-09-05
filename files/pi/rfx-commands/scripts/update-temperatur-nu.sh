@@ -66,7 +66,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	
 	#	Update graphite
 
-	${scriptDir}/to-graphite-temps.sh '0000' ${number}
+	${scriptDir}/to-graphite-temps.sh '0000' ${number} '00' '0'
 
 
 	#	Only 1 decimal to be safe...
@@ -155,7 +155,7 @@ number="$(awk '{print $5}' ${tmpfile})"
 
 #	Update graphite
 
-${scriptDir}/to-graphite-temps.sh '0001' ${number}
+${scriptDir}/to-graphite-temps.sh '0001' ${number} '00' '0'
 
 
 

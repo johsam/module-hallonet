@@ -63,6 +63,14 @@ parser.add_argument(
     help='Sensor timestamp'
 )
 
+parser.add_argument(
+    '--signal', required=False,
+    default='',
+    dest='signal',
+    help='Sensor signal'
+)
+
+
 # Pubnub
 
 parser.add_argument(
@@ -107,11 +115,13 @@ def publish_switch(s):
     pubnub.publish(args.pubnub_channel, ps)
 
 
-def processSensors(a, id, value, humidity, stamp):
+def processSensors(a, id, value, humidity, stamp, signal):
 
     for i, item in enumerate(a):
         sensorid = a[i]['sensor']['id']
         if sensorid == id:
+            a[i]['signal'] = signal
+
             a[i]['temperature']['last']['timestamp'] = stamp
             a[i]['temperature']['last']['value'] = float(value)
 
@@ -141,12 +151,13 @@ def processSensors(a, id, value, humidity, stamp):
             break
 
 
-def processSwitches(a, id, state, stamp):
+def processSwitches(a, id, state, stamp, signal):
     for i, item in enumerate(a):
 	swid = a[i]['id']
         if swid == id:
             a[i]['timestamp'] = stamp
             a[i]['state'] = state
+            a[i]['signal'] = signal
             publish_switch(a[i])
             break
 
@@ -171,10 +182,10 @@ with open(args.file) as data_file:
 
     if args.sensor_id != '':
         if 'sensors' in json_data:
-            processSensors(json_data['sensors'], args.sensor_id, args.sensor_value, args.sensor_humidity, args.stamp)
+            processSensors(json_data['sensors'], args.sensor_id, args.sensor_value, args.sensor_humidity, args.stamp, args.signal)
             print json.dumps(json_data,indent=4, sort_keys=True, encoding="utf-8") 
 
     if args.switch_id != '':
         if 'switches' in json_data:
-            processSwitches(json_data['switches'], args.switch_id, args.switch_state, args.stamp)
+            processSwitches(json_data['switches'], args.switch_id, args.switch_state, args.stamp, args.signal)
             print json.dumps(json_data,indent=4, sort_keys=True, encoding="utf-8") 

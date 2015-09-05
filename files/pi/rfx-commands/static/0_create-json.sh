@@ -214,7 +214,7 @@ mysql rfx -urfxuser -prfxuser1 \
 
 
 #
-#	Convert to json suitable for ExtJS
+#	Convert to json
 #
 
 python -u ${scriptDir}/1_data-to-json.py \

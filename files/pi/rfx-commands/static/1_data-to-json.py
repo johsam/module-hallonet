@@ -91,19 +91,40 @@ switchAliases = {
 	
 	
 	"03D242AA_16": {
-		"alias": "Ytterdörren",
-		"type":  "magnet",
-		"order": -5
+		"alias":   "Ytterdörren",
+		"type":    "magnet",
+		"subtype": "door",
+		"order":   -6
 	},
 	"00CFDEEA_10": {
-		"alias": "Altanen",
-		"type":  "magnet",
-		"order": -4
+		"alias":   "Altanen",
+		"type":    "magnet",
+		"subtype": "door",
+		"order":   -5
 	},
 	"00CFD656_10": {
-		"alias": "Förrådet",
-		"type":  "magnet",
-		"order": -3
+		"alias":   "Förrådet",
+		"type":    "magnet",
+		"subtype": "door",
+		"order":   -4
+	},
+	"00EF07E6_10": {
+		"alias":   "Vardagsrum",
+		"type":    "magnet",
+		"subtype": "ir",
+		"order":   -3
+	},
+	"0115A1F6_10": {
+		"alias":   "Altanen",
+		"type":    "magnet",
+		"subtype": "ir",
+		"order":   -2
+	},
+	"010865CA_10": {
+		"alias":   "Altanen (*)",
+		"type":    "magnet",
+		"subtype": "duskdawn",
+		"order":   -1
 	}
 
 }
@@ -245,6 +266,7 @@ with open(args.switch_file, 'rb') as csvfile:
 		sensorid = row['sensorid'] + '_' + row['subid']
 		timestamp = row['datetime']
 		state = row['state']
+		signal = row['signal']
 		alias = 'n/a'
 		swtype = 'n/a'
 		order = 0
@@ -257,6 +279,9 @@ with open(args.switch_file, 'rb') as csvfile:
 			alias = switchAliases[sensorid]['alias']
 			swtype = switchAliases[sensorid]['type']
 			order = switchAliases[sensorid]['order']
+			if 'subtype' in switchAliases[sensorid]:
+				switchData[sensorid]['subtype'] = switchAliases[sensorid]['subtype']
+
 
 		switchData[sensorid]['id'] = sensorid
 		switchData[sensorid]['alias'] = alias
@@ -264,6 +289,7 @@ with open(args.switch_file, 'rb') as csvfile:
 		switchData[sensorid]['type'] = swtype
 		switchData[sensorid]['timestamp'] = timestamp
 		switchData[sensorid]['state'] = state
+		switchData[sensorid]['signal'] = signal
 
 #
 # Read last data
@@ -280,6 +306,7 @@ with open(args.last_file, 'rb') as csvfile:
 		humidity = row['humidity']
 		sensortype = row['packettype']
 		datetime = row['datetime']
+		signal = row['signal']
 		alias = 'n/a'
 		location = 'n/a'
 		order = 0
@@ -296,9 +323,10 @@ with open(args.last_file, 'rb') as csvfile:
 		
 		delta=relativedelta(now,parse(datetime))
 		if delta.days > 0 or delta.hours > 0 or delta.minutes > 30:
-			alias = alias + " ???"
+			alias = alias + " ?"
 
 		sensorData[sensorid]['order'] = order
+		sensorData[sensorid]['signal'] = signal
 		sensorData[sensorid]['sensor'] = {
 			'alias': alias,
 			'id': sensorid,

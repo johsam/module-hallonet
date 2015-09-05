@@ -36,27 +36,36 @@ umask 022
 
 [ ! -r ${logfile} ] && touch ${logfile} && chown pi:pi ${logfile}
 
+#
+# Parameters
+#
+
+magnet_id=${1}
+magnet_command=${2}
+magnet_dimlevel=${3}
+magnet_unitcode=${4}
+magnet_signal=${5}
 
 # Log parameters to file
 
-msg=$(printf "$1\t$2\t$3")
+msg=$(printf "${magnet_id}\t${magnet_command}\t${magnet_dimlevel}\t${magnet_signal}")
 log "${msg}" >> ${logfile}
 
 
 #	Send it to openhab
 
-status="Stängd ${shortnow}" ; [ "${2}" = "On" ] && status="Öppen ${shortnow}"	
+magnet_status="Stängd ${shortnow}" ; [ "${magnet_command}" = "On" ] && magnet_status="Öppen ${shortnow}"	
 
-to_openhab "Magnet trigger" "M_${1}_${4}" "${status}" >> ${UPDATE_REST_LOG}
+to_openhab "Magnet trigger" "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_REST_LOG}
 
 
 #	Send it to graphite
 
-switch_to_graphite "${1}_${4}" "${2}"
+switch_to_graphite "${magnet_id}_${magnet_unitcode}" "${magnet_command}"
 
 
 #	Send it to pubnub
 
-${scriptDir}/pubnub/publish_switch.sh "${1}_${4}" "${2}"
+${scriptDir}/pubnub/publish_switch.sh "${magnet_id}_${magnet_unitcode}" "${magnet_command}" "${magnet_signal}"
 
 exit 0

@@ -1228,6 +1228,8 @@ def decodePacket(message):
 					action = action.replace("$unitcode$", str(unitcode) )
 					action = action.replace("$command$", command )
 					action = action.replace("$dimlevel$", dimlevel )
+					action = action.replace("$signal$", str(signal) )
+
 					logger.debug("Execute shell")
 					run_command = Command(action)
 					run_command.run(timeout=config.trigger_timeout)

@@ -393,4 +393,21 @@ String M_00CFD656_10
         <ripan_door>
         (Magnets)
 
+String M_00EF07E6_10
+        "IR Vardagsrum [%s]"
+        <ripan_door>
+        (Magnets)
+
+
+String M_0115A1F6_10
+        "IR Altanen [%s]"
+        <ripan_door>
+        (Magnets)
+
+String M_010865CA_10
+        "Skymning [%s]"
+        <ripan_door>
+        (Magnets)
+
+
 

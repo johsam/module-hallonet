@@ -18,7 +18,6 @@ trap "exit 2" 1 2 3 15
 tmpfile="/tmp/`basename $0`-$$.tmp"
 logfile="/var/rfxcmd/pubnub-errors.log"
 
-
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 functions=${scriptDir}/../../functions.sh
@@ -33,37 +32,52 @@ settings=${scriptDir}/../../settings.cfg
 
 [ ! -r ${logfile} ] && umask 0011 && touch ${logfile} && chown pi:pi ${logfile}
 
-# Always publish switches even if android app hallonet is not running
-
 switch_id=${1}
 switch_state=${2}
+switch_signal=${3}
+
 now_full="$(date '+%F %T')"
 
-#
-#	Send it to pubnub
-#
-
-{
-${scriptDir}/publish_to_pubnub.py \
-	--file           "${JSON_FILE}" \
-	--pubnub-subkey  "${PUBNUB_SUBKEY}" \
-	--pubnub-pubkey  "${PUBNUB_PUBKEY}" \
-	--pubnub-channel "${PUBNUB_CHANNEL}" \
-	--switch-id      "${switch_id}" \
-	--switch-state   "${switch_state}" \
-	--stamp          "${now_full}"
-} > "${tmpfile}" 2>> "${logfile}"
 
 #
-#	Did we get a proper json back ?, If so upload it
+#	Use flock to prevent multiple triggers to manipulate sensors.json
 #
 
-python -mjson.tool "${tmpfile}" > /dev/null 2>&1; status=$?
- 
-if [ "${status}" -eq 0 ] ; then
-	cp ${tmpfile} "${JSON_FILE}"
-	upload_static static ${JSON_FILE}
-	backup_to_static ${JSON_FILE}
-fi 
- 
+(
+	flock -x -w 30 200 || {logger "Failed to aquire lock for ${switch_id}"; exit 1;}
+	[ ${SECONDS} -gt 0 ] && logger "$$ -> Aquired lock switch ${switch_id}->${switch_state} -> ${SECONDS}"
+
+	#
+	# 	Always publish switches even if android app hallonet is not running
+	#
+
+	{
+	${scriptDir}/publish_to_pubnub.py \
+		--file           "${JSON_FILE}" \
+		--pubnub-subkey  "${PUBNUB_SUBKEY}" \
+		--pubnub-pubkey  "${PUBNUB_PUBKEY}" \
+		--pubnub-channel "${PUBNUB_CHANNEL}" \
+		--switch-id      "${switch_id}" \
+		--switch-state   "${switch_state}" \
+		--stamp          "${now_full}" \
+		--signal         "${switch_signal}"
+	} > "${tmpfile}" 2>> "${logfile}"
+
+	#
+	#	Did we get a proper json back ?, If so upload it
+	#
+
+	python -mjson.tool "${tmpfile}" > /dev/null 2>&1; status=$?
+
+	if [ "${status}" -eq 0 ] ; then
+
+		cp ${tmpfile} "${JSON_FILE}"
+		upload_static static ${JSON_FILE}
+		backup_to_static ${JSON_FILE}
+	fi 
+
+	#logger "$$ -> Job done switch ${switch_id}->${switch_state}"
+
+) 200> /var/lock/sensor.lock
+
 exit 0
