@@ -50,7 +50,7 @@ fi
 #
 
 (
-	flock -x -w 30 200 || {logger "Failed to aquire lock for ${sensor_id}"; exit 1;}
+	flock -x -w 30 200 || { logger "Failed to aquire lock for ${sensor_id}"; exit 1; }
 	#logger "$$ -> Aquired lock temp ${sensor_id} -> ${SECONDS}"
 
 	#

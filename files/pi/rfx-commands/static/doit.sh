@@ -58,7 +58,7 @@ ${scriptDir}/0_create-json.sh > ${jsontmpfile}
 #	Use flock to prevent any script to manipulate sensors.json
 #
 (
-flock -x -w 30 200 || {logger "Failed to aquire lock for ${jsontmpfile}"; exit 1;}
+flock -x -w 30 200 || { logger "Failed to aquire lock for ${jsontmpfile}"; exit 1; }
 
 log "Uploading json..."
 upload_static static ${jsontmpfile}

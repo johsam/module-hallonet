@@ -44,7 +44,7 @@ now_full="$(date '+%F %T')"
 #
 
 (
-	flock -x -w 30 200 || {logger "Failed to aquire lock for ${switch_id}"; exit 1;}
+	flock -x -w 30 200 || { logger "Failed to aquire lock for ${switch_id}"; exit 1; }
 	[ ${SECONDS} -gt 0 ] && logger "$$ -> Aquired lock switch ${switch_id}->${switch_state} -> ${SECONDS}"
 
 	#
