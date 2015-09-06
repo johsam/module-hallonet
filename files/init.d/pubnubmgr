@@ -28,8 +28,9 @@ DESC="pubnubmgr daemon startup script"
 PIDFILE=/var/run/$NAME.pid
 
 SCRIPTNAME=/etc/init.d/$NAME
+HISTORYSCRIPT="/home/pi/rfx-commands/history/history.sh"
 DAEMON=/home/pi/rfx-commands/pubnub/pubnubmgr.py
-DAEMONOPTS="--pid-file ${PIDFILE} --allow-publish-file ${PUBNUB_ALLOWPUBLISH} --pubnub-subkey ${PUBNUB_SUBKEY} --pubnub-pubkey ${PUBNUB_PUBKEY} --pubnub-channel ${PUBNUB_CHANNEL}"
+DAEMONOPTS="--pid-file ${PIDFILE} --allow-publish-file ${PUBNUB_ALLOWPUBLISH} --pubnub-subkey ${PUBNUB_SUBKEY} --pubnub-pubkey ${PUBNUB_PUBKEY} --pubnub-channel ${PUBNUB_CHANNEL} --external-history ${HISTORYSCRIPT}"
 
 case "$1" in
 	start)

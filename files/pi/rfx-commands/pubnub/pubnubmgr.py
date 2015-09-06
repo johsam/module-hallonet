@@ -8,7 +8,7 @@ import json
 import syslog
 from daemon import Daemon
 from pubnub import Pubnub
-
+import subprocess
 
 class MyDaemon(Daemon):
 
@@ -19,11 +19,38 @@ class MyDaemon(Daemon):
     def removefile(self, filename):
         if os.path.exists(filename):
     	    os.remove(filename)
-
+    
+    def error(self, message, channel):
+	syslog.syslog("Error " + message)
 
     def callback(self, message, channel):
-        	
+       	
 	if type(message) == type(dict()):
+	    
+	    #
+	    # Request ? 
+	    #
+	    
+	    if 'type' in message and message['type'] == 'request' and 'request' in message:
+		 
+		 requesttype = message['request']
+		 syslog.syslog("Channel %s: %s -> %s" % (channel, "request", json.dumps(message['request'])))
+                 
+		 syslog.syslog("Calling '" + args.external_history + "'")
+		 jsonstr = subprocess.check_output(args.external_history, stderr=subprocess.STDOUT)
+		 syslog.syslog("Done processing external script")
+		 
+		 try:
+		 	js = json.loads(jsonstr)
+		 	self.pubnub.publish(args.pubnub_channel, js)
+		 except:
+		 	syslog.syslog("Failed to parse json from script -> '" + jsonstr + "'")
+		  
+	    #
+	    # Status ?
+	    #
+	    
+
 	    if 'type' in message and message['type'] == 'status' and 'status' in message:
 	       
 	       status = message['status']
@@ -46,14 +73,14 @@ class MyDaemon(Daemon):
 
     def run(self):
 
-        pubnub = Pubnub(publish_key=args.pubnub_pubkey,
+        self.pubnub = Pubnub(publish_key=args.pubnub_pubkey,
                         subscribe_key=args.pubnub_subkey,
                         secret_key='',
                         cipher_key='',
                         ssl_on=False
                         )
         syslog.syslog("Listening on Channel %s" % args.pubnub_channel)
-        pubnub.subscribe(args.pubnub_channel, self.callback)
+        self.pubnub.subscribe(args.pubnub_channel, self.callback)
 
 
 if __name__ == "__main__":
@@ -99,6 +126,15 @@ if __name__ == "__main__":
         help='Status file'
     )
 
+
+    parser.add_argument(
+        '--external-history', required=True,
+        default='',
+        dest='external_history',
+        help='Status file'
+    )
+
+
     parser.add_argument(
         '--start', required=False,
         default=False,
@@ -133,7 +169,7 @@ if __name__ == "__main__":
 
     if args.do_start is True:
         syslog.syslog("Starting...")
-        daemon.start()
+        daemon.run()
 
     elif args.do_stop is True:
         syslog.syslog("Stopping...")
