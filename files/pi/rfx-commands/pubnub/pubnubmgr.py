@@ -169,7 +169,7 @@ if __name__ == "__main__":
 
     if args.do_start is True:
         syslog.syslog("Starting...")
-        daemon.run()
+        daemon.start()
 
     elif args.do_stop is True:
         syslog.syslog("Stopping...")
