@@ -68,7 +68,7 @@ with open(args.file, 'rb') as csvfile:
 		duration = stamp - unixtime
 		delta = str(timedelta(seconds=duration))
 		
-		if command != lastcommand[sensorid]:
+		if command != lastcommand[sensorid] and duration > 1:
 			history[sensorid]['last'].append({'duration': duration, 'delta': delta, 'datetime': datetime, 'unixtime': unixtime, 'command': command, 'signal': signal})
 			lastcommand[sensorid] = command
 			stamp = unixtime
