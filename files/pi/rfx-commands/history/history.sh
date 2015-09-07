@@ -6,7 +6,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}"  > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${jsonfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 
@@ -31,7 +31,7 @@ settings=${scriptDir}/../settings.cfg
 
 
 histlen=50
-keep=1
+keep=10
 
 #
 #	History of all magnets
@@ -49,8 +49,8 @@ python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --count  ${keep}  > ${js
 #	Save data
 #
 
-upload_static static/ ${jsonfile}
-backup_to_static ${jsonfile}
+upload_static static/ ${jsonfile} 2> /dev/null
+backup_to_static ${jsonfile} 2> /dev/null
 
 #	And return result
 
