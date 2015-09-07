@@ -25,7 +25,4 @@ FROM
     ORDER BY sensorid, id DESC 
 ) AS T1
 WHERE rn <= @histlen
-
 ;
-
--- select datetime,data1,data3,data4 from rfxcmd where data1 = '0115A1F6' order by datetime desc limit 10
