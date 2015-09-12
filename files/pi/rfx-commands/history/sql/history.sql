@@ -1,4 +1,4 @@
-set @histlen := coalesce(@histlen,3);
+set @histlen := coalesce(@histlen,10);
  
 SELECT
     datetime,
@@ -21,7 +21,7 @@ FROM
     FROM rfxcmd 
  
     JOIN (SELECT @prev := NULL, @rn := 0) AS vars
-    WHERE packettype = '11'
+    WHERE packettype = '11' and data3 in ('On','Off')
     ORDER BY sensorid, id DESC 
 ) AS T1
 WHERE rn <= @histlen

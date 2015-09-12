@@ -266,7 +266,7 @@ with open(args.switch_file, 'rb') as csvfile:
 		sensorid = row['sensorid'] + '_' + row['subid']
 		timestamp = row['datetime']
 		state = row['state']
-		signal = row['signal']
+		signal = int(row['signal'])
 		alias = 'n/a'
 		swtype = 'n/a'
 		order = 0
@@ -306,7 +306,7 @@ with open(args.last_file, 'rb') as csvfile:
 		humidity = row['humidity']
 		sensortype = row['packettype']
 		datetime = row['datetime']
-		signal = row['signal']
+		signal = int(row['signal'])
 		alias = 'n/a'
 		location = 'n/a'
 		order = 0

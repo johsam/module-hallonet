@@ -65,7 +65,8 @@ parser.add_argument(
 
 parser.add_argument(
     '--signal', required=False,
-    default='',
+    type=int,
+    default=0,
     dest='signal',
     help='Sensor signal'
 )

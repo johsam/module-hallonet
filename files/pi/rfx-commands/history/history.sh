@@ -30,8 +30,9 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${settings} ]  && source ${settings}  || (echo "FATAL: Missing '${settings}', Aborting" ; exit 1)
 
 
-histlen=50
-keep=10
+histlen=30
+keep=${1}
+keep=${keep:=10}
 
 #
 #	History of all magnets

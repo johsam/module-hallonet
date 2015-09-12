@@ -4,6 +4,7 @@ import csv
 import argparse
 import json
 import time
+import re
 from datetime import timedelta
 
 
@@ -44,7 +45,7 @@ stamp = epoch_time
 with open(args.file, 'rb') as csvfile:
 
 	sqlData = csv.DictReader(csvfile, dialect="excel-tab")
-
+	
 	for row in sqlData:
 
 		datetime = row['datetime']
@@ -62,6 +63,7 @@ with open(args.file, 'rb') as csvfile:
 		
 		if len(history[sensorid]['last']) >= args.count:
 			continue
+		
 			
 		# Only keep this if state has changed, Swithes sometimes bounses a bit giving duplicates
 		
@@ -69,7 +71,8 @@ with open(args.file, 'rb') as csvfile:
 		delta = str(timedelta(seconds=duration))
 		
 		if command != lastcommand[sensorid] and duration > 1:
-			history[sensorid]['last'].append({'duration': duration, 'delta': delta, 'datetime': datetime, 'unixtime': unixtime, 'command': command, 'signal': signal})
+			# history[sensorid]['last'].append({'duration': duration, 'dlt': delta, 'dt': datetime, 'unixtime': unixtime, 'cmd': command, 'sig': signal})
+			history[sensorid]['last'].append({'dlt': delta, 'dt': datetime, 'cmd': command, 'sig': signal})
 			lastcommand[sensorid] = command
 			stamp = unixtime
 		#else:
@@ -79,4 +82,5 @@ result['type'] = 'history'
 result['history'] = history
 
 		
-print json.dumps(result, indent=4, sort_keys=True)
+#print json.dumps(result, indent=2, sort_keys=True)
+print json.dumps(result, sort_keys=True, separators=(',', ':'))

@@ -28,10 +28,9 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${functions} ] && source ${functions} || (echo "FATAL: Missing '${functions}', Aborting" ; exit 1)
 [ -r ${settings} ]  && source ${settings}  || (echo "FATAL: Missing '${settings}', Aborting" ; exit 1)
 
-
-light_id=${1}
-light_command=${2}
-light_unitcode=${3}
+light_id="${1}"
+light_command="${2}"
+light_unitcode="${3}"
 
 
 # Do it
@@ -43,18 +42,17 @@ log "trigger (${light_unitcode} -> ${light_command})" >> "${logfile}"
 
 onOff="$(echo "${light_command}" | tr '[:lower:]' '[:upper:]')"
 
-
 if [ "${onOff}" = "GROUP OFF" ] ; then
-	${0} ${id} Off 1
+	${0} ${light_id} Off 1
 	sleep 1
-	${0} ${id} Off 2
+	${0} ${light_id} Off 2
 	exit 0
 fi
 
 if [ "${onOff}" = "GROUP ON" ] ; then
-	${0} ${id} On 1
+	${0} ${light_id} On 1
 	sleep 1
-	${0} ${id} On 2
+	${0} ${light_id} On 2
 	exit 0
 fi
 
