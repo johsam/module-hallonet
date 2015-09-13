@@ -121,7 +121,7 @@ switchAliases = {
 		"order":   -2
 	},
 	"010865CA_10": {
-		"alias":   "Altanen (*)",
+		"alias":   "Staketet (*)",
 		"type":    "magnet",
 		"subtype": "duskdawn",
 		"order":   -1

@@ -35,13 +35,20 @@ class MyDaemon(Daemon):
 		 
 		 requesttype = message['request']
 		 syslog.syslog("Channel %s: %s -> %s" % (channel, "request", json.dumps(message['request'])))
-                 
-		 histlen=5
+  
+  		 command=[args.external_history]
+
 		 if "length" in message['request']:
 		 	histlen = message['request']['length']
+		 	command.append("-l")
+		 	command.append(str(histlen))
 		 
-		 syslog.syslog("Calling '" + args.external_history + " " + str(histlen) + "'")
-		 jsonstr = subprocess.check_output([args.external_history,str(histlen)], stderr=subprocess.STDOUT)
+		 if "mode" in message['request']:
+		 	if message['request']['mode'] == 'warnings':
+				command.append("-w")
+		 
+		 syslog.syslog("Calling '" + " ".join(command) + "'")
+		 jsonstr = subprocess.check_output(command, stderr=subprocess.STDOUT)
 		 syslog.syslog("Done processing external script")
 		 
 		 try:

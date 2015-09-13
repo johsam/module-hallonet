@@ -31,20 +31,36 @@ settings=${scriptDir}/../settings.cfg
 
 
 histlen=30
-keep=${1}
-keep=${keep:=10}
+signals="0,1,2,3,4,5,6,7,8,9"
+arg_count=10
+args=""
+
+#	Parse parameters
+#
+
+while getopts "l:w" opt
+do
+        case $opt in
+            l) arg_count="${OPTARG}";;
+            w) args="--all" ; signals="3";;
+            \?) usage ;;
+            *) usage ;;
+        esac
+done
+
+shift `expr ${OPTIND} - 1` ; OPTIND=1
 
 #
 #	History of all magnets
 #
 
 mysql rfx -urfxuser -prfxuser1 \
-	-e "set @histlen:=${histlen}; source ${scriptDir}/sql/history.sql;" > "${tmpfile}"
+	-e "set @histlen:=${histlen}; set @signals:='${signals}'; source ${scriptDir}/sql/history.sql;" > "${tmpfile}"
 
 
 #	Convert to json
 
-python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --count  ${keep}  > ${jsonfile}
+python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --count ${arg_count} ${args} > ${jsonfile}
 
 #
 #	Save data

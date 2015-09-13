@@ -31,6 +31,10 @@ settings=${scriptDir}/../settings.cfg
 light_id="${1}"
 light_command="${2}"
 light_unitcode="${3}"
+light_signal="${4}"
+
+light_signal=${light_signal:=0}
+
 
 
 # Do it
@@ -62,7 +66,7 @@ to_openhab "Light trigger" "Nexa_${light_unitcode}" "${onOff}" >> ${UPDATE_REST_
 
 #	Send it to pubnub
 
-${scriptDir}/pubnub/publish_switch.sh "${id}_${light_unitcode}" "${light_command}"
+${scriptDir}/pubnub/publish_switch.sh "${light_id}_${light_unitcode}" "${light_command}" "${light_signal}"
 
 
 exit 0

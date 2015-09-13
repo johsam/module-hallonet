@@ -32,9 +32,9 @@ settings=${scriptDir}/../../settings.cfg
 
 [ ! -r ${logfile} ] && umask 0011 && touch ${logfile} && chown pi:pi ${logfile}
 
-switch_id=${1}
-switch_state=${2}
-switch_signal=${3}
+switch_id="${1}"
+switch_state="${2}"
+switch_signal="${3}"
 
 now_full="$(date '+%F %T')"
 

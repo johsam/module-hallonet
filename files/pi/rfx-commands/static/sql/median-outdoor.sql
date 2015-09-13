@@ -50,7 +50,7 @@ select
 	round(avg(temperature),2) as median,
 	"0"           as "humidity",
 	"9"           as "battery",
-	"9"           as "signal"
+	"-1"          as "signal"
 
 from tmp_last
 where (select @row_id := @row_id + 1) between @ct/2.0 and @ct/2.0 + 1

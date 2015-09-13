@@ -25,10 +25,17 @@ parser.add_argument(
 	default=10,
 	type=int,
 	dest='count',
-	help='FMax number of last items to keep'
+	help='Max number of last items to keep'
 )
 
+parser.add_argument(
+	'--all', required=False,
+	dest='all',
+	action='store_true',
+	help='Show all'
+)
 
+parser.set_defaults(all=False)
 args = parser.parse_args()
 
 history = {}
@@ -70,13 +77,10 @@ with open(args.file, 'rb') as csvfile:
 		duration = stamp - unixtime
 		delta = str(timedelta(seconds=duration))
 		
-		if command != lastcommand[sensorid] and duration > 1:
-			# history[sensorid]['last'].append({'duration': duration, 'dlt': delta, 'dt': datetime, 'unixtime': unixtime, 'cmd': command, 'sig': signal})
-			history[sensorid]['last'].append({'dlt': delta, 'dt': datetime, 'cmd': command, 'sig': signal})
+		if args.all or (command != lastcommand[sensorid] and duration > 1):
+			history[sensorid]['last'].append({'dlt': delta,'cmd': command, 'sig': signal, 'ut': unixtime,})
 			lastcommand[sensorid] = command
 			stamp = unixtime
-		#else:
-		#	history[sensorid]['last'].append({'dup': True,'datetime': datetime, 'command': command, 'signal': signal})
 	
 result['type'] = 'history'
 result['history'] = history

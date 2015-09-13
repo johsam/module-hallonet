@@ -40,7 +40,7 @@ log "send  (${1} -> on)" >> /var/rfxcmd/nexa-setstate.log
 
 #	Sent to pubnub
 
-${dir}/../triggers/pubnub/publish_switch.sh "00D81332_${1}" On
+${dir}/../triggers/pubnub/publish_switch.sh "00D81332_${1}" "On" "0"
 
 
 exit 0

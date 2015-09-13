@@ -155,7 +155,7 @@ number="$(awk '{print $5}' ${tmpfile})"
 
 #	Update graphite
 
-${scriptDir}/to-graphite-temps.sh '0001' ${number} '00' '0'
+${scriptDir}/to-graphite-temps.sh '0001' ${number} '00' '-1'
 
 
 
