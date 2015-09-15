@@ -5,7 +5,7 @@
 </trigger>
 <trigger>
         <message>0B1100..00D81332........</message>
-	<action>/home/pi/rfx-commands/triggers/lights.sh "$id$" "$command$" "$unitcode$"</action>
+	<action>/home/pi/rfx-commands/triggers/lights.sh "$id$" "$command$" "$unitcode$" "$signal$"</action>
 </trigger>
 <trigger>
         <message>085007............</message>

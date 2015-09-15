@@ -44,8 +44,8 @@ now_full="$(date '+%F %T')"
 #
 
 (
-	flock -x -w 30 200 || { logger "Failed to aquire lock for ${switch_id}"; exit 1; }
-	[ ${SECONDS} -gt 0 ] && logger "$$ -> Aquired lock switch ${switch_id}->${switch_state} -> ${SECONDS}"
+	flock -x -w 30 200 || { logger -t $(basename $0) "Failed to aquire lock for ${switch_id}"; exit 1; }
+	[ ${SECONDS} -gt 0 ] && logger -t $(basename $0) "$$ -> Aquired lock switch ${switch_id}->${switch_state} -> ${SECONDS}"
 
 	#
 	# 	Always publish switches even if android app hallonet is not running

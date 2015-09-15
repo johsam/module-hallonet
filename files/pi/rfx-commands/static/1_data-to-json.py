@@ -158,13 +158,13 @@ sensorAliases = {
 	},
 
 	"0700": {
-		"alias": "Förrådets Tak",
+		"alias": "Förråd Tak",
 		"location": "outside",
 		"order": 1
 	},
 
 	"B700": {
-		"alias": "Förrådets Golv",
+		"alias": "Förråd Golv",
 		"location": "outside",
 		"order": 2
 	},
