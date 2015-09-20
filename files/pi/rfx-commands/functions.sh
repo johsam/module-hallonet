@@ -111,21 +111,23 @@ if [ -w "${STATIC_DIR}" ] ; then
 	if [ "${file}" != "${dest}" ] ; then
 		#logger "${file} -> ${dest}"
 		cp -p ${file} "${STATIC_DIR}/"
-		log "Saved '$(basename ${file})' to static" >> ${UPDATE_REST_LOG}
+		log "$(basename $0) -> Saved '$(basename ${file})' to static" >> ${UPDATE_REST_LOG}
 	fi
 else
-	logger "Could not write to '${STATIC_DIR}'"
+	logger -t $(basename $0) "Could not write to '${STATIC_DIR}'"
 fi
 
 
 #	NAS
 
+ps --no-headers -o command $PPID >> /tmp/xxx
+
 if [ -w "${STATIC_NASDIR}" ] ; then
 	cp ${file} "${STATIC_NASDIR}/"
-	log "Saved '$(basename ${file})' to NAS" >> ${UPDATE_REST_LOG}
+	log "$(basename $0) -> Saved '$(basename ${file})' to NAS" >> ${UPDATE_REST_LOG}
 
 else 
-	logger "Could not write to '${STATIC_NASDIR}'"
+	logger -t $(basename $0) "Could not write to '${STATIC_NASDIR}'"
 fi
 
 

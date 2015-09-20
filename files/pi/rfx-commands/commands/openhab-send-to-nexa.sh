@@ -15,54 +15,39 @@ trap "exit 2" 1 2 3 15
 #
 ######################################################################
 
-tmpfile="/tmp/`basename $0`-$$.tmp"
-logfile="/var/rfxcmd/nexa-setstate.log"
-
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
-functions=${scriptDir}/../functions.sh
+tmpfile="/tmp/`basename $0`-$$.tmp"
+
 settings=${scriptDir}/../settings.cfg
+functions=${scriptDir}/../functions.sh
+sensors="${scriptDir}/../sensors.cfg"
 
 # Sanity checks
 
 [ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
-
-light_id="${1}"
-light_command="${2}"
-light_unitcode="${3}"
-light_signal="${4}"
-
-light_signal=${light_signal:=0}
-
+[ -r ${sensors} ]   && source ${sensors}   || { logger -t $(basename $0) "FATAL: Missing '${sensors}', Aborting" ; exit 1; }
 
 
 # Do it
 
-umask 0011
+ipaddress=127.0.0.1
 
-log "trigger (${light_unitcode} -> ${light_command})" >> "${logfile}"
+switch_id=${1}
+switch_command="$(echo "${2}" | tr '[:upper:]' '[:lower:]')"
+switch_command=${switch_command^}
 
+log "send  (${switch_id} -> ${switch_command})" >> /var/rfxcmd/nexa-setstate.log
 
-onOff="$(echo "${light_command}" | tr '[:lower:]' '[:upper:]')"
-
-if [ "${onOff}" = "GROUP OFF" ] ; then
-	${0} ${light_id} Off 1
-	sleep 1
-	${0} ${light_id} Off 2
-	exit 0
+if [ ${switch_command} == "On" ] ; then
+	/opt/rfxcmd/rfxsend.py -s ${ipaddress} -r "0B110000${remote_nexa}0${switch_id}010F00"
+else
+	/opt/rfxcmd/rfxsend.py -s ${ipaddress} -r "0B110000${remote_nexa}0${switch_id}000000"
 fi
 
-if [ "${onOff}" = "GROUP ON" ] ; then
-	${0} ${light_id} On 1
-	sleep 1
-	${0} ${light_id} On 2
-	exit 0
-fi
+#	Sent to pubnub
 
-#	Send it to openhab, This will trigger a send and a publish
-
-to_openhab "Light trigger" "Nexa_${light_unitcode}" "${onOff}" >> ${UPDATE_REST_LOG}
-
+${scriptDir}/../triggers/pubnub/publish_switch.sh "${remote_nexa}_${switch_id}" "${switch_command}" "0"
 
 exit 0

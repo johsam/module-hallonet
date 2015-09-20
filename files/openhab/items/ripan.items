@@ -338,22 +338,22 @@ Group:Number:MAX StorageGoundMaxToday
 Switch Nexa_1
     "Vid Tv:n"
     (Lights)
-    {exec="ON:/usr/local/bin/nexa_one_on.sh 1, OFF:/usr/local/bin/nexa_one_off.sh 1"}
+    {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 1 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 1 off"}
 
 Switch Nexa_2
     "Vid köksfönstret"
     (Lights)
-    {exec="ON:/usr/local/bin/nexa_one_on.sh 2, OFF:/usr/local/bin/nexa_one_off.sh 2"}
+    {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 2 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 2 off"}
 
 Switch Nexa_3
     "Ebbas rum"
     (Lights)
-    {exec="ON:/usr/local/bin/nexa_one_on.sh 3, OFF:/usr/local/bin/nexa_one_off.sh 3"}
+    {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 3 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 3 off"}
 
 Switch Nexa_4
     "Julgranen"
     (Lights)
-    {exec="ON:/usr/local/bin/nexa_one_on.sh 4, OFF:/usr/local/bin/nexa_one_off.sh 4"}
+    {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 4 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 4 off"}
 
 String VoiceCommand
 

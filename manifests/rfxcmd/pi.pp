@@ -86,19 +86,13 @@ class hallonet::rfxcmd::pi {
     #
 
 
-    file {'nexa_one_off_link':
+    file {'openhab_to_nexa':
         ensure  => link,
         require => [File['rfx_commands']],
-        path    => '/usr/local/bin/nexa_one_off.sh',
-        target  => '/home/pi/rfx-commands/commands/nexa_one_off.sh',
+        path    => '/usr/local/bin/openhab-send-to-nexa.sh',
+        target  => '/home/pi/rfx-commands/commands/openhab-send-to-nexa.sh',
     }
 
-    file {'nexa_one_on_link':
-        ensure  => link,
-        require => [File['rfx_commands']],
-        path    => '/usr/local/bin/nexa_one_on.sh',
-        target  => '/home/pi/rfx-commands/commands/nexa_one_on.sh',
-    }
 
     file {'usr_local_bin_ttop':
         ensure  => link,

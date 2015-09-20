@@ -25,8 +25,8 @@ settings=${scriptDir}/../settings.cfg
 
 # Sanity checks
 
-[ -r ${functions} ] && source ${functions} || (logger "FATAL: Missing '${functions}', Aborting" ; exit 1)
-[ -r ${settings} ]  && source ${settings}  || (logger "FATAL: Missing '${settings}', Aborting" ; exit 1)
+[ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
+[ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
 #
 #	Can we do a backup

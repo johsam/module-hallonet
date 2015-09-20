@@ -1,24 +1,24 @@
 #
 #	Lamporna
 #
-#00 06 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  2
-#15 08 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 off 2
+#00 06 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh "group on"
+#15 08 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh "group off"
 #
-00 19 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 "group on"  1
-30 23 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 "group off" 1
+00 19 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh "group on"
+30 23 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh "group off"
 #
 #	Ebbas rum
 #
-15 05 * * 1-5 pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  3
-30 07 * * 1-5 pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 off 3
+15 05 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 3 on
+30 07 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 3 off
 #
-#30 17 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  3
-00 23 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 off 3
+#30 17 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 3 on
+00 23 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 3 off
 #
 #	Julgranen
 #
-#00 06 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  4
-#15 08 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 off 4
+#00 06 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
+#15 08 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
 #
-#45 17 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 on  4
-#45 23 * * * pi /home/pi/rfx-commands/triggers/lights.sh 00D81332 off 4
+#45 17 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
+#45 23 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off

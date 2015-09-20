@@ -1,5 +1,14 @@
 #!/bin/bash
 
+
+######################################################################
+#
+#	To be used from cron or prompt...
+#	usage: script <1-4> on|off or script group off|group off
+#
+######################################################################
+
+
 ######################################################################
 #
 #	Catch signals...
@@ -16,7 +25,6 @@ trap "exit 2" 1 2 3 15
 ######################################################################
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
-logfile="/var/rfxcmd/nexa-setstate.log"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
@@ -28,41 +36,40 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
-light_id="${1}"
-light_command="${2}"
-light_unitcode="${3}"
-light_signal="${4}"
-
-light_signal=${light_signal:=0}
+light_id="$(echo "${1}" | tr '[:lower:]' '[:upper:]')"
+light_command="${2^}"
 
 
-
-# Do it
-
-umask 0011
-
-log "trigger (${light_unitcode} -> ${light_command})" >> "${logfile}"
-
-
-onOff="$(echo "${light_command}" | tr '[:lower:]' '[:upper:]')"
-
-if [ "${onOff}" = "GROUP OFF" ] ; then
-	${0} ${light_id} Off 1
+if [ "${light_id}" = "GROUP OFF" ] ; then
+	${0} 1 Off
 	sleep 1
-	${0} ${light_id} Off 2
+	${0} 2 Off
 	exit 0
 fi
 
-if [ "${onOff}" = "GROUP ON" ] ; then
-	${0} ${light_id} On 1
+if [ "${light_id}" = "GROUP ON" ] ; then
+	${0} 1 On
 	sleep 1
-	${0} ${light_id} On 2
+	${0} 2 On
 	exit 0
 fi
 
-#	Send it to openhab, This will trigger a send and a publish
 
-to_openhab "Light trigger" "Nexa_${light_unitcode}" "${onOff}" >> ${UPDATE_REST_LOG}
+#
+#	Get current state
+#
+
+last_state=$(${scriptDir}/../scripts/nexa-get-state.sh ${light_id})
+
+#
+#	Only send if state differs
+#
+
+if [ "${light_command}" != "${last_state^}" ] ; then
+	${scriptDir}/../triggers/lights.sh ${remote_nexa} ${light_command} ${light_id}
+else
+	logger -t $(basename $0) "Skip nexa ${light_id} -> ${light_command}, State was already ${last_state^}"
+fi
 
 
 exit 0

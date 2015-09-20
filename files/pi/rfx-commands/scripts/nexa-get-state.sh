@@ -16,7 +16,8 @@ trap "exit 2" 1 2 3 15
 ######################################################################
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
-logfile="/var/rfxcmd/nexa-setstate.log"
+
+
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
@@ -29,40 +30,16 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
 light_id="${1}"
-light_command="${2}"
-light_unitcode="${3}"
-light_signal="${4}"
-
-light_signal=${light_signal:=0}
 
 
+#
+#	Get the current state
+#
 
-# Do it
+sql=${scriptDir}/../static/sql/last-switches.sql
 
-umask 0011
+/usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 < ${sql} > ${tmpfile}
 
-log "trigger (${light_unitcode} -> ${light_command})" >> "${logfile}"
-
-
-onOff="$(echo "${light_command}" | tr '[:lower:]' '[:upper:]')"
-
-if [ "${onOff}" = "GROUP OFF" ] ; then
-	${0} ${light_id} Off 1
-	sleep 1
-	${0} ${light_id} Off 2
-	exit 0
-fi
-
-if [ "${onOff}" = "GROUP ON" ] ; then
-	${0} ${light_id} On 1
-	sleep 1
-	${0} ${light_id} On 2
-	exit 0
-fi
-
-#	Send it to openhab, This will trigger a send and a publish
-
-to_openhab "Light trigger" "Nexa_${light_unitcode}" "${onOff}" >> ${UPDATE_REST_LOG}
-
+awk -v "light_id=${light_id}" '$5==light_id  {print $NF}' ${tmpfile}
 
 exit 0

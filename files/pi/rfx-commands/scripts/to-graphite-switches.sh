@@ -25,7 +25,7 @@ sensors=${scriptDir}/../sensors.cfg
 
 # Sanity checks
 
-[ -r ${sensors} ]   && source ${sensors}   || (echo "FATAL: Missing '${sensors}', Aborting" ; exit 1)
+[ -r ${sensors} ]   && source ${sensors} || { logger -t $(basename $0) "FATAL: Missing '${sensors}', Aborting" ; exit 1; }
 
 
 #
