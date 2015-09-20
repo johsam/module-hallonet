@@ -94,37 +94,43 @@ switchAliases = {
 		"alias":   "Ytterdörren",
 		"type":    "magnet",
 		"subtype": "door",
-		"order":   -6
+		"order":   -10
 	},
 	"00CFDEEA_10": {
 		"alias":   "Altanen",
 		"type":    "magnet",
 		"subtype": "door",
-		"order":   -5
+		"order":   -9
 	},
 	"00CFD656_10": {
 		"alias":   "Förrådet",
 		"type":    "magnet",
 		"subtype": "door",
-		"order":   -4
+		"order":   -8
+	},
+	"032C96AA_16": {
+		"alias":   "Bokhyllan",
+		"type":    "magnet",
+		"subtype": "door",
+		"order":   -7
 	},
 	"00EF07E6_10": {
 		"alias":   "Vardagsrum",
 		"type":    "magnet",
 		"subtype": "ir",
-		"order":   -3
+		"order":   -6
 	},
 	"0115A1F6_10": {
 		"alias":   "Altanen",
 		"type":    "magnet",
 		"subtype": "ir",
-		"order":   -2
+		"order":   -5
 	},
 	"010865CA_10": {
 		"alias":   "Staketet (*)",
 		"type":    "magnet",
 		"subtype": "duskdawn",
-		"order":   -1
+		"order":   -4
 	}
 
 }

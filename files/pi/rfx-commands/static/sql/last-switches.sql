@@ -1,6 +1,6 @@
 -- Override by -e "set @switches_all='AAAA,BBBB'; source last-switches.sql;"
 
-set @switches_all := coalesce(@switches_all,'00CFDEEA,00CFD656,03D242AA,00D81332');
+set @switches_all := coalesce(@switches_all,'00D81332,00CFDEEA,00CFD656,03D242AA,00EF07E6,0115A1F6,010865CA,032C96AA');
 
 
 select

@@ -409,5 +409,9 @@ String M_010865CA_10
         <ripan_door>
         (Magnets)
 
+String M_032C96AA_16
+        "Bokhyllan [%s]"
+        <ripan_door>
+        (Magnets)
 
 

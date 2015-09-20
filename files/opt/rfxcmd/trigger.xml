@@ -51,5 +51,10 @@
         <message>0B1100..010865CA........</message>
 	<action>/home/pi/rfx-commands/triggers/magnets.sh "$id$" "$command$" "$dimlevel$" "$unitcode$" "$signal$"</action>
 </trigger>
+<trigger>
+        <message>0B1100..032C96AA........</message>
+	<action>/home/pi/rfx-commands/triggers/magnets.sh "$id$" "$command$" "$dimlevel$" "$unitcode$" "$signal$"</action>
+</trigger>
 
 </xml>
+
