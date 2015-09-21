@@ -66,6 +66,63 @@ args = parser.parse_args()
 
 
 switchData = {}
+sensorData = {}
+
+
+systemAliases = {
+
+	"pi_core_temp": {
+		"alias": "Cpu Temp",
+		"order": 1
+	},
+	"pi_loadavg": {
+		"alias": "Cpu Medel",
+		"order": 2
+	},
+	"pi_uptime": {
+		"alias": "Upptid",
+		"order": 3
+	},
+	"pi_last_boot": {
+		"alias": "Omstartad",
+		"order": 4,
+		"type": "date"
+	},
+	"pi_wifi_restart": {
+		"alias": "Wifi Omstart",
+		"order": 5,		
+		"type": "date"
+	},
+	"pi_wifi_link": {
+		"alias": "Wifi Länk",
+		"order": 6,		
+	},
+	"pi_wifi_level": {
+		"alias": "Wifi Nivå",
+		"order": 7,		
+	},
+	"pi_public_ip": {
+		"alias": "Publik Ip",
+		"order": 8
+	},
+	
+	
+	"openhab_status": {
+		"alias": "Status",
+		"order": 1,
+	},
+	"openhab_load": {
+		"alias": "Cpu",
+		"order": 2
+	},
+	"openhab_restarted": {
+		"alias": "Omstartad",
+		"order": 3,
+		"type": "date"
+	}
+
+}
+
 switchAliases = {
 
 	"00D81332_1": {
@@ -136,8 +193,6 @@ switchAliases = {
 }
 
 
-
-sensorData = {}
 sensorAliases = {
 	
 	# Not real sensors
@@ -255,10 +310,26 @@ def readSystemFile(filename):
 			section = row['section']
 			key = row['key']
 			value = row['value']
-
-			if section not in result:
-				result[section] = {}
-			result[section][key] = value.decode('iso8859-1')
+			
+			section_key = section + "_" + key
+			if section_key not in systemAliases:
+				continue
+			
+			alias = systemAliases[section_key]['alias']
+			order = systemAliases[section_key]['order']
+			infotype = "string"
+			if 'type' in systemAliases[section_key]:
+				infotype = systemAliases[section_key]['type']
+			
+			value = value.decode('iso8859-1')
+			
+			if "system" not in result:
+				result["system"] = {}
+			
+			if section not in result["system"]:
+				result["system"][section] = []
+			
+			result["system"][section].append({"alias": alias,"section_key": section_key, "value": value, "order": order, "type": infotype})
 			
 
 #
@@ -410,6 +481,11 @@ for sensorid in sensorData:
 
 result['switches'] = sorted(result['switches'], key=lambda k: k['order']) 
 result['sensors'] = sorted(result['sensors'], key=lambda k: k['order']) 
+
+# Sort system entries
+
+for x in result['system']:
+	result['system'][x] = sorted(result['system'][x], key=lambda k: k['order']) 
 
 
 # print json.dumps(sensorData, indent=4, sort_keys=True)

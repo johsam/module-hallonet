@@ -103,6 +103,8 @@ core_volts=$(vcgencmd measure_volts core | awk -F'=' '{print $2}')
 
 #wifi_restart="$(awk 'END {print $1" "$2}' /var/log/WiFi_Check.log)"
 wifi_restart=$(stat --printf=%z /run/sendsigs.omit.d/wpasupplicant.wpa_supplicant.wlan0.pid | awk -F. '{print $1}')
+wifi_link=$(cat /proc/net/wireless | awk '$1 ~ /wlan0/ {gsub(/\./,"");print $3}')
+wifi_level=$(cat /proc/net/wireless | awk '$1 ~ /wlan0/ {gsub(/\./,"");print $4}')
 
 #	openhab
 top -d 2 -p ${openHabPid} -n 5 -b > ${loadfile}
@@ -141,18 +143,21 @@ last_boot=$(who -b | awk '{print $3" "$4":00"}')
 {
 formatSystemInfo "section" "key" "value"
 
-formatSystemInfo "pi" "openhab_load"		"${openhab_load} %"
-formatSystemInfo "pi" "openhab_restarted"	"${openhab_restarted}"
-formatSystemInfo "pi" "openhab_status"		"${openhab_status}"
+formatSystemInfo "openhab" "load"	"${openhab_load} %"
+formatSystemInfo "openhab" "restarted"	"${openhab_restarted}"
+formatSystemInfo "openhab" "status"	"${openhab_status}"
+
 formatSystemInfo "pi" "uptime"			"${uptime}"
 formatSystemInfo "pi" "core_temp"		"${core_temp}"
 formatSystemInfo "pi" "core_volts"		"${core_volts}"
 formatSystemInfo "pi" "loadavg"			"${loadavg}"
 formatSystemInfo "pi" "wifi_restart"		"${wifi_restart}"
+formatSystemInfo "pi" "wifi_link"		"${wifi_link}"
+formatSystemInfo "pi" "wifi_level"		"${wifi_level}"
 formatSystemInfo "pi" "public_ip"		"${public_ip}"
 formatSystemInfo "pi" "last_boot"		"${last_boot}"
 
-formatSystemInfo "static" "timestamp" "${now}" 
+formatSystemInfo "static" "timestamp"	"${now}" 
 
 #	Sql stuff
 
@@ -227,7 +232,6 @@ python -u ${scriptDir}/1_data-to-json.py \
         --switch-file   "${switchfile}" \
 	
 ) > "${tmpfile}" && cat "${tmpfile}"
-
 
 
 exit 0

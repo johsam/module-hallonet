@@ -120,7 +120,6 @@ fi
 
 #	NAS
 
-ps --no-headers -o command $PPID >> /tmp/xxx
 
 if [ -w "${STATIC_NASDIR}" ] ; then
 	cp ${file} "${STATIC_NASDIR}/"

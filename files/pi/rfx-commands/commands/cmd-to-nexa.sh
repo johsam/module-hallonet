@@ -25,20 +25,22 @@ trap "exit 2" 1 2 3 15
 ######################################################################
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
+logfile="/var/rfxcmd/nexa-setstate.log"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 functions=${scriptDir}/../functions.sh
 settings=${scriptDir}/../settings.cfg
+sensors=${scriptDir}/../sensors.cfg
 
 # Sanity checks
 
 [ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
+[ -r ${sensors} ]   && source ${sensors}   || { logger -t $(basename $0) "FATAL: Missing '${sensors}', Aborting" ; exit 1; }
 
 light_id="$(echo "${1}" | tr '[:lower:]' '[:upper:]')"
 light_command="${2^}"
-
 
 if [ "${light_id}" = "GROUP OFF" ] ; then
 	${0} 1 Off
@@ -60,15 +62,16 @@ fi
 #
 
 last_state=$(${scriptDir}/../scripts/nexa-get-state.sh ${light_id})
-
 #
 #	Only send if state differs
 #
 
 if [ "${light_command}" != "${last_state^}" ] ; then
-	${scriptDir}/../triggers/lights.sh ${remote_nexa} ${light_command} ${light_id}
+	${scriptDir}/../triggers/lights.sh "${remote_nexa}" "${light_command}" "${light_id}"
 else
+	log "ignore (${light_id} -> ${light_command})" >> "${logfile}"
 	logger -t $(basename $0) "Skip nexa ${light_id} -> ${light_command}, State was already ${last_state^}"
+
 fi
 
 
