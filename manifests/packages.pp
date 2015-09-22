@@ -22,6 +22,12 @@ class hallonet::packages ($base_packages = $hallonet::params::base_packages,$pip
         mode    => '0755',
     }
 
+    file {'usr_local_bin_sun_rise_set':
+        path    => '/usr/local/bin/sun-rise-set.pl',
+        source  => "puppet:///modules/${module_name}/usr/local/bin/sun-rise-set.pl",
+        require => Package[$params::rfxcmd_packages],
+        mode    => '0755',
+    }
 
     file {'collectd_conf':
         path    => '/etc/collectd/collectd.conf',

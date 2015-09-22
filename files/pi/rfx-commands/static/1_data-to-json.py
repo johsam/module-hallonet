@@ -119,6 +119,16 @@ systemAliases = {
 		"alias": "Omstartad",
 		"order": 3,
 		"type": "date"
+	},
+
+	"misc_sun_rise": {
+		"alias": "Solen Upp",
+		"order": 1
+	},
+	
+	"misc_sun_set": {
+		"alias": "Solen Ned",
+		"order": 2
 	}
 
 }

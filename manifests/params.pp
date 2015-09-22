@@ -10,6 +10,8 @@ class hallonet::params {
 	'lighttpd',
 	'collectd',
 	'bc',
+	'libdatetime-astro-sunrise-perl',
+	'libdate-manip-perl'
     ]
 
     $pip_packages = [

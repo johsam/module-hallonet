@@ -78,6 +78,7 @@ printf "%s\t%s\t%s\n" "${1}" "${2}" "${3}"
 #	Sensors variables: sensors_outdoor,sensors_indoor,sensors_humidity,sensors_all
 
 source ${scriptDir}/../sensors.cfg
+source ${scriptDir}/../settings.cfg
 
 openHabPid=$(cat "${openhabPidFile}")
 
@@ -132,6 +133,12 @@ if [ -s "${tmpfile}" ] ; then
 	public_ip=$(cat "${tmpfile}")
 fi
 
+
+#	Sunrise/Set
+/usr/local/bin/sun-rise-set.pl --longitude ${RIPAN_LON} --latitude ${RIPAN_LAT} -f "%T" > "${tmpfile}"
+sun_rise=$(awk 'NR==1 {print $1}' ${tmpfile})
+sun_set=$(awk 'NR==2 {print $1}' ${tmpfile})
+
 #	Last boot
 
 last_boot=$(who -b | awk '{print $3" "$4":00"}')
@@ -158,6 +165,10 @@ formatSystemInfo "pi" "public_ip"		"${public_ip}"
 formatSystemInfo "pi" "last_boot"		"${last_boot}"
 
 formatSystemInfo "static" "timestamp"	"${now}" 
+
+formatSystemInfo "misc" "sun_rise"		"${sun_rise}"
+formatSystemInfo "misc" "sun_set"		"${sun_set}"
+
 
 #	Sql stuff
 
@@ -232,6 +243,5 @@ python -u ${scriptDir}/1_data-to-json.py \
         --switch-file   "${switchfile}" \
 	
 ) > "${tmpfile}" && cat "${tmpfile}"
-
 
 exit 0
