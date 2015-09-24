@@ -29,9 +29,9 @@ create temporary table if not exists tmp_tnu_last as
 
 	on maxt.data1 = i.data1 and maxt.mu = i.unixtime
 
-	-- Only outdoor sensors and age < 30 min
+	-- Only outdoor sensors and age < 60 min
 
-	where @unix_now - maxt.mu < 1800 and find_in_set(i.data1,@sensors_outdoor) 
+	where @unix_now - maxt.mu < 3600 and find_in_set(i.data1,@sensors_outdoor) 
 
 	order by temperature ASC limit 4
 	;

@@ -29,7 +29,23 @@ class hallonet::packages ($base_packages = $hallonet::params::base_packages,$pip
         mode    => '0755',
     }
 
-    file {'collectd_conf':
+    file {'usr_local_bin_jq':
+        path    => '/usr/local/bin/jq',
+        source  => "puppet:///modules/${module_name}/usr/local/bin/jq",
+        require => Package[$params::rfxcmd_packages],
+        mode    => '0755',
+    }
+
+    file {'jq_man1':
+        path    => '/usr/share/man/man1/jq.1',
+        source  => "puppet:///modules/${module_name}/usr/man1/jq.1",
+        require => Package[$params::rfxcmd_packages],
+	owner   => 'root',
+	group   => 'root',
+        mode    => '0644',
+    }
+
+   file {'collectd_conf':
         path    => '/etc/collectd/collectd.conf',
         source  => "puppet:///modules/${module_name}/collectd/collectd.conf",
         require => Package['collectd'],

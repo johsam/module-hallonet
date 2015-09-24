@@ -119,7 +119,7 @@ def publish_switch(s):
 def processSensors(a, id, value, humidity, stamp, signal):
 
     for i, item in enumerate(a):
-        sensorid = a[i]['sensor']['id']
+        sensorid = a[i]['id']
         if sensorid == id:
             a[i]['signal'] = signal
 

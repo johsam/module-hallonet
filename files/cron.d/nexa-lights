@@ -9,7 +9,7 @@
 #
 #	Ebbas rum
 #
-#15 05 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 3 on
+15 05 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 3 on
 30 07 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 3 off
 #
 #30 17 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 3 on

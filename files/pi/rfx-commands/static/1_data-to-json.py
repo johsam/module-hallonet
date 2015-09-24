@@ -414,12 +414,10 @@ with open(args.last_file, 'rb') as csvfile:
 
 		sensorData[sensorid]['order'] = order
 		sensorData[sensorid]['signal'] = signal
-		sensorData[sensorid]['sensor'] = {
-			'alias': alias,
-			'id': sensorid,
-			'type' : int(sensortype),
-			'location' : location
-		}
+		sensorData[sensorid]['alias'] = alias
+		sensorData[sensorid]['id'] = sensorid
+		sensorData[sensorid]['type'] = int(sensortype)
+		sensorData[sensorid]['location'] = location
 
 		sensorData[sensorid]['temperature'] = {'min': {}, 'max': {}, 'last': {}}
 		sensorData[sensorid]['temperature']['last']['value'] = float(temperature)

@@ -11,7 +11,9 @@ class hallonet::params {
 	'collectd',
 	'bc',
 	'libdatetime-astro-sunrise-perl',
-	'libdate-manip-perl'
+	'libdate-manip-perl',
+	'autotools-dev',
+	'ruby-dev',
     ]
 
     $pip_packages = [
