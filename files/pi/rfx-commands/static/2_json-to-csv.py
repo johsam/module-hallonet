@@ -77,8 +77,8 @@ def processSensors(a):
 
 	for i in a:
 
-		sensorid = i['sensor']['id']
-		sensortype = i['sensor']['type']
+		sensorid = i['id']
+		sensortype = i['type']
 		
 		# Skip fake sensor Temperatur.nu
 		
