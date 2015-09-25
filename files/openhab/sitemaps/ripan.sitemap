@@ -189,9 +189,9 @@ sitemap ripan label="Ripstigen" {
    }
 
    Frame label="Openhab info" {
-        Text item=PI_openhab_status
-        Text item=PI_openhab_load
-        Text item=PI_openhab_restarted
+        Text item=OPENHAB_status
+        Text item=OPENHAB_load
+        Text item=OPENHAB_restarted
    }
    
    Frame label="Sensordata" {

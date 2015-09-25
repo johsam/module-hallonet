@@ -358,17 +358,19 @@ Switch Nexa_4
 String VoiceCommand
 
 
-String PI_uptime       "Uptime [%s]" <ripan_pi>
+String PI_uptime       "Uptime [%s]"       <ripan_pi>
 String PI_loadavg      "Load Average [%s]" <ripan_pi>
-String PI_core_temp    "Core Temp [%s]" <ripan_pi>
-String PI_core_volts   "Core Volts [%s]" <ripan_pi>
-String PI_wifi_restart "Wifi Restart [%s]"       <ripan_pi>
-String PI_public_ip    "Public Ip [%s]"         <ripan_pi>
-String PI_last_boot    "Last Boot [%s]"       <ripan_pi>
+String PI_core_temp    "Core Temp [%s]"    <ripan_pi>
+String PI_core_volts   "Core Volts [%s]"   <ripan_pi>
+String PI_wifi_restart "Wifi Restart [%s]" <ripan_pi>
+String PI_wifi_link    "Wifi link [%s]"    <ripan_pi>
+String PI_wifi_level   "Wifi Level [%s]"   <ripan_pi>
+String PI_public_ip    "Public Ip [%s]"    <ripan_pi>
+String PI_last_boot    "Last Boot [%s]"    <ripan_pi>
 
-String PI_openhab_load      "Load [%s]"      <ripan_openhab>
-String PI_openhab_restarted "Restarted [%s]" <ripan_openhab>
-String PI_openhab_status    "Status [%s]"    <ripan_openhab>
+String OPENHAB_load      "Load [%s]"      <ripan_openhab>
+String OPENHAB_restarted "Restarted [%s]" <ripan_openhab>
+String OPENHAB_status    "Status [%s]"    <ripan_openhab>
 
 String STATIC_timestamp     "JSON [%s]" <ripan_clock>
 String SQL_timestamp        "SQL [%s]"  <ripan_clock>

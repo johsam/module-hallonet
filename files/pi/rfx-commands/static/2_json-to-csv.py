@@ -21,18 +21,6 @@ args = parser.parse_args()
 
 
 
-def processSection(s):
-	if s in json_data:
-		for key, value in json_data[s].iteritems():
-			
-			#value = value.decode('utf-8')
-			#value = value.encode('raw_unicode_escape').decode('utf-8').encode('utf-8')
-			#value = value.encode('raw_unicode_escape')
-			
-			value = value.encode('ascii','xmlcharrefreplace')
-			
-			print s.upper() + "_" + key + "\t" + value
-
 def processSwitches(a):
 	for i in a:
 
@@ -103,6 +91,22 @@ def processSensors(a):
 
 print "item\tvalue"
 
+
+
+def processSection(b,s):
+	if s in json_data[b]:
+		for a in json_data[b][s]:
+			
+			#value = value.decode('utf-8')
+			#value = value.encode('raw_unicode_escape').decode('utf-8').encode('utf-8')
+			#value = value.encode('raw_unicode_escape')
+			
+			value = a['value'].encode('ascii','xmlcharrefreplace')
+			key = re.sub(r"^{0}_".format(s),s.upper() + "_",a['section_key'])
+			
+			print key + "\t" + value
+
+
 with open(args.file) as data_file:
 	json_data = json.load(data_file)
 
@@ -112,7 +116,8 @@ with open(args.file) as data_file:
 	if 'switches' in json_data:
 		processSwitches(json_data['switches'])
 
-	processSection('pi')
-	processSection('static')
-	processSection('sql')
+	processSection('system', 'pi')
+	processSection('system', 'openhab')
+	processSection('system', 'sql')
+	processSection('system', 'static')
 

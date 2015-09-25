@@ -71,6 +71,8 @@ sensorData = {}
 
 systemAliases = {
 
+	# pi
+
 	"pi_core_temp": {
 		"alias": "Cpu Temp",
 		"order": 1
@@ -106,6 +108,7 @@ systemAliases = {
 		"order": 8
 	},
 	
+	# openhab
 	
 	"openhab_status": {
 		"alias": "Status",
@@ -120,16 +123,32 @@ systemAliases = {
 		"order": 3,
 		"type": "date"
 	},
+	
+	# misc
 
 	"misc_sun_rise": {
-		"alias": "Solen Upp",
+		"alias": "Soluppgång",
 		"order": 1
 	},
-	
 	"misc_sun_set": {
-		"alias": "Solen Ned",
+		"alias": "Solnedgång",
 		"order": 2
+	},
+	
+	# static
+
+	"static_timestamp": {
+		"alias": "Senaste data",
+		"order": 1,
+		"type": "date"
+	},
+
+	"sql_timestamp": {
+		"alias": "Senaste sql",
+		"order": 1,
+		"type": "date"
 	}
+
 
 }
 
