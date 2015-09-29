@@ -62,7 +62,7 @@ fi
 		--file            "${JSON_FILE}" \
 		--pubnub-subkey   "${PUBNUB_SUBKEY}" \
 		--pubnub-pubkey   "${PUBNUB_PUBKEY}" \
-		--pubnub-channel  "${PUBNUB_CHANNEL}" \
+		--pubnub-channel  "${PUBNUB_CHANNEL_SENSORS}" \
 		--sensor-id       "${sensor_id}" \
 		--sensor-value    "${sensor_temp}" \
 		--sensor-humidity "${sensor_humidity}" \

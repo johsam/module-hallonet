@@ -34,7 +34,7 @@ class MyDaemon(Daemon):
 	    if 'type' in message and message['type'] == 'request' and 'request' in message:
 		 
 		 requesttype = message['request']
-		 syslog.syslog("Channel %s: %s -> %s" % (channel, "request", json.dumps(message['request'])))
+		 syslog.syslog("Channel '%s': %s -> %s" % (channel, "request", json.dumps(message['request'])))
   
   		 command=[args.external_history]
 
@@ -52,8 +52,10 @@ class MyDaemon(Daemon):
 		 syslog.syslog("Done processing external script")
 		 
 		 try:
-		 	js = json.loads(jsonstr)
-		 	self.pubnub.publish(args.pubnub_channel, js)
+		 	sendto = args.pubnub_channel + '-history'
+			js = json.loads(jsonstr)
+			syslog.syslog("Sending response to channel '" + sendto + "'")
+		 	self.pubnub.publish(sendto, js)
 		 except:
 		 	syslog.syslog("Failed to parse json from script -> '" + jsonstr + "'")
 		  
@@ -78,9 +80,9 @@ class MyDaemon(Daemon):
 	           elif state == 'stopped':
 	              self.removefile(args.publish_temp_file)
 		    		   
-	       syslog.syslog("Channel %s: %s (%s) from %s" % (channel, application, state, ip))
+	       syslog.syslog("Channel '%s': %s (%s) from %s" % (channel, application, state, ip))
 	else:
-               syslog.syslog("Channel %s: Unsupported type (%s)" % (channel,type(message)))
+               syslog.syslog("Channel '%s': Unsupported type (%s)" % (channel,type(message)))
 
     def run(self):
 
@@ -90,7 +92,7 @@ class MyDaemon(Daemon):
                         cipher_key='',
                         ssl_on=False
                         )
-        syslog.syslog("Listening on Channel %s" % args.pubnub_channel)
+        syslog.syslog("Listening on Channel '%s'" % args.pubnub_channel)
         self.pubnub.subscribe(args.pubnub_channel, self.callback)
 
 

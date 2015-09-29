@@ -56,7 +56,7 @@ now_full="$(date '+%F %T')"
 		--file           "${JSON_FILE}" \
 		--pubnub-subkey  "${PUBNUB_SUBKEY}" \
 		--pubnub-pubkey  "${PUBNUB_PUBKEY}" \
-		--pubnub-channel "${PUBNUB_CHANNEL}" \
+		--pubnub-channel "${PUBNUB_CHANNEL_SENSORS}" \
 		--switch-id      "${switch_id}" \
 		--switch-state   "${switch_state}" \
 		--stamp          "${now_full}" \

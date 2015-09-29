@@ -54,7 +54,7 @@ log "${msg}" >> ${logfile}
 
 #	Send it to openhab
 
-magnet_status="StÃ¤ngd ${shortnow}" ; [ "${magnet_command}" = "On" ] && magnet_status="Ã–ppen ${shortnow}"	
+magnet_status="Stängd ${shortnow}" ; [ "${magnet_command}" = "On" ] && magnet_status="Öppen ${shortnow}"	
 
 to_openhab "Magnet trigger" "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_REST_LOG}
 

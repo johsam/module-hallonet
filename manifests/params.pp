@@ -14,6 +14,8 @@ class hallonet::params {
 	'libdate-manip-perl',
 	'autotools-dev',
 	'ruby-dev',
+	'avahi-daemon',
+	'avahi-utils',
     ]
 
     $pip_packages = [

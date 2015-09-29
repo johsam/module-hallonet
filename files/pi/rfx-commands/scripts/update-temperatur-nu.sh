@@ -50,7 +50,7 @@ source "${scriptDir}/../functions.sh"
 #	Get Median number from 4 coldest sensors
 
 /usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 \
-	-e "set @sensors_outdoor='${sensors_outdoor}'; source ${sqlDir}/${sql};" > "${tmpfile}" 2>&1
+	-e "set @sensors_outdoor='${sensors_tnu}'; source ${sqlDir}/${sql};" > "${tmpfile}" 2>&1
 
 number="$(cat ${tmpfile})"
 
@@ -145,11 +145,11 @@ fi
 
 
 #
-#	Get Median number from all sensors
+#	Get Median number from all sensors for tnu
 #
 
 /usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 \
-	-e "set @sensors_outdoor='${sensors_outdoor}'; source ${scriptDir}/../static/sql/median-outdoor.sql;" > "${tmpfile}" 2>&1
+	-e "set @sensors_outdoor='${sensors_tnu}'; source ${scriptDir}/../static/sql/median-outdoor.sql;" > "${tmpfile}" 2>&1
 
 number="$(awk '{print $5}' ${tmpfile})"
 
