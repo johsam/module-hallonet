@@ -135,10 +135,9 @@ fi
 
 
 #	Sunrise/Set
-/usr/local/bin/sun-rise-set.pl --longitude ${RIPAN_LON} --latitude ${RIPAN_LAT} -f "%T" > "${tmpfile}"
-sun_rise=$(awk 'NR==1 {print $1}' ${tmpfile})
-sun_set=$(awk 'NR==2 {print $1}' ${tmpfile})
-
+sun_rise=$(awk 'END {print $2}' /var/rfxcmd/sun-rise-set.log)
+sun_set=$(awk 'END {print $3}' /var/rfxcmd/sun-rise-set.log)
+ 
 #	Last boot
 
 last_boot=$(who -b | awk '{print $3" "$4":00"}')

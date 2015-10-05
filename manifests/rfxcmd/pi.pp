@@ -80,6 +80,27 @@ class hallonet::rfxcmd::pi {
         group  => 'root',
         mode   => '0644',
     }
+
+    file {'update_sun_rise_set':
+        ensure => present,
+        path   => '/etc/cron.d/update-sun-rise-set',
+        source => "puppet:///modules/${module_name}/cron.d/update-sun-rise-set",
+        require => [File['rfx_commands']],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+  
+     file {'schedule_lights_around_sunset':
+        ensure => present,
+        path   => '/etc/cron.d/schedule-lights-around-sunset',
+        source => "puppet:///modules/${module_name}/cron.d/schedule-lights-around-sunset",
+        require => [File['rfx_commands']],
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+    }
+ 
   
     #
     #	Stuff for /usr/local/bin

@@ -1,0 +1,2 @@
+00 06 * * * root /home/pi/rfx-commands/scripts/schedule-lights-around-sunset.sh > /etc/cron.d/sunset-lights
+ 
