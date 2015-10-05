@@ -1,0 +1,16 @@
+sitemap ripan_small label="Ripstigen-Small" {
+   
+   Frame label="Temperatur.nu" {
+        Text item=T_NU_last_info
+        Text item=T_NU_last_max
+        Text item=T_NU_last_min
+   }
+   
+   Frame label="Lampor" {
+        Switch item=Nexa_1
+        Switch item=Nexa_2
+        Switch item=Nexa_3
+        Switch item=Nexa_4
+   }
+
+ }

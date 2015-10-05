@@ -9,18 +9,19 @@
         mode  => '0644',
     }
 
-    file {'openhab_sitemap':
+    file {'openhab_sitemap_default':
         ensure => present,
         path   => '/etc/openhab/configurations/sitemaps/ripan.sitemap',
         source => "puppet:///modules/${module_name}/openhab/sitemaps/ripan.sitemap",
     }
 
-#    file {'openhab_sitemap_default':
-#        ensure  => link,
-#        path    => '/etc/openhab/configurations/sitemaps/default.sitemap',
-#        target  => 'ripan.sitemap',
-#        require => File['openhab_sitemap'],
-#    }
+    file {'openhab_sitemap_small':
+        ensure => present,
+        path   => '/etc/openhab/configurations/sitemaps/ripan_small.sitemap',
+        source => "puppet:///modules/${module_name}/openhab/sitemaps/ripan_small.sitemap",
+    }
+
+
 
 
 
