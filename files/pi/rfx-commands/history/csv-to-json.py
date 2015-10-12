@@ -35,6 +35,15 @@ parser.add_argument(
 	help='Show all'
 )
 
+parser.add_argument(
+	'--pretty', required=False,
+	dest='pretty',
+	action='store_true',
+	help='Pretty json'
+)
+
+
+
 parser.set_defaults(all=False)
 args = parser.parse_args()
 
@@ -85,6 +94,7 @@ with open(args.file, 'rb') as csvfile:
 result['type'] = 'history'
 result['history'] = history
 
-		
-#print json.dumps(result, indent=2, sort_keys=True)
-print json.dumps(result, sort_keys=True, separators=(',', ':'))
+if args.pretty:		
+	print json.dumps(result, indent=2, sort_keys=True)
+else:
+	print json.dumps(result, sort_keys=True, separators=(',', ':'))

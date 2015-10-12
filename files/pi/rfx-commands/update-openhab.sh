@@ -41,7 +41,7 @@ settings=${scriptDir}/settings.cfg
 
 [ ! -r "${counterfile}" ] && echo "0" > "${counterfile}"
 
-perl -i -pe 's/(\d+)/($1 + 1) % 144/e' "${counterfile}"
+perl -i -pe 's/(\d+)/(($1 % 144) + 1)/e' "${counterfile}"
 
 
 log "Starting job..."
@@ -60,6 +60,7 @@ log "Counter is [${runCounter}]"
 
 #	JSON files to bbb
 
+
 if [[ $(( ${runCounter} % 3)) -eq 0 ]] ; then
 	log "Counter % 3 -> Updating json 24 hours"
 	${scriptDir}/static/4_tnu-to-json-to-bbb.sh
@@ -69,6 +70,9 @@ fi
 if [[ $(( ${runCounter} % 6)) -eq 0 ]] ; then
 	log "Counter % 6 -> Updating json 72 hours"
 	${scriptDir}/static/4_tnu-to-json-to-bbb.sh -l
+	
+	log "Counter % 6 -> Updating signal-history"
+	${scriptDir}/signal/signal.sh -t 40 -d 4 > /dev/null
 fi
 
 if [[ $(( ${runCounter} % 36)) -eq 0 ]] ; then

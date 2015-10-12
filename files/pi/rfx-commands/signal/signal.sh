@@ -19,7 +19,7 @@ trap "exit 2" 1 2 3 15
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
-jsonfile="/tmp/switch-history.json"
+jsonfile="/tmp/signal-history.json"
 
 functions=${scriptDir}/../functions.sh
 settings=${scriptDir}/../settings.cfg
@@ -30,20 +30,17 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
 
-histlen=30
-signals="0,1,2,3,4,5,6,7,8,9"
-arg_count=10
-args=""
+threshold=40
+days=2
 
 #	Parse parameters
 #
 
-while getopts "l:wp" opt
+while getopts "t:d:" opt
 do
         case $opt in
-            l) arg_count="${OPTARG}";;
-            w) args="--all" ; signals="3";;
-            p) pretty="--pretty";;
+            t) threshold="${OPTARG}";;
+            d) days="${OPTARG}";;
             \?) usage ;;
             *) usage ;;
         esac
@@ -52,17 +49,29 @@ done
 shift `expr ${OPTIND} - 1` ; OPTIND=1
 
 #
-#	History of all magnets
+#	History of all hours with missing signals, i.e count < threshold
 #
 
 mysql rfx -urfxuser -prfxuser1 \
-	-e "set @histlen:=${histlen}; set @signals:='${signals}'; source ${scriptDir}/sql/history.sql;" > "${tmpfile}"
+	-e "set @threshold:=${threshold}; set @days:=${days}; source ${scriptDir}/sql/signal.sql;" > "${tmpfile}"
 
+
+#
+#	Use flock to prevent any script to manipulate sensors.json while we read
+#
+
+(
+flock -x -w 30 200 || { logger "Failed to aquire lock for ${jsonfile}"; exit 1; }
 
 #	Convert to json
 
-python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --count ${arg_count} ${args} ${pretty}  > ${jsonfile}
+python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --sensors ${JSON_FILE} > ${jsonfile}
 
+) 200> /var/lock/sensor.lock
+
+#cat ${jsonfile}
+
+#exit
 #
 #	Save data
 #
