@@ -6,6 +6,7 @@ import json
 import time
 import re
 from datetime import timedelta
+from babel.dates import format_timedelta
 
 
 #
@@ -42,6 +43,12 @@ parser.add_argument(
 	help='Pretty json'
 )
 
+parser.add_argument(
+	'--human', required=False,
+	dest='human',
+	action='store_true',
+	help='Human history length'
+)
 
 
 parser.set_defaults(all=False)
@@ -84,7 +91,15 @@ with open(args.file, 'rb') as csvfile:
 		# Only keep this if state has changed, Swithes sometimes bounses a bit giving duplicates
 		
 		duration = stamp - unixtime
-		delta = str(timedelta(seconds=duration))
+		
+		if args.human == False:
+			delta = str(timedelta(seconds=duration))
+			delta = delta.replace('days', 'dagar')
+			delta = delta.replace('day', 'dag')
+		else:
+			delta = format_timedelta(duration,threshold=1, granularity='second',format='medium', locale='sv_SE')
+
+		
 		
 		if args.all or (command != lastcommand[sensorid] and duration > 1):
 			history[sensorid]['last'].append({'dlt': delta,'cmd': command, 'sig': signal, 'ut': unixtime,})

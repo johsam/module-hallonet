@@ -180,7 +180,6 @@ sitemap ripan label="Ripstigen" {
 
    Frame label="Pi system info" {
         Text item=PI_core_temp
-        Text item=PI_core_volts
         Text item=PI_loadavg
         Text item=PI_uptime
         Text item=PI_last_boot

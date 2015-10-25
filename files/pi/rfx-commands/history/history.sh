@@ -38,12 +38,13 @@ args=""
 #	Parse parameters
 #
 
-while getopts "l:wp" opt
+while getopts "l:wph" opt
 do
         case $opt in
             l) arg_count="${OPTARG}";;
             w) args="--all" ; signals="3";;
             p) pretty="--pretty";;
+            h) human="--human";;
             \?) usage ;;
             *) usage ;;
         esac
@@ -61,7 +62,7 @@ mysql rfx -urfxuser -prfxuser1 \
 
 #	Convert to json
 
-python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --count ${arg_count} ${args} ${pretty}  > ${jsonfile}
+python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --count ${arg_count} ${args} ${pretty} ${human} > ${jsonfile}
 
 #
 #	Save data

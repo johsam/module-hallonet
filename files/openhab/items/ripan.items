@@ -107,12 +107,12 @@ Number T_50_0700_max
         <ripan_small_red_temp>
         (Outside,OutMaxToday,StorageRoofMaxToday)
 
-/*	Förrådet Golvet	*/
+/*	Förrådet Golvet No average	*/
 
 Number T_52_B700_last
         "Temperatur (Fg) [%.1f °C]"
         <ripan_temp>
-        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+        (Outside)
 
 Number T_52_B700_min
         "Kallast [%.1f °C]"
@@ -130,12 +130,12 @@ Number H_52_B700_last
         (Outside)
 
 
-/*	Annas	*/
+/*	Annas No average or min max, unstable sensor*/
 
 Number T_50_3B00_last
         "Temperatur (A) [%.1f °C]"
         <ripan_temp>
-        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+        (Outside)
 
 Number T_50_3B00_min
         "Kallast [%.1f °C]"

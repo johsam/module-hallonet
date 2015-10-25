@@ -34,8 +34,12 @@ declare -A params ; get_query_string params
 
 length=${params['length']:=10}
 warnings=${params['warnings']:=0}
+human=${params['human']:=0}
 
-[ ${warnings} == '1' ] && args="-w -p" || args="-p"
+args="-p"
+
+[ ${warnings} == '1' ] && args="${args} -w"
+[ ${human} == '1' ] && args="${args} -h"
 
 # Run external script
 
