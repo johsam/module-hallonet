@@ -17,7 +17,6 @@ trap "exit 2" 1 2 3 15
 ######################################################################
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
-counterfile="/var/rfxcmd/update-openhab.counter"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
@@ -35,15 +34,6 @@ settings=${scriptDir}/settings.cfg
 
 (
 
-#
-#	Increment counter file...
-#
-
-[ ! -r "${counterfile}" ] && echo "0" > "${counterfile}"
-
-perl -i -pe 's/(\d+)/(($1 % 144) + 1)/e' "${counterfile}"
-
-
 log "Starting job..."
 
 ${scriptDir}/static/doit.sh
@@ -53,10 +43,11 @@ ${scriptDir}/static/doit.sh
 #	Check if we should run something every n:th time
 #
 
-runCounter="$(cat ${counterfile})"
 hour="$(date +%H)"
+runCounter=$(( (${hour} * 6)  + ($(date +%M) / 10) ))
 
 log "Counter is [${runCounter}]"
+
 
 #	JSON files to bbb
 
@@ -70,10 +61,7 @@ fi
 if [[ $(( ${runCounter} % 6)) -eq 0 ]] ; then
 	log "Counter % 6 -> Updating json 72 hours"
 	${scriptDir}/static/4_tnu-to-json-to-bbb.sh -l
-	
-	log "Counter % 6 -> Updating signal-history"
-	${scriptDir}/signal/signal.sh -t 40 -d 4 > /dev/null
-fi
+	fi
 
 if [[ $(( ${runCounter} % 36)) -eq 0 ]] ; then
 	log "Counter % 36 -> Updating json 168 hours"
@@ -83,7 +71,7 @@ fi
 
 #	Graphs
 
-if [ ${hour} -gt 6 ] ; then
+if [ ${hour} -ge 6 ] ; then
 
 	if [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
 		log "Counter % 2 -> Updating graph"
@@ -93,6 +81,10 @@ if [ ${hour} -gt 6 ] ; then
 	if [[ $(( ${runCounter} % 6)) -eq 0 ]] ; then
 		log "Counter % 6 -> Updating graph -2"
 		sudo ${scriptDir}/scripts/update-graphs.sh -2
+	
+		log "Counter % 6 -> Updating signal-history"
+		${scriptDir}/signal/signal.sh -t 40 -d 4 > /dev/null
+
 	fi
 
 	if [[ $(( ${runCounter} % 21)) -eq 0 ]] ; then

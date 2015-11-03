@@ -6,7 +6,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}" "${jsonfile}" > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${jsonfile}" "${missingfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 
@@ -19,15 +19,18 @@ trap "exit 2" 1 2 3 15
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
+missingfile="/tmp/`basename $0`-$$-missing.tmp"
 jsonfile="/tmp/signal-history.json"
 
 functions=${scriptDir}/../functions.sh
 settings=${scriptDir}/../settings.cfg
+sensors=${scriptDir}/../sensors.cfg
 
 # Sanity checks
 
 [ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
+[ -r ${sensors} ]  && source ${sensors}  || { logger -t $(basename $0) "FATAL: Missing '${sensors}', Aborting" ; exit 1; }
 
 
 threshold=40
@@ -48,13 +51,22 @@ done
 
 shift `expr ${OPTIND} - 1` ; OPTIND=1
 
+
+sensors="${sensors_all}"
+
 #
 #	History of all hours with missing signals, i.e count < threshold
 #
 
 mysql rfx -urfxuser -prfxuser1 \
-	-e "set @threshold:=${threshold}; set @days:=${days}; source ${scriptDir}/sql/signal.sql;" > "${tmpfile}"
+	-e "set @threshold:=${threshold}; set @days:=${days}; set @sensors_all:='${sensors}'; source ${scriptDir}/sql/signal.sql;" > "${tmpfile}"
 
+#
+#	Missing values 
+#
+
+mysql rfx -urfxuser -prfxuser1 \
+	-e "set @threshold:=${threshold}; set @days:=${days}; set @sensors_all:='${sensors}'; source ${scriptDir}/sql/missing.sql;" > "${missingfile}"
 
 #
 #	Use flock to prevent any script to manipulate sensors.json while we read
@@ -65,7 +77,7 @@ flock -x -w 30 200 || { logger "Failed to aquire lock for ${jsonfile}"; exit 1; 
 
 #	Convert to json
 
-python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --sensors ${JSON_FILE} > ${jsonfile}
+python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --sensors ${JSON_FILE} --missing ${missingfile}  --all "${sensors}" > ${jsonfile}
 
 ) 200> /var/lock/sensor.lock
 
