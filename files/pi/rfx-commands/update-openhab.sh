@@ -44,7 +44,7 @@ ${scriptDir}/static/doit.sh
 #
 
 hour="$(date +%H)"
-runCounter=$(( (${hour} * 6)  + ($(date +%M) / 10) ))
+runCounter=$(( ($(date +%_H) * 6)  + ($(date +%_M) / 10) ))
 
 log "Counter is [${runCounter}]"
 
@@ -83,7 +83,7 @@ if [ ${hour} -ge 6 ] ; then
 		sudo ${scriptDir}/scripts/update-graphs.sh -2
 	
 		log "Counter % 6 -> Updating signal-history"
-		${scriptDir}/signal/signal.sh -t 40 -d 4 > /dev/null
+		${scriptDir}/signal/signal.sh -t 40 -d 3 > /dev/null
 
 	fi
 
