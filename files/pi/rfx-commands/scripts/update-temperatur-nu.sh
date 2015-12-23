@@ -71,7 +71,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 
 	#	Only 1 decimal to be safe...
 	
-	tnumber=$(echo "${number}" | awk '{printf("%.1f",$1);}')
+	tnumber=$(echo "${number}" | awk '{printf("%.2f",$1);}')
 	
 	#	Report to temperatur.nu
 	
