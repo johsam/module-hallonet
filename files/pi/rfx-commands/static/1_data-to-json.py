@@ -62,6 +62,14 @@ parser.add_argument(
 	help='File containing switch values'
 )
 
+parser.add_argument(
+	'--cities-file', required=False,
+	default='',
+	dest='cities_file',
+	help='File containing cities values'
+)
+
+
 args = parser.parse_args()
 
 
@@ -330,6 +338,15 @@ def readFile(filename, section, colname, dictkey):
 
 
 #
+# Read citiesfile
+#
+
+def readCitiesFile(filename):
+	with open(filename) as data_file:    
+    		data = json.load(data_file)	
+		result['cities'] = data
+
+#
 # Read systemfile
 #
 
@@ -497,7 +514,8 @@ readFile(args.hum_max_file,'humidity', 'maxhumidity', 'max')
 
 readSystemFile(args.system_file)
 
-
+if args.cities_file:
+	readCitiesFile(args.cities_file)
 
 
 #

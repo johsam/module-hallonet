@@ -16,6 +16,7 @@ class hallonet::params {
 	'ruby-dev',
 	'avahi-daemon',
 	'avahi-utils',
+	'python-beautifulsoup',
     ]
 
     $pip_packages = [

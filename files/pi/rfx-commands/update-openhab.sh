@@ -34,20 +34,17 @@ settings=${scriptDir}/settings.cfg
 
 (
 
-log "Starting job..."
+hour="$(date +%H)"
+runCounter=$(( ($(date +%_H) * 6)  + ($(date +%_M) / 10) ))
 
-${scriptDir}/static/doit.sh
+log "Starting job, Counter is [${runCounter}]"
+
+${scriptDir}/static/doit.sh -c ${runCounter}
 
 
 #
 #	Check if we should run something every n:th time
 #
-
-hour="$(date +%H)"
-runCounter=$(( ($(date +%_H) * 6)  + ($(date +%_M) / 10) ))
-
-log "Counter is [${runCounter}]"
-
 
 #	JSON files to bbb
 
@@ -95,6 +92,8 @@ if [ ${hour} -ge 6 ] ; then
 else
 	log "Counter skipping graph(s) at night..."
 fi
+
+
 
 #
 #	Restart openhab end remove run file from ftp if flag file found

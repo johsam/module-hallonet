@@ -16,7 +16,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" "${switchfile}" > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" "${switchfile}" "${citiestmpfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 ######################################################################
@@ -49,11 +49,24 @@ systemfile="/tmp/`basename $0`-$$-system.tmp"
 loadfile="/tmp/`basename $0`-$$-oh-load.tmp"
 switchfile="/tmp/`basename $0`-$$-switches.tmp"
 
+citiestmpfile="/tmp/cities.json"
 
 openhabPidFile=/var/run/openhab.pid
 now=$(date '+%F %T')
+runCounter=""
+
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
+
+functions=${scriptDir}/../functions.sh
+settings=${scriptDir}/../settings.cfg
+sensors=${scriptDir}/../sensors.cfg
+
+# Sanity checks
+
+[ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
+[ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
+[ -r ${sensors} ]  && source ${sensors}    || { logger -t $(basename $0) "FATAL: Missing '${sensors}', Aborting" ; exit 1; }
 
 
 #-------------------------------------------------------------------------------
@@ -72,13 +85,25 @@ printf "%s\t%s\t%s\n" "${1}" "${2}" "${3}"
 (
 
 #
+#   Parse parameters
+#
+
+while getopts "c:" opt
+do
+        case $opt in
+            c) runCounter=$OPTARG;;
+            *) exit 0 ;;
+        esac
+done
+
+
+
+#
 #	Collect info
 #
 
 #	Sensors variables: sensors_outdoor,sensors_indoor,sensors_humidity,sensors_all
 
-source ${scriptDir}/../sensors.cfg
-source ${scriptDir}/../settings.cfg
 
 openHabPid=$(cat "${openhabPidFile}")
 
@@ -228,6 +253,20 @@ mysql rfx -urfxuser -prfxuser1 \
 	-e "set @sensors_humidity:='${sensors_humidity}'; source ${scriptDir}/sql/max-humidity-today.sql;" > "${maxhumfile}"
 
 
+
+#
+#	Get coldest/warmest cities
+#
+
+(
+if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 3)) -eq 0 ]] ; then
+	log "Counter % 3 -> Fetch warmest/coldest cities"
+	${scriptDir}/../scripts/top-cities.py > ${citiestmpfile}
+	backup_to_static ${citiestmpfile} 
+fi
+) >> /var/rfxcmd/update-rest.log 2>&1
+
+
 #
 #	Convert to json
 #
@@ -240,6 +279,7 @@ python -u ${scriptDir}/1_data-to-json.py \
         --max-hum-file  "${maxhumfile}" \
         --system-file   "${systemfile}" \
         --switch-file   "${switchfile}" \
+        --cities-file   "${STATIC_DIR}/cities.json" \
 	
 ) > "${tmpfile}" && cat "${tmpfile}"
 

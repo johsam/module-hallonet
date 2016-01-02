@@ -36,6 +36,9 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 
 jsontmpfile="/tmp/sensors.json"
 csvtmpfile="/tmp/openhab.csv"
+citiestmpfile="/tmp/cities.json"
+
+runCounter=""
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
@@ -47,12 +50,30 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
+
+
+#
+#   Parse parameters
+#
+
+while getopts "c:" opt
+do
+        case $opt in
+            c) runCounter=$OPTARG;;
+            *) exit 0 ;;
+        esac
+done
+
+
+
+
+
 #
 #	Start collecting data
 #
 
 log "Collecting data..."
-${scriptDir}/0_create-json.sh > ${jsontmpfile}
+${scriptDir}/0_create-json.sh -c "${runCounter}" > ${jsontmpfile}
 
 #
 #	Use flock to prevent any script to manipulate sensors.json
