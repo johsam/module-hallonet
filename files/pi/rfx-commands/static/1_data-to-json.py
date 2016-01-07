@@ -186,6 +186,12 @@ switchAliases = {
 		"nexaid": 4,
 		"order": 4
 	},
+	"00D81332_5": {
+		"alias": "Hallen",
+		"type":  "light",
+		"nexaid": 5,
+		"order": 5
+	},
 	
 	
 	"03D242AA_16": {
@@ -271,7 +277,7 @@ sensorAliases = {
 		"order": 2
 	},
 
-	"7500": {
+	"CF00": {
 		"alias": "Hammocken",
 		"location": "outside",
 		"order": 3

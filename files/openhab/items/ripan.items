@@ -12,17 +12,17 @@ Number T_NU_last
 
 /*	Hammock	*/
 
-Number T_50_7500_last
+Number T_50_CF00_last
         "Temperatur (H) [%.1f °C]"
         <ripan_temp>
         (Outside,OutAvgLast,OutMinLast,OutMaxLast)
 
-Number T_50_7500_min
+Number T_50_CF00_min
         "Kallast [%.1f °C]"
         <ripan_small_blue_temp>
         (Outside,OutMinToday,HammockMinToday)
 
-Number T_50_7500_max
+Number T_50_CF00_max
         "Varmast [%.1f °C]"
         <ripan_small_red_temp>
         (Outside,OutMaxToday,HammockMaxToday)
@@ -194,9 +194,9 @@ Number T_50_0001_max
 
 /*	Tid for max min	typ 50*/
 
-String T_50_7500_last_stamp "Avläst [%s]" <ripan_clock>
-String T_50_7500_min_stamp  "Klockan [%s]" <ripan_clock>
-String T_50_7500_max_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_CF00_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_CF00_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_CF00_max_stamp  "Klockan [%s]" <ripan_clock>
 
 String T_50_AC00_last_stamp "Avläst [%s]" <ripan_clock>
 String T_50_AC00_min_stamp  "Klockan [%s]" <ripan_clock>
@@ -355,7 +355,11 @@ Switch Nexa_4
     (Lights)
     {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 4 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 4 off"}
 
-String VoiceCommand
+Switch Nexa_5
+    "Hallen"
+    (Lights)
+    {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 5 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 5 off"}
+
 
 
 String PI_uptime       "Uptime [%s]"       <ripan_pi>

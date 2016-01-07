@@ -268,7 +268,7 @@ def ttop(stdscr):
     sensors.addsensor(id='3B00', alias='Anna:s', offset=0)
     sensors.addsensor(id='0700', alias='Förrådet (T)', offset=1)
     sensors.addsensor(id='B700', alias='Förrådet (G)', offset=2)
-    sensors.addsensor(id='7500', alias='Hammocken', offset=3)
+    sensors.addsensor(id='CF00', alias='Hammocken', offset=3)
     sensors.addsensor(id='8700', alias='Tujan', offset=4)
     sensors.addsensor(id='A700', alias='Komposten', offset=5)
     sensors.addsensor(id='AC00', alias='Cyklarna', offset=6)

@@ -11,6 +11,7 @@ sitemap ripan_small label="Ripstigen-Small" {
         Switch item=Nexa_2
         Switch item=Nexa_3
         Switch item=Nexa_4
+        Switch item=Nexa_5
    }
 
  }

@@ -259,9 +259,9 @@ mysql rfx -urfxuser -prfxuser1 \
 #
 
 (
-if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 3)) -eq 0 ]] ; then
-	log "Counter % 3 -> Fetch warmest/coldest cities"
-	${scriptDir}/../scripts/top-cities.py > ${citiestmpfile}
+if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
+	log "Counter % 2 -> Fetch warmest/coldest cities"
+	${scriptDir}/../cities/top-cities.sh > ${citiestmpfile}
 	backup_to_static ${citiestmpfile} 
 fi
 ) >> /var/rfxcmd/update-rest.log 2>&1
