@@ -58,6 +58,8 @@ class hallonet::openhab {
         path    => "/usr/share/openhab/addons/${params::myopenhab}",
         source  => "puppet:///modules/${module_name}/openhab/addons/${params::myopenhab}",
         require => Package['openhab_packages'],
+	mode    => '0644',
+
     }
 
     #

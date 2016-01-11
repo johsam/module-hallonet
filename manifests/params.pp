@@ -33,7 +33,7 @@ class hallonet::params {
     ]
 
 
-    $myopenhab_version = '1.7.0'
+    $myopenhab_version = '1.8.0'
     $myopenhab = "org.openhab.io.myopenhab-${myopenhab_version}.jar"
 
 
