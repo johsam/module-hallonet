@@ -84,6 +84,27 @@ parser.add_argument(
     help='Favourites cities'
 )
 
+parser.add_argument(
+    '--now', required=False,
+    default='',
+    dest='now',
+    help='Timestamp'
+)
+
+parser.add_argument(
+    '--rise', required=False,
+    default='',
+    dest='rise',
+    help='Sun rise'
+)
+
+
+parser.add_argument(
+    '--set', required=False,
+    default='',
+    dest='set',
+    help='Sun set'
+)
 
 parser.add_argument(
     '--count', required=False,
@@ -99,7 +120,7 @@ args = parser.parse_args()
 # Start to work
 #
 
-cities = {'warmest': [], 'coldest': [], 'nearby': [], 'favourites': []}
+cities = {'timestamp': 'N/A', 'warmest': [], 'coldest': [], 'nearby': [], 'favourites': [], 'bergshamra': []}
 
 all_json = json.loads(open(args.all).read(), 'utf8')
 items = all_json['channel']['item']
@@ -136,8 +157,17 @@ if args.fav:
     items = favourites_json['channel']['item']
 
     # We need at least 2 cities to get an array, Skip ourselves
-    citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
+    #citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
+    citylist = collect_cities(items, seen={})
     insert_cities(citylist, 'favourites')
 
+if args.now:
+    cities['timestamp'] = args.now
+
+if args.rise:
+    cities['bergshamra'].append({'alias': u'Soluppg\u00E5ng', 'time': args.rise, 'section_key': 'bergshamra_1'}) 
+
+if args.set:
+    cities['bergshamra'].append({'alias': u'Solnedg\u00E5ng', 'time': args.set, 'section_key': 'bergshamra_2'}) 
 
 print json.dumps(cities, indent=2)

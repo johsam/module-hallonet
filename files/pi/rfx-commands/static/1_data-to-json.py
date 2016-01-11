@@ -104,11 +104,11 @@ systemAliases = {
 		"type": "date"
 	},
 	"pi_wifi_link": {
-		"alias": "Wifi Länk",
+		"alias": u"Wifi L\u00e4nk",
 		"order": 6,		
 	},
 	"pi_wifi_level": {
-		"alias": "Wifi Nivå",
+		"alias": u"Wifi Niv\u00e5",
 		"order": 7,		
 	},
 	"pi_public_ip": {
@@ -132,16 +132,35 @@ systemAliases = {
 		"type": "date"
 	},
 	
-	# misc
+	# Mint black
 
-	"misc_sun_rise": {
-		"alias": "Soluppgång",
+	"mintblack_core_temp": {
+		"alias": "Cpu Temp",
 		"order": 1
 	},
-	"misc_sun_set": {
-		"alias": "Solnedgång",
+	"mintblack_loadavg": {
+		"alias": "Cpu Medel",
 		"order": 2
 	},
+	"mintblack_uptime": {
+		"alias": "Upptid",
+		"order": 3
+	},
+	"mintblack_last_boot": {
+		"alias": "Omstartad",
+		"order": 4,
+		"type": "date"
+	},
+	
+
+	# Misc
+
+	"misc_rfxcmd_last_restart": {
+		"alias": "Rfxcmd Omstartad",
+		"order": 1,
+		"type": "date"
+	},
+
 	
 	# static
 
@@ -169,7 +188,7 @@ switchAliases = {
 		"order": 1
 	},
 	"00D81332_2": {
-		"alias": "Köksfönstret",
+		"alias": u"K\u00f6ksf\u00f6nstret",
 		"type":  "light",
 		"nexaid": 2,
 		"order": 2
@@ -195,7 +214,7 @@ switchAliases = {
 	
 	
 	"03D242AA_16": {
-		"alias":   "Ytterdörren",
+		"alias":   u"Ytterd\u00F6rren",
 		"type":    "magnet",
 		"subtype": "door",
 		"order":   -10
@@ -207,13 +226,13 @@ switchAliases = {
 		"order":   -9
 	},
 	"00CFD656_10": {
-		"alias":   "Förrådet",
+		"alias":   u"F\u00f6rr\u00e5det",
 		"type":    "magnet",
 		"subtype": "door",
 		"order":   -8
 	},
 	"032C96AA_16": {
-		"alias":   "Bokhyllan",
+		"alias":   "Bokhyllan (*)",
 		"type":    "magnet",
 		"subtype": "door",
 		"order":   -7
@@ -266,13 +285,13 @@ sensorAliases = {
 	},
 
 	"0700": {
-		"alias": "Förråd Tak",
+		"alias": u"F\u00f6rr\u00e5d Tak",
 		"location": "outside",
 		"order": 1
 	},
 
 	"B700": {
-		"alias": "Förråd Golv",
+		"alias": u"F\u00f6rr\u00e5d Golv",
 		"location": "outside",
 		"order": 2
 	},
@@ -546,4 +565,4 @@ for x in result['system']:
 
 
 # print json.dumps(sensorData, indent=4, sort_keys=True)
-print json.dumps(result, indent=4, sort_keys=True, encoding="utf-8")
+print json.dumps(result, indent=2, sort_keys=True, encoding="utf-8")

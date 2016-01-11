@@ -81,6 +81,11 @@ printf "%s\t%s\t%s\n" "${1}" "${2}" "${3}"
 }
 
 
+function log_to_file ()
+{
+log "${1}" >> /var/rfxcmd/update-rest.log 2>&1
+}
+
 
 (
 
@@ -118,6 +123,18 @@ core_volts="0V"
 uptime="21 days, 11:19:03"
 wifi_restart=""
 
+
+log_to_file "Collect from openhab..."
+
+#	openhab
+
+top -d 2 -p ${openHabPid} -n 5 -b > ${loadfile}
+openhab_load=$(awk -v pid="${openHabPid}" 'BEGIN {s=0;c=1} $1 ~ pid {s += $9;c++} END {printf("%.1f",s / c);}' ${loadfile})
+openhab_restarted=$(stat --printf=%z /var/run/openhab.pid | awk -F. '{print $1}')
+openhab_status=$(${scriptDir}/../scripts/check-openhab-online.sh | awk '{print $3}')
+
+log_to_file "Collect from pi..."
+
 #	loadavg
 
 loadavg=$(awk '{print $1" "$2" "$3}' /proc/loadavg)
@@ -127,17 +144,10 @@ core_temp=$(cat /sys/devices/virtual/thermal/thermal_zone0/temp | awk '{printf("
 core_volts=$(vcgencmd measure_volts core | awk -F'=' '{print $2}')
 
 
-#wifi_restart="$(awk 'END {print $1" "$2}' /var/log/WiFi_Check.log)"
 wifi_restart=$(stat --printf=%z /run/sendsigs.omit.d/wpasupplicant.wpa_supplicant.wlan0.pid | awk -F. '{print $1}')
 wifi_link=$(cat /proc/net/wireless | awk '$1 ~ /wlan0/ {gsub(/\./,"");print $3}')
 wifi_level=$(cat /proc/net/wireless | awk '$1 ~ /wlan0/ {gsub(/\./,"");print $4}')
 
-#	openhab
-top -d 2 -p ${openHabPid} -n 5 -b > ${loadfile}
-openhab_load=$(awk -v pid="${openHabPid}" 'BEGIN {s=0;c=1} $1 ~ pid {s += $9;c++} END {printf("%.1f",s / c);}' ${loadfile})
-#openhab_restarted=$(egrep '^20' /var/rfxcmd/openhab-restart.log | tail -1 | awk '{print $1" "$2}')
-openhab_restarted=$(stat --printf=%z /var/run/openhab.pid | awk -F. '{print $1}')
-openhab_status=$(${scriptDir}/../scripts/check-openhab-online.sh | awk '{print $3}')
 
 uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
@@ -158,15 +168,17 @@ if [ -s "${tmpfile}" ] ; then
 	public_ip=$(cat "${tmpfile}")
 fi
 
-
-#	Sunrise/Set
-sun_rise=$(awk 'END {print $2}' /var/rfxcmd/sun-rise-set.log)
-sun_set=$(awk 'END {print $3}' /var/rfxcmd/sun-rise-set.log)
  
 #	Last boot
 
 last_boot=$(who -b | awk '{print $3" "$4":00"}')
 
+#	Last rfxcmd restart
+
+rfxcmd_restart=$(stat --printf=%z /var/run/rfxcmd.pid | awk -F. '{print $1}')
+
+
+ 
 #
 #	Create the systemfile
 #
@@ -190,19 +202,28 @@ formatSystemInfo "pi" "last_boot"		"${last_boot}"
 
 formatSystemInfo "static" "timestamp"	"${now}" 
 
-formatSystemInfo "misc" "sun_rise"		"${sun_rise}"
-formatSystemInfo "misc" "sun_set"		"${sun_set}"
+#formatSystemInfo "mintblack" "core_temp"	"${core_temp}"
+#formatSystemInfo "mintblack" "loadavg"		"${loadavg}"
+#formatSystemInfo "mintblack" "uptime"		"${uptime}"
+#formatSystemInfo "mintblack" "last_boot"	"${last_boot}"
 
 
-#	Sql stuff
+formatSystemInfo "misc" "rfxcmd_last_restart"	"${rfxcmd_restart}"
+
+curl -s --connect-timeout 5 --max-time 5 'http://mint-black:4800/collect.php' 2> /dev/null
 
 cat "${stampfile}"
-
 
 } > "${systemfile}"
 
 
+log_to_file "Collect from pi done..."
 
+
+
+#	Sql stuff
+
+log_to_file "Collect from mysql..."
 
 #
 #	State of all switches
@@ -253,14 +274,16 @@ mysql rfx -urfxuser -prfxuser1 \
 	-e "set @sensors_humidity:='${sensors_humidity}'; source ${scriptDir}/sql/max-humidity-today.sql;" > "${maxhumfile}"
 
 
+log_to_file "Collect from mysql done..."
+
 
 #
 #	Get coldest/warmest cities
 #
 
 (
-if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
-	log "Counter % 2 -> Fetch warmest/coldest cities"
+if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 1)) -eq 0 ]] ; then
+	log "Counter % 1 -> Fetch warmest/coldest cities"
 	${scriptDir}/../cities/top-cities.sh > ${citiestmpfile}
 	backup_to_static ${citiestmpfile} 
 fi

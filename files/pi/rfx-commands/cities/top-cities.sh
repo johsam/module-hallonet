@@ -31,6 +31,8 @@ favourites_json_file="/tmp/favourites.json"
 favourites="bergshamra,akersbergac"
 count=5
 
+now=$(date '+%F %T')
+
 #
 #   Parse parameters
 #
@@ -49,6 +51,12 @@ NEARBY_URL="http://api.temperatur.nu/tnu_1.15.php?cli=hallonet&lat=59.378617&lon
 ALL_URL="http://api.temperatur.nu/tnu_1.15.php?cli=hallonet&verbose"
 FAVOURITES_URL="http://api.temperatur.nu/tnu_1.15.php?cli=hallonet&p=${favourites}&verbose"
 
+#	Sunrise/Set
+
+sun_rise=$(awk 'END {print $2}' /var/rfxcmd/sun-rise-set.log)
+sun_set=$(awk 'END {print $3}' /var/rfxcmd/sun-rise-set.log)
+
+
 curl -s "${NEARBY_URL}" > ${nearby_xml_file}
 curl -s "${ALL_URL}" > ${all_xml_file}
 curl -s "${FAVOURITES_URL}" > ${favourites_xml_file}
@@ -58,6 +66,13 @@ perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(X
 perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${all_xml_file}'))" > ${all_json_file}
 perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${favourites_xml_file}'))" > ${favourites_json_file}
 
-python ${scriptDir}/top-cities.py --nearby "${nearby_json_file}" --all "${all_json_file}" --fav "${favourites_json_file}" --count ${count}
+python ${scriptDir}/top-cities.py \
+	--now    "${now}" \
+	--nearby "${nearby_json_file}" \
+	--all    "${all_json_file}" \
+	--fav    "${favourites_json_file}" \
+	--count  ${count} \
+	--rise   "${sun_rise}" \
+	--set    "${sun_set}"
 
 exit 0
