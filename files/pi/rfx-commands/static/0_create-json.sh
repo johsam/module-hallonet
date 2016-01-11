@@ -202,12 +202,6 @@ formatSystemInfo "pi" "last_boot"		"${last_boot}"
 
 formatSystemInfo "static" "timestamp"	"${now}" 
 
-#formatSystemInfo "mintblack" "core_temp"	"${core_temp}"
-#formatSystemInfo "mintblack" "loadavg"		"${loadavg}"
-#formatSystemInfo "mintblack" "uptime"		"${uptime}"
-#formatSystemInfo "mintblack" "last_boot"	"${last_boot}"
-
-
 formatSystemInfo "misc" "rfxcmd_last_restart"	"${rfxcmd_restart}"
 
 curl -s --connect-timeout 5 --max-time 5 'http://mint-black:4800/collect.php' 2> /dev/null
@@ -282,8 +276,8 @@ log_to_file "Collect from mysql done..."
 #
 
 (
-if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 1)) -eq 0 ]] ; then
-	log "Counter % 1 -> Fetch warmest/coldest cities"
+if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
+	log "Counter % 2 -> Fetch warmest/coldest cities"
 	${scriptDir}/../cities/top-cities.sh > ${citiestmpfile}
 	backup_to_static ${citiestmpfile} 
 fi
