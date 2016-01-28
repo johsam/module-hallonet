@@ -2,6 +2,7 @@ set @windowsize := coalesce(@windowsize,15);
 set @displayhours := coalesce(@displayhours,24);
 set @slew := coalesce(@slew,5);
 set @timestart  := DATE_SUB(DATE_SUB(NOW(), INTERVAL @displayhours HOUR),INTERVAL @slew MINUTE);
+set @startofday := coalesce(@startofday,"1970-01-01");
 
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
 
@@ -22,6 +23,6 @@ Round(
 
 	from tnu a
 
-where datetime >= @timestart
+where datetime >= GREATEST(@timestart,@startofday)
 
 order by datetime ASC

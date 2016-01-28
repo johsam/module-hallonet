@@ -32,8 +32,14 @@ log "Backup of tnu to /var/rfxcmd/tnu-dump.sql"
 mysqldump tnu --single-transaction --quick -urfxuser -prfxuser1 > /var/rfxcmd/tnu-dump.sql
 log "Done"
 
+log "Backup of rfx to /var/rfxcmd/nmap-dump.sql"
+mysqldump nmap --single-transaction --quick -urfxuser -prfxuser1 > /var/rfxcmd/nmap-dump.sql
+log "Done"
+
 log "Backup of rfx to /var/rfxcmd/sensor-dump.sql"
 mysqldump rfx --single-transaction --quick -urfxuser -prfxuser1 > /var/rfxcmd/sensor-dump.sql
 log "Done"
+
+
 
 exit 0

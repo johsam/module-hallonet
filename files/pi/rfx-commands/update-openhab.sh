@@ -49,19 +49,23 @@ ${scriptDir}/static/doit.sh -c ${runCounter}
 #	JSON files to bbb
 
 
+log "Counter % 1 -> Updating json graph for today"
+${scriptDir}/static/4_tnu-to-json-to-bbb.sh -t
+
+
 if [[ $(( ${runCounter} % 3)) -eq 0 ]] ; then
-	log "Counter % 3 -> Updating json 24 hours"
+	log "Counter % 3 -> Updating json graph for 24 hours"
 	${scriptDir}/static/4_tnu-to-json-to-bbb.sh
 fi
 
 
 if [[ $(( ${runCounter} % 6)) -eq 0 ]] ; then
-	log "Counter % 6 -> Updating json 72 hours"
+	log "Counter % 6 -> Updating json graph for 72 hours"
 	${scriptDir}/static/4_tnu-to-json-to-bbb.sh -l
 	fi
 
 if [[ $(( ${runCounter} % 36)) -eq 0 ]] ; then
-	log "Counter % 36 -> Updating json 168 hours"
+	log "Counter % 36 -> Updating json grap for 168 hours"
 	${scriptDir}/static/4_tnu-to-json-to-bbb.sh -w
 fi
 

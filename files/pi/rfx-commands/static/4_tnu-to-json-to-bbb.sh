@@ -50,28 +50,32 @@ settings=${scriptDir}/../settings.cfg
 
 displayhours=24
 windowsize=15
-
+startofday="1970-01-01"
+onlytoday=0
 
 #
 #	Parse parameter(s)
 #
 
 OPTIND=1         # Reset in case getopts has been used previously in the shell.
-while getopts "wl" _opts
+while getopts "wlt" _opts
 do
 	case "${_opts}" in
 	l) displayhours=72;;
 	w) displayhours=168;windowsize=30;;
+	t) startofday="$(date +%F)";onlytoday=1;;
 	?) exit 1 ;;
 	esac
 done
 shift `expr $OPTIND - 1` ; OPTIND=1
 [ "$1" = "--" ] && shift
 
+#
+# If -t is given then ony fetch data for this day
+#
 
-
-jsontmpfile="/tmp/tnu-${displayhours}-ws${windowsize}.json"
-
+[ ${onlytoday} -eq 1 ] && filemiddle="today" || filemiddle=${displayhours}
+jsontmpfile="/tmp/tnu-${filemiddle}-ws${windowsize}.json"
 
 
 #
@@ -80,9 +84,11 @@ jsontmpfile="/tmp/tnu-${displayhours}-ws${windowsize}.json"
 
 log "Running query with displayhours=${displayhours} and windowsize=${windowsize}"
 
-mysql tnu \
-	-urfxuser -prfxuser1 \
-	-A -e "set @displayhours:=${displayhours},@windowsize:=${windowsize} ; source ${sqlFile};" > "${tmpfile}"
+mysql tnu -urfxuser -prfxuser1 -A \
+	-e "set @startofday='${startofday}',\
+	@displayhours:=${displayhours},\
+	@windowsize:=${windowsize};\
+	source ${sqlFile};" > "${tmpfile}"
 
 #
 #	Convert to JSON

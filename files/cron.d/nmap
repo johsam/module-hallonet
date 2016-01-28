@@ -1,0 +1,4 @@
+#
+# Scan network snad save in mysql database nmap
+#
+*/10 * * * * pi /home/pi/rfx-commands/nmap/scan.sh

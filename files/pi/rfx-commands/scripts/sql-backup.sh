@@ -44,6 +44,7 @@ fi
 now="$(date '+%F_%H-%M')"
 rfxname=$(echo ${now} | tr -- ':-' '_')-rfx-dump.sql
 tnuname=$(echo ${now} | tr -- ':-' '_')-tnu-dump.sql
+nmapname=$(echo ${now} | tr -- ':-' '_')-nmap-dump.sql
 
 
 (
@@ -57,14 +58,16 @@ tnuname=$(echo ${now} | tr -- ':-' '_')-tnu-dump.sql
 #	Dump 'em
 #
 
-/usr/bin/mysqldump tnu --single-transaction --quick -urfxuser -prfxuser1 > "${SQL_BACKUPDIR}/${tnuname}"
-/usr/bin/mysqldump rfx --single-transaction --quick -urfxuser -prfxuser1 > "${SQL_BACKUPDIR}/${rfxname}"
+/usr/bin/mysqldump nmap --single-transaction --quick -urfxuser -prfxuser1 > "${SQL_BACKUPDIR}/${nmapname}"
+/usr/bin/mysqldump tnu  --single-transaction --quick -urfxuser -prfxuser1 > "${SQL_BACKUPDIR}/${tnuname}"
+/usr/bin/mysqldump rfx  --single-transaction --quick -urfxuser -prfxuser1 > "${SQL_BACKUPDIR}/${rfxname}"
 
 
 #
 #	Zip 'em
 #
 
+/bin/gzip -f -q "${SQL_BACKUPDIR}/${nmapname}"
 /bin/gzip -f -q "${SQL_BACKUPDIR}/${tnuname}"
 /bin/gzip -f -q "${SQL_BACKUPDIR}/${rfxname}"
 

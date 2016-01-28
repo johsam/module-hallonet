@@ -5,6 +5,7 @@ import json
 from datetime import *
 from dateutil.relativedelta import *
 from dateutil.parser import *
+from babel.dates import format_timedelta
 
 #
 # Parse arguments
@@ -67,6 +68,27 @@ parser.add_argument(
 	default='',
 	dest='cities_file',
 	help='File containing cities values'
+)
+
+parser.add_argument(
+	'--tnu-sensors', required=True,
+	default='',
+	dest='tnu_sensors',
+	help='Comma separated string with tnu sensors'
+)
+
+parser.add_argument(
+    '--devices-file', required=True,
+    default='',
+    dest='devices_file',
+    help='Csv file'
+)
+
+parser.add_argument(
+    '--macs', required=True,
+    default='',
+    dest='macs',
+    help='Mac mappings'
 )
 
 
@@ -330,9 +352,63 @@ sensorAliases = {
 
 }
 
-result = {'success': True, 'sensors': [],'switches': []}
-now = datetime.now()
 
+deviceAliases = {
+    "1": {
+        "alias": "Galaxy S6",
+        "order": 1
+    },
+    "2": {
+        "alias": "Samsung Mini",
+        "order": 2
+    },
+
+    "3": {
+        "alias": "Catarinas iPhone",
+        "order": 3
+    },
+
+    "4": {
+        "alias": "Catarinas iPad",
+        "order": 4
+    },
+
+    "5": {
+        "alias": "Catarinas Surface",
+        "order": 5
+    },
+
+    "6": {
+        "alias": "Ebbas iPhone",
+        "order": 6
+    },
+
+    "7": {
+        "alias": "Ebbas Air",
+        "order": 7
+    },
+
+    "8": {
+        "alias": "Ebbas iPad",
+        "order": 8
+    },
+   
+    "9": {
+        "alias": "Ebbas Surface",
+        "order": 9
+    },
+
+    "10": {
+        "alias": "Sony Android TV",
+        "order": 10
+    }
+}
+
+
+
+result = {'success': True, 'sensors': [],'switches': [], 'devices': []}
+now = datetime.now()
+tnu_sensors = args.tnu_sensors.split(',')
 
 #
 # Read file and save data
@@ -496,6 +572,11 @@ with open(args.last_file, 'rb') as csvfile:
 		sensorData[sensorid]['temperature']['max']['value'] = float(temperature)
 		sensorData[sensorid]['temperature']['max']['timestamp'] = datetime
 		
+		if sensorid in tnu_sensors:
+			sensorData[sensorid]['tnu'] = True
+		else:
+			sensorData[sensorid]['tnu'] = False
+
 		
 		if int(sensortype) == 52:
 			sensorData[sensorid]['humidity'] = {'min': {}, 'max': {}, 'last': {}}
@@ -508,6 +589,31 @@ with open(args.last_file, 'rb') as csvfile:
 			sensorData[sensorid]['humidity']['max']['value'] = float(humidity)
 			sensorData[sensorid]['humidity']['max']['timestamp'] = datetime
 		
+
+#
+# Read devices file
+#
+
+macs_mapping = dict(map(lambda x: x.split("="), args.macs.split(",")))
+
+with open(args.devices_file, 'rb') as csvfile:
+
+    sqlData = csv.DictReader(csvfile, dialect="excel-tab")
+
+    for row in sqlData:
+        mac = row['mac']
+        if mac in macs_mapping:
+            id = macs_mapping[mac]
+            ip = row['ip']
+            age = row['age']
+            alias = deviceAliases[id]['alias']
+            order = deviceAliases[id]['order']
+            datetime = row['datetime']
+	    delta = format_timedelta(int(row['age']),threshold=1, granularity='second',format='medium', locale='sv_SE')
+
+	    
+            result['devices'].append({'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age,'delta': delta})
+
 
 #
 # Read min temps
@@ -557,6 +663,7 @@ for sensorid in sensorData:
 
 result['switches'] = sorted(result['switches'], key=lambda k: k['order']) 
 result['sensors'] = sorted(result['sensors'], key=lambda k: k['order']) 
+result['devices'] = sorted(result['devices'], key=lambda k: k['order'])
 
 # Sort system entries
 
@@ -564,5 +671,5 @@ for x in result['system']:
 	result['system'][x] = sorted(result['system'][x], key=lambda k: k['order']) 
 
 
-# print json.dumps(sensorData, indent=4, sort_keys=True)
+# print json.dumps(sensorData, indent=2, sort_keys=True)
 print json.dumps(result, indent=2, sort_keys=True, encoding="utf-8")

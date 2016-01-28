@@ -18,10 +18,12 @@ class hallonet::params {
 	'avahi-utils',
 	'libxml-simple-perl',
 	'libjson-any-perl',
+	'nmap',
     ]
 
     $pip_packages = [
         'py-dateutil',
+	'python-nmap',
     ]
 
     $openhab_version = '1.6.2'

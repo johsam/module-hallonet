@@ -72,6 +72,9 @@ fi
 path="linux.${host}.sensors.${sensor_location}.${sensor_type}.${sensor} ${value} ${now}"
 echo $path | nc -q0 mint-black 2003
 
+path="linux.${host}.sensors.${sensor_location}.signal.${sensor} ${signal} ${now}"
+echo $path | nc -q0 mint-black 2003
+
 
 
 # Is it an humidity sensor ?

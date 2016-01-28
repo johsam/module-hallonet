@@ -30,7 +30,7 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
 today=$(date +"%F")
-rise_set=$(/usr/local/bin/sun-rise-set.pl --longitude ${RIPAN_LON} --latitude ${RIPAN_LAT} -f "%T" | tr  '\n' ' ')
+rise_set=$(/usr/local/bin/sun-rise-set.pl --longitude ${RIPAN_LON} --latitude ${RIPAN_LAT} -f "%H:%M" | tr  '\n' ' ')
 
 echo "${today} ${rise_set}" >> /var/rfxcmd/sun-rise-set.log
 
