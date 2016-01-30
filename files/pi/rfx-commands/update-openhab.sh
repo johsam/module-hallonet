@@ -39,7 +39,7 @@ runCounter=$(( ($(date +%_H) * 6)  + ($(date +%_M) / 10) ))
 
 log "Starting job, Counter is [${runCounter}]"
 
-${scriptDir}/static/doit.sh -c ${runCounter}
+call ${scriptDir}/static/collect.sh -c ${runCounter}
 
 
 #
@@ -50,24 +50,24 @@ ${scriptDir}/static/doit.sh -c ${runCounter}
 
 
 log "Counter % 1 -> Updating json graph for today"
-call "${scriptDir}/static/4_tnu-to-json-to-bbb.sh" "-t"
+call ${scriptDir}/static/4_hallonet_json.sh -t
 
 
 
 if [[ $(( ${runCounter} % 3)) -eq 0 ]] ; then
 	log "Counter % 3 -> Updating json graph for 24 hours"
-	call "${scriptDir}/static/4_tnu-to-json-to-bbb.sh"
+	call ${scriptDir}/static/4_hallonet_json.sh
 fi
 
 
 if [[ $(( ${runCounter} % 6)) -eq 0 ]] ; then
 	log "Counter % 6 -> Updating json graph for 72 hours"
-	call "${scriptDir}/static/4_tnu-to-json-to-bbb.sh" "-l"
+	call "${scriptDir}/static/4_hallonet_json.sh" "-l"
 	fi
 
 if [[ $(( ${runCounter} % 36)) -eq 0 ]] ; then
 	log "Counter % 36 -> Updating json grap for 168 hours"
-	call "${scriptDir}/static/4_tnu-to-json-to-bbb.sh" "-w"
+	call "${scriptDir}/static/4_hallonet_json.sh" "-w"
 fi
 
 
