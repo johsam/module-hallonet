@@ -355,11 +355,11 @@ sensorAliases = {
 
 deviceAliases = {
     "1": {
-        "alias": "Galaxy S6",
+        "alias": "Johans Galaxy S6",
         "order": 1
     },
     "2": {
-        "alias": "Samsung Mini",
+        "alias": "Johans Samsung",
         "order": 2
     },
 

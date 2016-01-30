@@ -62,6 +62,7 @@ fi
 #
 
 last_state=$(${scriptDir}/../scripts/nexa-get-state.sh ${light_id})
+
 #
 #	Only send if state differs
 #

@@ -57,7 +57,7 @@ number="$(cat ${tmpfile})"
 #	Is it a real float ?
 
 if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
-
+	{
 	#	Save temp for web static
 	
 	cp ${tmpfile} ${statictempfile}
@@ -112,14 +112,14 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 
 	#	Update openhab for graph
 	
-	to_openhab "Temperatur.nu" "T_NU_last" "${number}" >> ${UPDATE_REST_LOG}
+	to_openhab "T_NU_last" "${number}"
 
 	
 	#	Update openhab data sent to temperatur.nu
 	
 
 	last_temperatur_nu=$(awk '{print $2" -> "$3}' "${lastokfile}")
-	to_openhab "Temperatur.nu" "T_NU_last_info" "${last_temperatur_nu}" >> ${UPDATE_REST_LOG}
+	to_openhab "T_NU_last_info" "${last_temperatur_nu}"
 
 
 	# Update openhab min/max info for temperatur.nu
@@ -129,10 +129,10 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
  	min_tnu=$(awk -F'\t' '$2 ~ /min/ {print $3}' ${tmpfile})
  	max_tnu=$(awk -F'\t' '$2 ~ /max/ {print $3}' ${tmpfile})
 
-	to_openhab "Temperatur.nu" "T_NU_last_min" "${min_tnu}" >> ${UPDATE_REST_LOG}
-	to_openhab "Temperatur.nu" "T_NU_last_max" "${max_tnu}" >> ${UPDATE_REST_LOG}
+	to_openhab "T_NU_last_min" "${min_tnu}"
+	to_openhab "T_NU_last_max" "${max_tnu}"
 
-
+	} >> ${UPDATE_REST_LOG}
 
 else 
 	
@@ -155,7 +155,7 @@ number="$(awk '{print $5}' ${tmpfile})"
 
 #	Update graphite
 
-${scriptDir}/to-graphite-temps.sh '0001' ${number} '00' '-1'
+${scriptDir}/to-graphite-temps.sh '0001' ${number} '00' '-1' >> ${UPDATE_REST_LOG}
 
 
 

@@ -62,7 +62,7 @@ mysql rfx -urfxuser -prfxuser1 \
 
 #	Convert to json
 
-python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --count ${arg_count} ${args} ${pretty} ${human} > ${jsonfile}
+${scriptDir}/csv-to-json.py --file ${tmpfile} --count ${arg_count} ${args} ${pretty} ${human} > ${jsonfile}
 
 #
 #	Save data

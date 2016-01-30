@@ -16,7 +16,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}"  > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 ######################################################################
@@ -30,7 +30,13 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
+#
+#	Use flock to prevent multiple executions
+#
 
-sudo python ${scriptDir}/scan.py > /dev/null 2>&1
+(
+flock -x -w 120 300 || { logger "Failed to aquire lock for nmap"; exit 1; }
+sudo python ${scriptDir}/scan.py
+) 300> /var/lock/nmap.lock
 
 exit 0

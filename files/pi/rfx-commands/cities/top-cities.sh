@@ -45,6 +45,8 @@ do
         esac
 done
 
+shift `expr ${OPTIND} - 1` ; OPTIND=1
+
 
 
 NEARBY_URL="http://api.temperatur.nu/tnu_1.15.php?cli=hallonet&lat=59.378617&lon=18.040734&num=$((${count}+1))&verbose"
@@ -66,7 +68,7 @@ perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(X
 perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${all_xml_file}'))" > ${all_json_file}
 perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${favourites_xml_file}'))" > ${favourites_json_file}
 
-python ${scriptDir}/top-cities.py \
+${scriptDir}/top-cities.py \
 	--now    "${now}" \
 	--nearby "${nearby_json_file}" \
 	--all    "${all_json_file}" \

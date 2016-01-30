@@ -49,23 +49,23 @@ magnet_signal=${5}
 # Log parameters to file
 
 msg=$(printf "${magnet_id}\t${magnet_command}\t${magnet_dimlevel}\t${magnet_signal}")
-log "${msg}" >> ${logfile}
+plainlog "${msg}" >> ${logfile}
 
 
 #	Send it to openhab
 
 magnet_status="Stängd ${shortnow}" ; [ "${magnet_command}" = "On" ] && magnet_status="Öppen ${shortnow}"	
 
-to_openhab "Magnet trigger" "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_REST_LOG}
+to_openhab "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_REST_LOG}
 
 
 #	Send it to graphite
 
-switch_to_graphite "${magnet_id}_${magnet_unitcode}" "${magnet_command}"
+switch_to_graphite "${magnet_id}_${magnet_unitcode}" "${magnet_command}" >> ${UPDATE_REST_LOG}
 
 
 #	Send it to pubnub
 
-${scriptDir}/pubnub/publish_switch.sh "${magnet_id}_${magnet_unitcode}" "${magnet_command}" "${magnet_signal}"
+call "${scriptDir}/pubnub/publish_switch.sh" "${magnet_id}_${magnet_unitcode} ${magnet_command} ${magnet_signal}" >> ${UPDATE_REST_LOG}
 
 exit 0

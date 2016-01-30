@@ -2,13 +2,80 @@
 
 #-------------------------------------------------------------------------------
 #
+#	Function plainlog
+#
+#-------------------------------------------------------------------------------
+
+function plainlog ()
+{
+printf "%s %s\n" "$(date '+%F %T')" "${1}"
+}
+
+#-------------------------------------------------------------------------------
+#
 #	Function log
 #
 #-------------------------------------------------------------------------------
 
 function log ()
 {
-printf "%s %s\n" "$(date '+%F %T')" "${1}"
+local _pname="$(basename -- $0)"
+local _fname="${FUNCNAME[1]}"
+
+if [ "${_fname}" != "main" ] ; then
+	printf "%s %s %s\n" "$(date '+%F %T')" "[${_pname}:${_fname}]" "${1}"
+else
+	printf "%s %s %s\n" "$(date '+%F %T')" "[${_pname}]" "${1}"
+fi
+}
+
+#-------------------------------------------------------------------------------
+#
+#	Function call_script
+#
+#-------------------------------------------------------------------------------
+
+
+function call_script ()
+{
+local _script="${1}"
+shift
+local _args="${@}"
+log "Calling '$(basename ${_script}) ${_args}'" 
+${_script} ${_args}
+}
+
+function call ()
+{
+local _append
+local _output
+
+#
+#   Parse parameters
+#
+
+while getopts "a:o:" opt
+do
+        case $opt in
+            a) _append=$OPTARG;;
+            o) _output=$OPTARG;;
+            *) exit 0 ;;
+        esac
+done
+
+shift `expr ${OPTIND} - 1` ; OPTIND=1
+
+
+local _script="${1}"
+shift
+local _args="${@}"
+local _dir="$(basename $(dirname ${_script}))"
+
+log "${_dir}/$(basename ${_script}) ${_args}" 
+
+[ -n "${_append}" ] && ${_script} ${_args} >> ${_append}
+[ -n "${_output}" ] && ${_script} ${_args} > ${_output}
+[ -z "${_append}" ] && [ -z "${_output}" ] && ${_script} ${_args}
 }
 
 #-------------------------------------------------------------------------------
@@ -19,13 +86,12 @@ printf "%s %s\n" "$(date '+%F %T')" "${1}"
 
 function to_openhab ()
 {
-local info=${1}
-local item=${2}
-local value=${3}
+local item=${1}
+local value=${2}
 
 curl -s --header "Content-Type: text/plain" --request POST  http://localhost:8080/rest/items/${item} --data "${value}"
 
-printf "$(date '+%F %T') ${info} -> ${item} = '${value}'\n"
+log "${item}='${value}'"
 }
 
 #-------------------------------------------------------------------------------
@@ -42,6 +108,8 @@ local epoch="$(date +%s)"
 local path="linux.hallonet.sensors.switches.${id} ${state} ${epoch}"
 
 echo $path | nc -q0 mint-black 2003
+log "$path"
+
 }
 
 #-------------------------------------------------------------------------------
@@ -111,7 +179,7 @@ if [ -w "${STATIC_DIR}" ] ; then
 	if [ "${file}" != "${dest}" ] ; then
 		#logger "${file} -> ${dest}"
 		cp -p ${file} "${STATIC_DIR}/"
-		log "$(basename $0) -> Saved '$(basename ${file})' to static" >> ${UPDATE_REST_LOG}
+		log "Saved '$(basename ${file})' to static" >> ${UPDATE_REST_LOG}
 	fi
 else
 	logger -t $(basename $0) "Could not write to '${STATIC_DIR}'"
@@ -123,7 +191,7 @@ fi
 
 if [ -w "${STATIC_NASDIR}" ] ; then
 	cp ${file} "${STATIC_NASDIR}/"
-	log "$(basename $0) -> Saved '$(basename ${file})' to NAS" >> ${UPDATE_REST_LOG}
+	log "Saved '$(basename ${file})' to NAS" >> ${UPDATE_REST_LOG}
 
 else 
 	logger -t $(basename $0) "Could not write to '${STATIC_NASDIR}'"

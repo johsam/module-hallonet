@@ -67,6 +67,7 @@ do
 	?) exit 1 ;;
 	esac
 done
+
 shift `expr $OPTIND - 1` ; OPTIND=1
 [ "$1" = "--" ] && shift
 
@@ -82,7 +83,7 @@ jsontmpfile="/tmp/tnu-${filemiddle}-ws${windowsize}.json"
 #	Run the query
 #
 
-log "Running query with displayhours=${displayhours} and windowsize=${windowsize}"
+log "Running sql-query dh=${displayhours} ws=${windowsize}"
 
 mysql tnu -urfxuser -prfxuser1 -A \
 	-e "set @startofday='${startofday}',\
@@ -100,7 +101,7 @@ awk -F'\t' -v "formats=tl"  -f ${scriptDir}/tsv2json-with-formats.awk "${tmpfile
 #	And upload it
 #
 
-log "Uploading file '$(basename ${jsontmpfile})' to static webroot"
+log "Uploading '$(basename ${jsontmpfile})' to static webroot"
 
 upload_static static/graphs ${jsontmpfile}
 

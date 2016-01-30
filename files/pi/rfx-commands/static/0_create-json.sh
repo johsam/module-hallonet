@@ -56,7 +56,7 @@ scantmpfile="/tmp/`basename $0`-$$-scan.tmp"
 
 openhabPidFile=/var/run/openhab.pid
 now=$(date '+%F %T')
-runCounter=""
+runCounter="-1"
 
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
@@ -86,7 +86,7 @@ printf "%s\t%s\t%s\n" "${1}" "${2}" "${3}"
 
 function log_to_file ()
 {
-log "${1}" >> /var/rfxcmd/update-rest.log 2>&1
+log "${1}" >> ${UPDATE_REST_LOG} 2>&1
 }
 
 
@@ -96,14 +96,17 @@ log "${1}" >> /var/rfxcmd/update-rest.log 2>&1
 #   Parse parameters
 #
 
-while getopts "c:" opt
-do
-        case $opt in
-            c) runCounter=$OPTARG;;
-            *) exit 0 ;;
-        esac
-done
+if [ $# -gt 1 ] ; then
+	while getopts "c:" opt
+	do
+        	case $opt in
+            	c) runCounter=$OPTARG;;
+            	*) exit 0 ;;
+        	esac
+	done
+fi
 
+shift `expr ${OPTIND} - 1` ; OPTIND=1
 
 
 #
@@ -281,18 +284,26 @@ log_to_file "Collect from mysql done..."
 (
 if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
 	log "Counter % 2 -> Fetch warmest/coldest cities"
-	${scriptDir}/../cities/top-cities.sh > ${citiestmpfile}
+	call -o ${citiestmpfile} ${scriptDir}/../cities/top-cities.sh 
 	backup_to_static ${citiestmpfile} 
 fi
-) >> /var/rfxcmd/update-rest.log 2>&1
+) >> ${UPDATE_REST_LOG} 2>&1
 
 
 #
 # Get nmap data
 #
 
+log_to_file "Wait for nmap scan to finish..."
+
+(
+flock -x -w 120 300 || logger "Failed to aquire lock for nmap"
 mysql nmap -urfxuser -prfxuser1 \
 	-e "source ${scriptDir}/../nmap/sql/scan.sql;" > "${scantmpfile}"
+) 300> /var/lock/nmap.lock
+
+log_to_file "Got nmap results..."
+
 
 
 

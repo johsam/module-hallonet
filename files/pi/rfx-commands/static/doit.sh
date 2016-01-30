@@ -56,15 +56,16 @@ settings=${scriptDir}/../settings.cfg
 #   Parse parameters
 #
 
-while getopts "c:" opt
-do
-        case $opt in
-            c) runCounter=$OPTARG;;
-            *) exit 0 ;;
-        esac
-done
-
-
+if [ $# -gt 1 ] ; then
+	while getopts "c:" opt
+	do
+        	case $opt in
+            	c) runCounter=$OPTARG;;
+            	*) exit 0 ;;
+        	esac
+	done
+fi
+shift `expr ${OPTIND} - 1` ; OPTIND=1
 
 
 
@@ -73,7 +74,7 @@ done
 #
 
 log "Collecting data..."
-${scriptDir}/0_create-json.sh -c "${runCounter}" > ${jsontmpfile}
+call -o ${jsontmpfile} ${scriptDir}/0_create-json.sh -c "${runCounter}"
 
 #
 #	Use flock to prevent any script to manipulate sensors.json
@@ -93,7 +94,7 @@ backup_to_static ${jsontmpfile}
 #	Openhab
 
 log "Convert json to csv..."
-python -u ${scriptDir}/2_json-to-csv.py --file ${jsontmpfile} > ${csvtmpfile}
+call -o ${csvtmpfile} ${scriptDir}/2_json-to-csv.py --file ${jsontmpfile}
 
 log "Backup $(basename ${csvtmpfile}) to NAS..."
 backup_to_static ${csvtmpfile}
@@ -101,7 +102,7 @@ backup_to_static ${csvtmpfile}
 
 log "Upload csv to openhab..."
 
-python -u ${scriptDir}/3_csv-to-openhab.py --file ${csvtmpfile}
+call ${scriptDir}/3_csv-to-openhab.py --file ${csvtmpfile}
 
 
 exit 0

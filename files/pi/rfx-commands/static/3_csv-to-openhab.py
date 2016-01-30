@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # coding=iso-8859-1
+
 import sys
 import csv
 import argparse
@@ -39,7 +41,7 @@ with open(args.file, 'rb') as csvfile:
 		item = row['item']
 		value = htmlparser.unescape(row['value']).encode('utf-8')
 		
-		print time.strftime("%Y-%m-%d %H:%M:%S") + " " + str(item) +" -> " + value
+		#print time.strftime("%Y-%m-%d %H:%M:%S") + " " + str(item) +" -> " + value
 		
 		conn = httplib.HTTPConnection("localhost:8080")
 		conn.request('POST', "/rest/items/" + item, value, headers)

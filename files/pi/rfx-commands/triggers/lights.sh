@@ -41,7 +41,7 @@ light_signal=${light_signal:=0}
 
 umask 0011
 
-log "trigger (${light_unitcode} -> ${light_command})" >> "${logfile}"
+plainlog "trigger (${light_unitcode} -> ${light_command})" >> "${logfile}"
 
 
 onOff="$(echo "${light_command}" | tr '[:lower:]' '[:upper:]')"
@@ -62,7 +62,7 @@ fi
 
 #	Send it to openhab, This will trigger a send and a publish
 
-to_openhab "Light trigger" "Nexa_${light_unitcode}" "${onOff}" >> ${UPDATE_REST_LOG}
+to_openhab "Nexa_${light_unitcode}" "${onOff}" >> ${UPDATE_REST_LOG}
 
 
 exit 0

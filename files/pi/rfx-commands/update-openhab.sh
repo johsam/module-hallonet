@@ -50,23 +50,24 @@ ${scriptDir}/static/doit.sh -c ${runCounter}
 
 
 log "Counter % 1 -> Updating json graph for today"
-${scriptDir}/static/4_tnu-to-json-to-bbb.sh -t
+call "${scriptDir}/static/4_tnu-to-json-to-bbb.sh" "-t"
+
 
 
 if [[ $(( ${runCounter} % 3)) -eq 0 ]] ; then
 	log "Counter % 3 -> Updating json graph for 24 hours"
-	${scriptDir}/static/4_tnu-to-json-to-bbb.sh
+	call "${scriptDir}/static/4_tnu-to-json-to-bbb.sh"
 fi
 
 
 if [[ $(( ${runCounter} % 6)) -eq 0 ]] ; then
 	log "Counter % 6 -> Updating json graph for 72 hours"
-	${scriptDir}/static/4_tnu-to-json-to-bbb.sh -l
+	call "${scriptDir}/static/4_tnu-to-json-to-bbb.sh" "-l"
 	fi
 
 if [[ $(( ${runCounter} % 36)) -eq 0 ]] ; then
 	log "Counter % 36 -> Updating json grap for 168 hours"
-	${scriptDir}/static/4_tnu-to-json-to-bbb.sh -w
+	call "${scriptDir}/static/4_tnu-to-json-to-bbb.sh" "-w"
 fi
 
 
@@ -76,21 +77,21 @@ if [ ${hour} -ge 6 ] ; then
 
 	if [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
 		log "Counter % 2 -> Updating graph"
-		sudo ${scriptDir}/scripts/update-graphs.sh -1
+		call "${scriptDir}/scripts/update-graphs.sh" "-1"
 	fi
 
 	if [[ $(( ${runCounter} % 6)) -eq 0 ]] ; then
 		log "Counter % 6 -> Updating graph -2"
-		sudo ${scriptDir}/scripts/update-graphs.sh -2
+		call "${scriptDir}/scripts/update-graphs.sh" "-2"
 	
 		log "Counter % 6 -> Updating signal-history"
-		${scriptDir}/signal/signal.sh -t 40 -d 3 > /dev/null
+		call -a /dev/null ${scriptDir}/signal/signal.sh -t 40 -d 3
 
 	fi
 
 	if [[ $(( ${runCounter} % 21)) -eq 0 ]] ; then
 		log "Counter % 21 -> Updating graph -3"
-		sudo ${scriptDir}/scripts/update-graphs.sh -3
+		call "${scriptDir}/scripts/update-graphs.sh" "-3"
 	fi
 
 else
@@ -118,6 +119,6 @@ fi
 
 log "Done..."
 
-) >> /var/rfxcmd/update-rest.log 2>&1
+) >> ${UPDATE_REST_LOG} 2>&1
 
 exit 0

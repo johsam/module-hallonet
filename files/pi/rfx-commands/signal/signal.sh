@@ -77,7 +77,7 @@ flock -x -w 30 200 || { logger "Failed to aquire lock for ${jsonfile}"; exit 1; 
 
 #	Convert to json
 
-python -u ${scriptDir}/csv-to-json.py --file ${tmpfile} --sensors ${JSON_FILE} --missing ${missingfile}  --all "${sensors}" > ${jsonfile}
+${scriptDir}/csv-to-json.py --file ${tmpfile} --sensors ${JSON_FILE} --missing ${missingfile}  --all "${sensors}" > ${jsonfile}
 
 ) 200> /var/lock/sensor.lock
 
