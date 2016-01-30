@@ -88,8 +88,8 @@ ${scriptDir}/csv-to-json.py --file ${tmpfile} --sensors ${JSON_FILE} --missing $
 #	Save data
 #
 
-upload_static static/ ${jsonfile} 2> /dev/null
-backup_to_static ${jsonfile} 2> /dev/null
+to_webroot static/ ${jsonfile} 2> /dev/null
+to_static ${jsonfile} 2> /dev/null
 
 #	And return result
 

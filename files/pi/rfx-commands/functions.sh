@@ -10,6 +10,7 @@ function plainlog ()
 {
 printf "%s %s\n" "$(date '+%F %T')" "${1}"
 }
+ 
 
 #-------------------------------------------------------------------------------
 #
@@ -21,29 +22,21 @@ function log ()
 {
 local _pname="$(basename -- $0)"
 local _fname="${FUNCNAME[1]}"
+local _pad=$(seq -s' ' $((${SHLVL} - 1)) | tr -d '[:digit:]')
 
 if [ "${_fname}" != "main" ] ; then
-	printf "%s %s %s\n" "$(date '+%F %T')" "[${_pname}:${_fname}]" "${1}"
+	printf "%s %s %s\n" "$(date '+%F %T')" "${_pad}[${_pname}:${_fname}]" "${1}"
 else
-	printf "%s %s %s\n" "$(date '+%F %T')" "[${_pname}]" "${1}"
+	printf "%s %s %s\n" "$(date '+%F %T')" "${_pad}[${_pname}]" "${1}"
 fi
 }
 
+
 #-------------------------------------------------------------------------------
 #
-#	Function call_script
+#	Function call
 #
 #-------------------------------------------------------------------------------
-
-
-function call_script ()
-{
-local _script="${1}"
-shift
-local _args="${@}"
-log "Calling '$(basename ${_script}) ${_args}'" 
-${_script} ${_args}
-}
 
 function call ()
 {
@@ -96,11 +89,11 @@ log "${item}='${value}'"
 
 #-------------------------------------------------------------------------------
 #
-#	Function switch_to_graphite
+#	Function to_graphite
 #
 #-------------------------------------------------------------------------------
 
-function switch_to_graphite ()
+function to_graphite ()
 {
 local id="${1}"
 local state=$(echo "${2}" | sed -e 's/On/1/g' -e 's/Off/0/g')
@@ -108,22 +101,24 @@ local epoch="$(date +%s)"
 local path="linux.hallonet.sensors.switches.${id} ${state} ${epoch}"
 
 echo $path | nc -q0 mint-black 2003
-log "$path"
 
+log "Sending ${id}->${state}"
 }
 
+
 #-------------------------------------------------------------------------------
 #
-#	Function upload_static dir file
+#	Function to_webroot dir file
 #
 #-------------------------------------------------------------------------------
 
-function upload_static ()
+function to_webroot ()
 {
 local dir="${1}"
 local file="${2}"
 
-lftp -c "my_upload; put -O ${dir} ${file}" 
+lftp -c "my_upload; put -O ${dir} ${file}"
+log "Saved '$(basename ${file})' to webroot" >> ${UPDATE_REST_LOG}
 }
 
 
@@ -161,15 +156,13 @@ return ${status}
 }
 
 
-
-
 #-------------------------------------------------------------------------------
 #
-#	Function backup_to_static file
+#	Function to_static file
 #
 #-------------------------------------------------------------------------------
 
-function backup_to_static ()
+function to_static ()
 {
 local file="${1}"
 local dest="${STATIC_DIR}/$(basename ${file})"

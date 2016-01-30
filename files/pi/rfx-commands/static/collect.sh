@@ -38,7 +38,7 @@ jsontmpfile="/tmp/sensors.json"
 csvtmpfile="/tmp/openhab.csv"
 citiestmpfile="/tmp/cities.json"
 
-runCounter=""
+runCounter="0"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
@@ -74,7 +74,7 @@ shift `expr ${OPTIND} - 1` ; OPTIND=1
 #
 
 log "Collecting data..."
-call -o ${jsontmpfile} ${scriptDir}/0_create-json.sh -c "${runCounter}"
+call ${scriptDir}/0_create-json.sh -c "${runCounter}" -d ${jsontmpfile}
 
 #
 #	Use flock to prevent any script to manipulate sensors.json
@@ -83,10 +83,10 @@ call -o ${jsontmpfile} ${scriptDir}/0_create-json.sh -c "${runCounter}"
 flock -x -w 30 200 || { logger "Failed to aquire lock for ${jsontmpfile}"; exit 1; }
 
 log "Uploading json..."
-upload_static static ${jsontmpfile}
+to_webroot static ${jsontmpfile}
 
 log "Backup $(basename ${jsontmpfile}) to NAS..."
-backup_to_static ${jsontmpfile}
+to_static ${jsontmpfile}
 
 ) 200> /var/lock/sensor.lock
 
@@ -97,7 +97,7 @@ log "Convert json to csv..."
 call -o ${csvtmpfile} ${scriptDir}/2_json-to-csv.py --file ${jsontmpfile}
 
 log "Backup $(basename ${csvtmpfile}) to NAS..."
-backup_to_static ${csvtmpfile}
+to_static ${csvtmpfile}
 
 
 log "Upload csv to openhab..."

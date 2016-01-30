@@ -15,7 +15,7 @@ trap "exit 2" 1 2 3 15
 #
 ######################################################################
 
-[ -h "$0" ] && dir=$(dirname `readlink $0`) || dir=$( cd `dirname $0` && pwd)
+[ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 
 #echo "sensors.temperatures.$1 $2 $(date +%s)" | nc -q0 mint-black 2003
@@ -30,8 +30,9 @@ now="$(date +%s)"
 
 #	Get sensor variables and settings
 
-source "${dir}/../sensors.cfg"
-source "${dir}/../settings.cfg"
+source "${scriptDir}/../sensors.cfg"
+source "${scriptDir}/../settings.cfg"
+source "${scriptDir}/../functions.sh"
 
 #
 #	Convert to arrays
@@ -53,6 +54,10 @@ containsElement () {
   for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
   return 1
 }
+
+#       We want all output appended to the log..
+
+exec >> ${UPDATE_REST_LOG} 2>&1 
 
 
 # Handle temp part
@@ -86,18 +91,18 @@ if [ ${status} -eq 0 ] ; then
 	path="linux.${host}.sensors.${sensor_location}.${sensor_type}.${sensor} ${humidity} ${now}"
 	echo $path | nc -q0 mint-black 2003
 
-	${dir}/../triggers/pubnub/publish_temp.sh "${sensor}" "${value}" "${humidity}" "${signal}"
+	${scriptDir}/../triggers/pubnub/publish_temp.sh "${sensor}" "${value}" "${humidity}" "${signal}"
 	
 	# Update dewpoint
 	
 	sensor_type="dewpoint"
-	dewpoint=$(${dir}/calc_dewpoint.sh "${value}" "${humidity}")
+	dewpoint=$(${scriptDir}/calc_dewpoint.sh "${value}" "${humidity}")
 	
 	path="linux.${host}.sensors.${sensor_location}.${sensor_type}.${sensor} ${dewpoint} ${now}"
 	echo $path | nc -q0 mint-black 2003
 
 else
-	${dir}/../triggers/pubnub/publish_temp.sh "${sensor}" "${value}" "${humidity}" "${signal}"
+	${scriptDir}/../triggers/pubnub/publish_temp.sh "${sensor}" "${value}" "${humidity}" "${signal}"
 fi
 
 

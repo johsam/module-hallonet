@@ -19,11 +19,6 @@
 trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" "${switchfile}" "${citiestmpfile}" "${scantmpfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
-######################################################################
-#
-#       Include some needed files...
-#
-######################################################################
 
 
 ######################################################################
@@ -57,7 +52,7 @@ scantmpfile="/tmp/`basename $0`-$$-scan.tmp"
 openhabPidFile=/var/run/openhab.pid
 now=$(date '+%F %T')
 runCounter="-1"
-
+destFile="/dev/stdout"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
@@ -84,27 +79,24 @@ printf "%s\t%s\t%s\n" "${1}" "${2}" "${3}"
 }
 
 
-function log_to_file ()
-{
-log "${1}" >> ${UPDATE_REST_LOG} 2>&1
-}
+#       We want all output appended to the log..
+
+exec >> ${UPDATE_REST_LOG} 2>&1 
 
 
-(
 
 #
 #   Parse parameters
 #
 
-if [ $# -gt 1 ] ; then
-	while getopts "c:" opt
+	while getopts "c:d:" opt
 	do
         	case $opt in
             	c) runCounter=$OPTARG;;
+            	d) destFile=$OPTARG;;
             	*) exit 0 ;;
         	esac
 	done
-fi
 
 shift `expr ${OPTIND} - 1` ; OPTIND=1
 
@@ -130,7 +122,7 @@ uptime="21 days, 11:19:03"
 wifi_restart=""
 
 
-log_to_file "Collect from openhab..."
+log "Collect from openhab..."
 
 #	openhab
 
@@ -139,7 +131,7 @@ openhab_load=$(awk -v pid="${openHabPid}" 'BEGIN {s=0;c=1} $1 ~ pid {s += $9;c++
 openhab_restarted=$(stat --printf=%z /var/run/openhab.pid | awk -F. '{print $1}')
 openhab_status=$(${scriptDir}/../scripts/check-openhab-online.sh | awk '{print $3}')
 
-log_to_file "Collect from pi..."
+log "Collect from pi..."
 
 #	loadavg
 
@@ -217,13 +209,13 @@ cat "${stampfile}"
 } > "${systemfile}"
 
 
-log_to_file "Collect from pi done..."
+log "Collect from pi done..."
 
 
 
 #	Sql stuff
 
-log_to_file "Collect from mysql..."
+log "Collect from mysql..."
 
 #
 #	State of all switches
@@ -274,27 +266,26 @@ mysql rfx -urfxuser -prfxuser1 \
 	-e "set @sensors_humidity:='${sensors_humidity}'; source ${scriptDir}/sql/max-humidity-today.sql;" > "${maxhumfile}"
 
 
-log_to_file "Collect from mysql done..."
+log "Collect from mysql done..."
 
 
 #
 #	Get coldest/warmest cities
 #
 
-(
+
 if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
 	log "Counter % 2 -> Fetch warmest/coldest cities"
 	call -o ${citiestmpfile} ${scriptDir}/../cities/top-cities.sh 
-	backup_to_static ${citiestmpfile} 
+	to_static ${citiestmpfile} 
 fi
-) >> ${UPDATE_REST_LOG} 2>&1
 
 
 #
 # Get nmap data
 #
 
-log_to_file "Wait for nmap scan to finish..."
+log "Wait for nmap scan to finish..."
 
 (
 flock -x -w 120 300 || logger "Failed to aquire lock for nmap"
@@ -302,7 +293,7 @@ mysql nmap -urfxuser -prfxuser1 \
 	-e "source ${scriptDir}/../nmap/sql/scan.sql;" > "${scantmpfile}"
 ) 300> /var/lock/nmap.lock
 
-log_to_file "Got nmap results..."
+log "Got nmap results..."
 
 
 
@@ -310,7 +301,7 @@ log_to_file "Got nmap results..."
 #
 #	Convert to json
 #
-
+(
 python -u ${scriptDir}/1_data-to-json.py \
         --last-file     "${lastfile}" \
         --min-file      "${minfile}" \
@@ -323,7 +314,6 @@ python -u ${scriptDir}/1_data-to-json.py \
 	--tnu-sensors   "${sensors_tnu}" \
 	--macs          "${ALL_MACS}" \
 	--devices-file  "${scantmpfile}"
-	
-) > "${tmpfile}" && cat "${tmpfile}"
+) > ${destFile} 2>&1
 
 exit 0

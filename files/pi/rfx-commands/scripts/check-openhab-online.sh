@@ -69,7 +69,7 @@ if [ ${status} -eq 0 ] ; then
 		#
 		
 		touch "${restartfile}"
-		upload_static static ${restartfile}
+		to_webroot static ${restartfile}
 
 		
 		reportStatus "offline"

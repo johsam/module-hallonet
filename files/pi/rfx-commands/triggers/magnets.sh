@@ -61,7 +61,7 @@ to_openhab "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_RE
 
 #	Send it to graphite
 
-switch_to_graphite "${magnet_id}_${magnet_unitcode}" "${magnet_command}" >> ${UPDATE_REST_LOG}
+to_graphite "${magnet_id}_${magnet_unitcode}" "${magnet_command}" >> ${UPDATE_REST_LOG}
 
 
 #	Send it to pubnub

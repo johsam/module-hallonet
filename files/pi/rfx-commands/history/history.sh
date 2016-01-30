@@ -68,8 +68,8 @@ ${scriptDir}/csv-to-json.py --file ${tmpfile} --count ${arg_count} ${args} ${pre
 #	Save data
 #
 
-upload_static static/ ${jsonfile} 2> /dev/null
-backup_to_static ${jsonfile} 2> /dev/null
+to_webroot static/ ${jsonfile} 2> /dev/null
+to_static ${jsonfile} 2> /dev/null
 
 #	And return result
 

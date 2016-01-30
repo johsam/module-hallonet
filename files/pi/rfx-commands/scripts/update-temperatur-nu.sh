@@ -61,7 +61,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	#	Save temp for web static
 	
 	cp ${tmpfile} ${statictempfile}
-	upload_static static ${statictempfile}
+	to_webroot static ${statictempfile}
 
 	
 	#	Update graphite

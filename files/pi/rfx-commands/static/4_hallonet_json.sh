@@ -83,7 +83,7 @@ jsontmpfile="/tmp/tnu-${filemiddle}-ws${windowsize}.json"
 #	Run the query
 #
 
-log "Running sql-query dh=${displayhours} ws=${windowsize}"
+log "Run sql-query dh=${displayhours} ws=${windowsize}"
 
 mysql tnu -urfxuser -prfxuser1 -A \
 	-e "set @startofday='${startofday}',\
@@ -101,15 +101,15 @@ awk -F'\t' -v "formats=tl"  -f ${scriptDir}/tsv2json-with-formats.awk "${tmpfile
 #	And upload it
 #
 
-log "Uploading '$(basename ${jsontmpfile})' to static webroot"
+log "Upload '$(basename ${jsontmpfile})' to webroot"
 
-upload_static static/graphs ${jsontmpfile}
+to_webroot static/graphs ${jsontmpfile}
 
 #
 #	Save static
 #
 
-backup_to_static ${jsontmpfile}
+to_static ${jsontmpfile}
 
 exit 0
 

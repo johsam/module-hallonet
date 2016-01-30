@@ -57,6 +57,8 @@ fi
 	#	Send it to pubnub
 	#
 
+	log "To PubNub [${sensor_id}] = ${sensor_temp}" >> ${UPDATE_REST_LOG} 2>&1
+
 	{
 	${scriptDir}/publish_to_pubnub.py \
 		--file            "${JSON_FILE}" \
@@ -81,8 +83,8 @@ fi
 		if [ "${status}" -eq 0 ] ; then
 
 			cp ${tmpfile} "${JSON_FILE}"
-			upload_static static ${JSON_FILE}
-			backup_to_static ${JSON_FILE}
+			to_webroot static ${JSON_FILE}
+			to_static ${JSON_FILE}
 		fi
 
 	fi
