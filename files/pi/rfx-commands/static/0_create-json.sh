@@ -254,7 +254,6 @@ mysql tnu -urfxuser -prfxuser1 --skip-column-names \
 mysql rfx -urfxuser -prfxuser1 --skip-column-names \
 	-e "set @sensors_outdoor:='${sensors_outdoor}'; source ${scriptDir}/sql/median-outdoor.sql;" >> "${lastfile}"
  
-
 #
 #	Humidity
 #
@@ -301,6 +300,8 @@ log "Got nmap results..."
 #
 #	Convert to json
 #
+log "Calling '$(basename ${scriptDir}/1_data-to-json.py)'..."
+
 (
 python -u ${scriptDir}/1_data-to-json.py \
         --last-file     "${lastfile}" \

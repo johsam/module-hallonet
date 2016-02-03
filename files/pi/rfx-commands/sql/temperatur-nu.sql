@@ -16,6 +16,7 @@ create temporary table if not exists tmp_tnu_last as
 	select
 
 	i.datetime,
+	i.data1,
 	i.data8 as temperature
 
 	from rfxcmd i
@@ -48,3 +49,12 @@ select round(avg(temperature),2) as temperature
 from tmp_tnu_last
 where (select @row_id := @row_id + 1) between @ct/2.0 and @ct/2.0 + 1
 ;
+
+set @row_id := 0;
+
+select group_concat(data1) as sensors
+
+from tmp_tnu_last
+where (select @row_id := @row_id + 1) between @ct/2.0 and @ct/2.0 + 1
+;
+

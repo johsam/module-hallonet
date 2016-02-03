@@ -6,7 +6,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}" "${statictempfile}" > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${statictempfile}" "${sqltempfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 
@@ -19,6 +19,7 @@ trap "exit 2" 1 2 3 15
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
+sqltempfile="/tmp/`basename $0`-$$.sql"
 statictempfile="/tmp/temperatur.txt"
 
 logfile="/var/rfxcmd/temperatur-nu.log"
@@ -50,9 +51,12 @@ source "${scriptDir}/../functions.sh"
 #	Get Median number from 4 coldest sensors
 
 /usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 \
-	-e "set @sensors_outdoor='${sensors_tnu}'; source ${sqlDir}/${sql};" > "${tmpfile}" 2>&1
+	-e "set @sensors_outdoor='${sensors_tnu}'; source ${sqlDir}/${sql};" > "${sqltempfile}" 2>&1
 
-number="$(cat ${tmpfile})"
+#number="$(cat ${sqltempfile})"
+number="$(head -1 ${sqltempfile})"
+tsensors="$(tail -1 ${sqltempfile})"
+
 
 #	Is it a real float ?
 
@@ -60,7 +64,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	{
 	#	Save temp for web static
 	
-	cp ${tmpfile} ${statictempfile}
+	echo ${number} > ${statictempfile}
 	to_webroot static ${statictempfile}
 
 	
@@ -69,7 +73,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	${scriptDir}/to-graphite-temps.sh '0000' ${number} '00' '0'
 
 
-	#	Only 1 decimal to be safe...
+	#	Only 2 decimal to be safe...
 	
 	tnumber=$(echo "${number}" | awk '{printf("%.2f",$1);}')
 	
@@ -82,7 +86,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 		--connect-timeout 15 \
 		--max-time        30 \
 		--url             "${temperaturUrl}${tnumber}" \
-		--output          ${tmpfile}
+		--output          "${tmpfile}"
 	) 2>&1 ; curlstatus=$?
 
 
@@ -92,7 +96,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	
 	#	Save in main log
 	
-	printf "${now}\t${curlstatus}\t${grepstatus}\t${number}\n" >> ${logfile}
+	printf "${now}\t${curlstatus}\t${grepstatus}\t${number}\t${tsensors}\n" >> ${logfile}
 
 	#	Save in status log
 	
@@ -107,7 +111,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	#	Insert into table tnu
 	
 	
-	/usr/bin/mysql tnu -urfxuser -prfxuser1 -e "insert into tnu values ('${now}',${curlstatus},${grepstatus},${number});"	
+	/usr/bin/mysql tnu -urfxuser -prfxuser1 -e "insert into tnu values ('${now}',${curlstatus},${grepstatus},${number},'${tsensors}');"	
 
 
 	#	Update openhab for graph
@@ -138,7 +142,7 @@ else
 	
 	#	Just log n/a in main log
 	
-	printf "${now}\tn/a\tn/a\tn/a\n" >> ${logfile}
+	printf "${now}\tn/a\tn/a\tn/a\tn/a\n" >> ${logfile}
 fi
 
 

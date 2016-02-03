@@ -9,7 +9,8 @@ i.data1   as 'sensorid',
 i.data8   as 'temperature',
 i.data4   as 'humidity',
 i.battery as 'battery',
-i.rssi    as 'signal'
+i.rssi    as 'signal',
+""        as 'tnumedian'
 
 from rfxcmd i
 join (

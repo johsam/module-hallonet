@@ -537,6 +537,7 @@ with open(args.last_file, 'rb') as csvfile:
 		sensortype = row['packettype']
 		datetime = row['datetime']
 		signal = int(row['signal'])
+		tnumedian = row['tnumedian']
 		alias = 'n/a'
 		location = 'n/a'
 		order = 0
@@ -561,7 +562,9 @@ with open(args.last_file, 'rb') as csvfile:
 		sensorData[sensorid]['id'] = sensorid
 		sensorData[sensorid]['type'] = int(sensortype)
 		sensorData[sensorid]['location'] = location
-
+		sensorData[sensorid]['tnu'] = False
+		sensorData[sensorid]['tnuselect'] = False
+		
 		sensorData[sensorid]['temperature'] = {'min': {}, 'max': {}, 'last': {}}
 		sensorData[sensorid]['temperature']['last']['value'] = float(temperature)
 		sensorData[sensorid]['temperature']['last']['timestamp'] = datetime
@@ -574,9 +577,14 @@ with open(args.last_file, 'rb') as csvfile:
 		
 		if sensorid in tnu_sensors:
 			sensorData[sensorid]['tnu'] = True
-		else:
-			sensorData[sensorid]['tnu'] = False
 
+		if tnumedian:
+			for s in tnumedian.split(','):
+				if s not in sensorData:
+					sensorData[s] = {}
+				sensorData[s]['tnuselect'] = True
+		
+		
 		
 		if int(sensortype) == 52:
 			sensorData[sensorid]['humidity'] = {'min': {}, 'max': {}, 'last': {}}

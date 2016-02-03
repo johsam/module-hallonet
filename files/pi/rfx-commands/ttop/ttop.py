@@ -62,7 +62,7 @@ locale.setlocale(locale.LC_ALL, "")
 
 re_50 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});\d+;50;..;..;(....);\d;(\d);(.*)')
 re_52 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});\d+;52;..;..;(....);\w+;(.*?);(\d+);\d;(\d)')
-re_tnu = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+\d+\s+\d+\s+(.*)')
+re_tnu = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+\d+\s+\d+\s+(.*?)\s+')
 re_rest = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+PI_core_temp\s+\-\>\s+(\d{2,3}\.\d{2,3})')
 
 trendsize = 14
