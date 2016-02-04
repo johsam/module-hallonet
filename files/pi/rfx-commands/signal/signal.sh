@@ -73,7 +73,7 @@ mysql rfx -urfxuser -prfxuser1 \
 #
 
 (
-flock -x -w 30 200 || { logger "Failed to aquire lock for ${jsonfile}"; exit 1; }
+flock -x -w 30 200 || { logger -t "${0}" "Failed to aquire lock for ${jsonfile}"; exit 1; }
 
 #	Convert to json
 

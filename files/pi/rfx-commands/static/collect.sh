@@ -80,7 +80,7 @@ call ${scriptDir}/0_create-json.sh -c "${runCounter}" -d ${jsontmpfile}
 #	Use flock to prevent any script to manipulate sensors.json
 #
 (
-flock -x -w 30 200 || { logger "Failed to aquire lock for ${jsontmpfile}"; exit 1; }
+flock -x -w 30 200 || { logger -t "${0}" "Failed to aquire lock for ${jsontmpfile}"; exit 1; }
 
 log "Uploading json..."
 to_webroot static ${jsontmpfile}

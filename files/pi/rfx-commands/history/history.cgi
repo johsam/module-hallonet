@@ -43,6 +43,9 @@ args="-p"
 
 # Run external script
 
+(
+flock -x -w 120 300 || { logger -t "${0}" "Failed to aquire lock for history"; exit 1; }
 /home/pi/rfx-commands/history/history.sh -l "${length}" "${args}"
+) 300> /var/lock/history.lock
 
 exit 0

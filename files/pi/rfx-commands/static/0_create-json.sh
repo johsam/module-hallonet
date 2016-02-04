@@ -287,7 +287,7 @@ fi
 log "Wait for nmap scan to finish..."
 
 (
-flock -x -w 120 300 || logger "Failed to aquire lock for nmap"
+flock -x -w 180 300 || logger -t "${0}" "Failed to aquire lock for nmap"
 mysql nmap -urfxuser -prfxuser1 \
 	-e "source ${scriptDir}/../nmap/sql/scan.sql;" > "${scantmpfile}"
 ) 300> /var/lock/nmap.lock

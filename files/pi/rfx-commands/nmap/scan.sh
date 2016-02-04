@@ -35,7 +35,7 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 #
 
 (
-flock -x -w 120 300 || { logger "Failed to aquire lock for nmap"; exit 1; }
+flock -x -w 120 300 || { logger -t "${0}" "Failed to aquire lock for nmap"; exit 1; }
 sudo python ${scriptDir}/scan.py
 ) 300> /var/lock/nmap.lock
 
