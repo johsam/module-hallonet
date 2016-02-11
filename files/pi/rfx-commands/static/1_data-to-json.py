@@ -221,20 +221,18 @@ switchAliases = {
 		"nexaid": 3,
 		"order": 3
 	},
-	"00D81332_4": {
-		"alias": "Julgranen",
-		"type":  "light",
-		"nexaid": 4,
-		"order": 4
-	},
 	"00D81332_5": {
 		"alias": "Hallen",
 		"type":  "light",
 		"nexaid": 5,
-		"order": 5
+		"order": 4
 	},
-	
-	
+	"00D81332_4": {
+		"alias": "Julgranen",
+		"type":  "light",
+		"nexaid": 4,
+		"order": 5
+	},	
 	"03D242AA_16": {
 		"alias":   u"Ytterd\u00F6rren",
 		"type":    "magnet",
@@ -401,7 +399,12 @@ deviceAliases = {
     "10": {
         "alias": "Sony Android TV",
         "order": 10
+    },
+    "11": {
+        "alias": "Smultronet",
+        "order": 11
     }
+
 }
 
 

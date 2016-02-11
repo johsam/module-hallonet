@@ -18,8 +18,15 @@
 #
 #	Julgranen
 #
-00 06 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
-15 08 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
+#00 06 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
+#15 08 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
 #
-45 15 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
-45 00 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
+#45 15 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
+#45 00 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
+#
+#	Hallen
+#
+00 07 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 on
+00 10 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 off
+#
+00 16 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 on

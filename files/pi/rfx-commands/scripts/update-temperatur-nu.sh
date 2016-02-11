@@ -39,6 +39,11 @@ temperaturHash="443da56c96fc336d3ba366eb9e685f0f"
 temperaturUrl="${temperaturBaseUrl}?hash=${temperaturHash}&t="
 now="$(date '+%F %T')"
 
+#	Log it all 
+
+exec >> /var/rfxcmd/update-temperatur-nu-out.log 2>&1 
+
+
 #	Get outdoor sensor from config file...
 
 source "${scriptDir}/../sensors.cfg"
@@ -89,7 +94,6 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 		--output          "${tmpfile}"
 	) 2>&1 ; curlstatus=$?
 
-
 	#	Check result
 	
 	/bin/egrep -q '^ok!\s\(.*\)' ${tmpfile} 2>/dev/null ; grepstatus=$?
@@ -100,7 +104,8 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 
 	#	Save in status log
 	
-	printf "${now} $(cat ${tmpfile} | sed '1,/^\r\{0,1\}$/d')\n" >> "${curlfile}"
+	[ -s "${tmpfile}" ] && printf "${now} $(cat ${tmpfile} | sed '1,/^\r\{0,1\}$/d')\n" >> "${curlfile}"
+	[ ! -s "${tmpfile}" ] && printf "${now} failed! (${number})" >> "${curlfile}"
 
 	#	Save last successful in file
 	
