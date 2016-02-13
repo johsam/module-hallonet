@@ -57,6 +57,10 @@ def insert_cities(l, section):
             break
 
 
+def no_data(section):
+    insert_cities([{'kommun': '?','city': 'Data saknas...','temp': 0}], section)
+
+
 #
 # Parse arguments
 #
@@ -122,44 +126,63 @@ args = parser.parse_args()
 
 cities = {'timestamp': 'N/A', 'warmest': [], 'coldest': [], 'nearby': [], 'favourites': [], 'bergshamra': []}
 
-all_json = json.loads(open(args.all).read(), 'utf8')
-items = all_json['channel']['item']
-citylist = collect_cities(items, seen={})
+#
+# All
+#
 
-#   Append coldest cities
+try:
+    all_json = json.loads(open(args.all).read(), 'utf8')
+    items = all_json['channel']['item']
+    citylist = collect_cities(items, seen={})
 
-insert_cities(citylist, 'coldest')
+    #   Append coldest cities
 
-#   Append warmest cities
+    insert_cities(citylist, 'coldest')
 
-citylist = sorted(citylist, key=lambda k: (k['temp'], k['city']), reverse=True)
-insert_cities(citylist, 'warmest')
+    #   Append warmest cities
+
+    citylist = sorted(citylist, key=lambda k: (k['temp'], k['city']), reverse=True)
+    insert_cities(citylist, 'warmest')
+except:
+    no_data('coldest')
+    no_data('warmest')
+    pass
 
 
 #
 # Nearby
 #
 
-nearby_json = json.loads(open(args.nearby).read(), 'utf8')
-items = nearby_json['channel']['item']
+try:
+    nearby_json = json.loads(open(args.nearby).read(), 'utf8')
+    items = nearby_json['channel']['item']
 
-# Skip ourselves
-citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
-insert_cities(citylist, 'nearby')
+    # Skip ourselves
+    citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
+    insert_cities(citylist, 'nearby')
+except:
+    no_data('nearby')
+    pass
 
 
 #
 # Favourites
 #
 
-if args.fav:
-    favourites_json = json.loads(open(args.fav).read(), 'utf8')
-    items = favourites_json['channel']['item']
+try:
+    if args.fav:
+	favourites_json = json.loads(open(args.fav).read(), 'utf8')
+	items = favourites_json['channel']['item']
 
-    # We need at least 2 cities to get an array, Skip ourselves
-    #citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
-    citylist = collect_cities(items, seen={})
-    insert_cities(citylist, 'favourites')
+	# We need at least 2 cities to get an array
+	#citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
+	citylist = collect_cities(items, seen={})
+	insert_cities(citylist, 'favourites')
+
+except:
+    no_data('favourites')
+    pass
+
 
 if args.now:
     cities['timestamp'] = args.now

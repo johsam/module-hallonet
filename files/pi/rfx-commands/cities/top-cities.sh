@@ -68,6 +68,7 @@ perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(X
 perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${all_xml_file}'))" > ${all_json_file}
 perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${favourites_xml_file}'))" > ${favourites_json_file}
 
+(
 ${scriptDir}/top-cities.py \
 	--now    "${now}" \
 	--nearby "${nearby_json_file}" \
@@ -76,5 +77,16 @@ ${scriptDir}/top-cities.py \
 	--count  ${count} \
 	--rise   "${sun_rise}" \
 	--set    "${sun_set}"
+) > ${tmpfile}
+
+#	Is it valid json ?
+
+python -mjson.tool "${tmpfile}" > /dev/null 2>&1; status=$?
+
+if [ ${status} -eq 0 ] ; then
+	cat "${tmpfile}"
+else
+	echo "{\"timestamp\": \"${now}\"}"
+fi
 
 exit 0
