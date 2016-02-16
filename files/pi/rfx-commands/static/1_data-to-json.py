@@ -380,38 +380,78 @@ deviceAliases = {
         "alias": "Ebbas iPhone",
         "order": 6
     },
+    
+    
+    "12": {
+        "alias": "Ebbas iPhone 6",
+        "order": 7
+    },
 
     "7": {
         "alias": "Ebbas Air",
-        "order": 7
+        "order": 8
     },
 
     "8": {
         "alias": "Ebbas iPad",
-        "order": 8
+        "order": 9
     },
    
     "9": {
         "alias": "Ebbas Surface",
-        "order": 9
+        "order": 10
     },
 
     "10": {
         "alias": "Sony Android TV",
-        "order": 10
+        "order": 11
     },
     "11": {
         "alias": "Smultronet",
-        "order": 11
+        "order": 12
     }
 
 }
 
 
 
-result = {'success': True, 'sensors': [],'switches': [], 'devices': []}
+result = {'success': True, 'sensors': [],'switches': [], 'devices': [], 'toplist': {'coldest': [], 'warmest': []}}
 now = datetime.now()
 tnu_sensors = args.tnu_sensors.split(',')
+
+#
+# Collect coldest/warmest outside sensors
+#
+
+def toplist(r):
+	
+	for s in r['sensors']:
+		if s['location'] == 'outside':
+			alias = s['alias']
+			id = s['id']
+
+			if id == '0000' or id == '0001':
+				continue
+
+			timestamp=s['temperature']['max']['timestamp']
+			value=s['temperature']['max']['value']
+			r['toplist']['warmest'].append({
+				'alias': alias,
+				'id': id,
+				'timestamp': timestamp,
+				'value': value
+			})
+
+			timestamp=s['temperature']['min']['timestamp']
+			value=s['temperature']['min']['value']
+			r['toplist']['coldest'].append({
+				'alias': alias,
+				'id': id,
+				'timestamp': timestamp,
+				'value': value
+		})
+
+
 
 #
 # Read file and save data
@@ -680,6 +720,12 @@ result['devices'] = sorted(result['devices'], key=lambda k: k['order'])
 
 for x in result['system']:
 	result['system'][x] = sorted(result['system'][x], key=lambda k: k['order']) 
+
+# Create toplist
+
+toplist(result)
+result['toplist']['coldest'] = sorted(result['toplist']['coldest'], key=lambda k: k['value']) 
+result['toplist']['warmest'] = sorted(result['toplist']['warmest'], key=lambda k: k['value'], reverse=True) 
 
 
 # print json.dumps(sensorData, indent=2, sort_keys=True)
