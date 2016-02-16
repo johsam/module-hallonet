@@ -31,12 +31,18 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 #
+# Can we create our lock file ?
+#
+
+[ ! -w /var/lock/ ] && { logger -t "${0}" "Could not create lock file '/var/lock/nmap.lock'"; exit 1;}
+
+#
 #	Use flock to prevent multiple executions
 #
 
 (
 flock -x -w 120 300 || { logger -t "${0}" "Failed to aquire lock for nmap"; exit 1; }
-sudo python ${scriptDir}/scan.py
+python ${scriptDir}/scan.py
 ) 300> /var/lock/nmap.lock
 
 exit 0
