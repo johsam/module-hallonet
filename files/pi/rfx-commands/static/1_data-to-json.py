@@ -358,11 +358,12 @@ deviceAliases = {
     },
     "2": {
         "alias": "Johans Samsung",
-        "order": 2
+        "order": 2,
+	"divider" : True
     },
 
     "3": {
-        "alias": "Catarinas iPhone",
+        "alias": "Catarinas iPhone 6",
         "order": 3
     },
 
@@ -373,7 +374,8 @@ deviceAliases = {
 
     "5": {
         "alias": "Catarinas Surface",
-        "order": 5
+        "order": 5,
+	"divider" : True
     },
 
     "6": {
@@ -399,7 +401,8 @@ deviceAliases = {
    
     "9": {
         "alias": "Ebbas Surface",
-        "order": 10
+        "order": 10,
+	"divider" : True
     },
 
     "10": {
@@ -430,7 +433,7 @@ def toplist(r):
 			alias = s['alias']
 			id = s['id']
 
-			if id == '0000' or id == '0001':
+			if id == '0001':
 				continue
 
 			timestamp=s['temperature']['max']['timestamp']
@@ -654,16 +657,22 @@ with open(args.devices_file, 'rb') as csvfile:
     for row in sqlData:
         mac = row['mac']
         if mac in macs_mapping:
-            id = macs_mapping[mac]
+	    id = macs_mapping[mac]
             ip = row['ip']
             age = row['age']
             alias = deviceAliases[id]['alias']
             order = deviceAliases[id]['order']
+	    if 'divider' in deviceAliases[id]:
+	    	divider = deviceAliases[id]['divider']
+	    else:
+	        divider = False
+	    
+		
             datetime = row['datetime']
 	    delta = format_timedelta(int(row['age']),threshold=1, granularity='second',format='medium', locale='sv_SE')
 
 	    
-            result['devices'].append({'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age,'delta': delta})
+            result['devices'].append({'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age,'delta': delta, 'divider': divider})
 
 
 #
@@ -724,8 +733,8 @@ for x in result['system']:
 # Create toplist
 
 toplist(result)
-result['toplist']['coldest'] = sorted(result['toplist']['coldest'], key=lambda k: k['value']) 
-result['toplist']['warmest'] = sorted(result['toplist']['warmest'], key=lambda k: k['value'], reverse=True) 
+result['toplist']['coldest'] = sorted(result['toplist']['coldest'], key=lambda k: (k['value'], k['alias']))
+result['toplist']['warmest'] = sorted(result['toplist']['warmest'], key=lambda k: (-k['value'], k['alias'])) 
 
 
 # print json.dumps(sensorData, indent=2, sort_keys=True)

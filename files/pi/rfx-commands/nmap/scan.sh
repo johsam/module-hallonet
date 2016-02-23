@@ -40,6 +40,8 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 #	Use flock to prevent multiple executions
 #
 
+umask 011
+
 (
 flock -x -w 120 300 || { logger -t "${0}" "Failed to aquire lock for nmap"; exit 1; }
 python ${scriptDir}/scan.py

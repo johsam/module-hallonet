@@ -88,6 +88,9 @@ to_webroot static ${jsontmpfile}
 log "Backup $(basename ${jsontmpfile}) to NAS..."
 to_static ${jsontmpfile}
 
+log "Tell hallonet..."
+${scriptDir}/../pubnub/publish-refresh.sh
+
 ) 200> /var/lock/sensor.lock
 
 

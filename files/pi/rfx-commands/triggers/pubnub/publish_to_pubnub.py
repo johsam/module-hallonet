@@ -96,6 +96,12 @@ parser.add_argument(
     help='Pubnub channel'
 )
 
+parser.add_argument(
+	'--refresh', required=False,
+	dest='refresh',
+	action='store_true',
+	help='Send refresh'
+)
 
 args = parser.parse_args()
 
@@ -113,6 +119,12 @@ def publish_switch(s):
     ps['type'] = 'switch'
     ps['switch'] = s
     
+    pubnub.publish(args.pubnub_channel, ps)
+
+
+def publish_refresh():
+    ps = {}
+    ps['type'] = 'refresh'
     pubnub.publish(args.pubnub_channel, ps)
 
 
@@ -190,3 +202,6 @@ with open(args.file) as data_file:
         if 'switches' in json_data:
             processSwitches(json_data['switches'], args.switch_id, args.switch_state, args.stamp, args.signal)
             print json.dumps(json_data,indent=2, sort_keys=True, encoding="utf-8") 
+
+    if args.refresh == True:
+    	publish_refresh()
