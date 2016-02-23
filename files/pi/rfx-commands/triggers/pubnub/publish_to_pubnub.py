@@ -97,10 +97,10 @@ parser.add_argument(
 )
 
 parser.add_argument(
-	'--refresh', required=False,
-	dest='refresh',
-	action='store_true',
-	help='Send refresh'
+    '--refresh', required=False,
+    dest='refresh',
+    action='store_true',
+    help='Send refresh'
 )
 
 args = parser.parse_args()
@@ -118,7 +118,6 @@ def publish_switch(s):
     ps = {}
     ps['type'] = 'switch'
     ps['switch'] = s
-    
     pubnub.publish(args.pubnub_channel, ps)
 
 
@@ -166,7 +165,7 @@ def processSensors(a, id, value, humidity, stamp, signal):
 
 def processSwitches(a, id, state, stamp, signal):
     for i, item in enumerate(a):
-	swid = a[i]['id']
+        swid = a[i]['id']
         if swid == id:
             a[i]['timestamp'] = stamp
             a[i]['state'] = state
@@ -201,7 +200,7 @@ with open(args.file) as data_file:
     if args.switch_id != '':
         if 'switches' in json_data:
             processSwitches(json_data['switches'], args.switch_id, args.switch_state, args.stamp, args.signal)
-            print json.dumps(json_data,indent=2, sort_keys=True, encoding="utf-8") 
+            print json.dumps(json_data, indent=2, sort_keys=True, encoding="utf-8") 
 
-    if args.refresh == True:
-    	publish_refresh()
+    if args.refresh is True:
+        publish_refresh()
