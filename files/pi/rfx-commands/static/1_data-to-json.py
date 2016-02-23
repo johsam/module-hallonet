@@ -656,10 +656,11 @@ with open(args.devices_file, 'rb') as csvfile:
             age = row['age']
             alias = deviceAliases[id]['alias']
             order = deviceAliases[id]['order']
-        if 'divider' in deviceAliases[id]:
-            divider = deviceAliases[id]['divider']
-        else:
-            divider = False
+
+	    if 'divider' in deviceAliases[id]:
+                divider = deviceAliases[id]['divider']
+            else:
+                divider = False
 
             datetime = row['datetime']
             delta = format_timedelta(int(row['age']), threshold=1, granularity='second',format='medium', locale='sv_SE')
