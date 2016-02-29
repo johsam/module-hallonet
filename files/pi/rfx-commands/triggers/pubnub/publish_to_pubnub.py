@@ -124,6 +124,7 @@ def publish_switch(s):
 def publish_refresh():
     ps = {}
     ps['type'] = 'refresh'
+    ps['target'] = 'sensors'
     pubnub.publish(args.pubnub_channel, ps)
 
 

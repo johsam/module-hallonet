@@ -10,88 +10,116 @@ from daemon import Daemon
 from pubnub import Pubnub
 import subprocess
 
+
 class MyDaemon(Daemon):
 
     def createfile(self, filename):
-        open(filename,'a').close()
-
+        open(filename, 'a').close()
 
     def removefile(self, filename):
         if os.path.exists(filename):
-    	    os.remove(filename)
-    
+            os.remove(filename)
+
     def error(self, message, channel):
-	syslog.syslog("Error " + message)
+        syslog.syslog("Error " + message)
+
+    def send_message(self, channel, message):
+        self.pubnub.publish(channel, {"type": "message", "message": message})
+	syslog.syslog("Sent '" + message + "' to channel (" + channel + ")")
 
     def callback(self, message, channel):
-       	
-	if type(message) == type(dict()):
-	    
-	    #
-	    # Request ? 
-	    #
-	    
-	    if 'type' in message and message['type'] == 'request' and 'request' in message:
-		 
-		 requesttype = message['request']
-		 syslog.syslog("Channel '%s': %s -> %s" % (channel, "request", json.dumps(message['request'])))
-  
-  		 command=[args.external_history]
 
-		 if "length" in message['request']:
-		 	histlen = message['request']['length']
-		 	command.append("-l")
-		 	command.append(str(histlen))
-		 
-		 if "mode" in message['request']:
-		 	if message['request']['mode'] == 'warnings':
-				command.append("-w")
-		 
-		 syslog.syslog("Calling '" + " ".join(command) + "'")
-		 jsonstr = subprocess.check_output(command, stderr=subprocess.STDOUT)
-		 syslog.syslog("Done processing external script")
-		 
-		 try:
-		 	sendto = args.pubnub_channel + '-history'
-			js = json.loads(jsonstr)
-			syslog.syslog("Sending response to channel '" + sendto + "'")
-		 	self.pubnub.publish(sendto, js)
-		 except:
-		 	syslog.syslog("Failed to parse json from script -> '" + jsonstr + "'")
-		  
-	    #
-	    # Status ?
-	    #
-	    
+        if type(message) != type(dict()):
+            syslog.syslog("Channel '%s': Unsupported type (%s)" % (channel, type(message)))
+            return
 
-	    if 'type' in message and message['type'] == 'status' and 'status' in message:
-	       
-	       status = message['status']
-	       
-	       ip = status['ip']
-	       state = status['state']
-	       application = status['application']
-	
-	       # Only hallonet for now
-	       
-	       if application == 'hallonet':
-	           if state == 'started':
-	              self.createfile(args.publish_temp_file)
-	           elif state == 'stopped':
-	              self.removefile(args.publish_temp_file)
-		    		   
-	       syslog.syslog("Channel '%s': %s (%s) from %s" % (channel, application, state, ip))
-	else:
-               syslog.syslog("Channel '%s': Unsupported type (%s)" % (channel,type(message)))
+        if not 'type' in message:
+            syslog.syslog("Channel '%s': 'type' not found in message (%s)" % (channel, json.dumps(message)))
+            return
+
+        #
+        # Request ?
+        #
+
+        if message['type'] == 'request' and 'request' in message:
+
+            request = message['request']
+
+            if not 'action' in request:
+                syslog.syslog("Channel '%s': 'action' not found in message (%s)" % (channel, json.dumps(message)))
+                return
+
+            if not 'target' in request:
+                syslog.syslog("Channel '%s': 'target' not found in message (%s)" % (channel, json.dumps(message)))
+                return
+
+            syslog.syslog("Channel '%s': %s -> %s" % (channel, message['type'], json.dumps(request)))
+
+            action = request['action']
+            target = request['target']
+            command = ''
+
+            if action == 'restart':
+                if target == 'rfxcmd':
+                    command = "/usr/sbin/service rfxcmd restart"
+
+                if target == 'openhab':
+                    command = "/usr/sbin/service openhab restart"
+
+                if target == 'hallonet':
+                    command = "/sbin/reboot"
+
+                if len(command):
+
+                    syslog.syslog("Channel '%s': %s -> %s" % (channel, action, target))
+
+                    try:
+                        syslog.syslog("Calling '" + command + "'")
+                        result = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+                        syslog.syslog("Done processing external script")
+			self.send_message(channel + "-sensors", "Excuted: '" + command + "'")
+
+                    except subprocess.CalledProcessError as e:
+                        msg = "Output from command was '" + e.output.rstrip('\n') + "' exitcode=" + str(e.returncode)
+			syslog.syslog(syslog.LOG_WARNING, msg)
+                        self.send_message(channel + "-sensors", msg)
+			pass
+
+                else:
+                    syslog.syslog("Channel '%s': Unknown target '%s' for action '%s' (%s)" % (channel, target, action, json.dumps(message)))
+
+        #
+        # Status ?
+        #
+
+        if message['type'] == 'status' and 'status' in message:
+
+            status = message['status']
+
+            ip = status['ip']
+            state = status['state']
+            application = status['application']
+
+            # Only hallonet for now
+
+            if application == 'hallonet':
+                if state == 'started':
+                    self.createfile(args.publish_temp_file)
+                elif state == 'stopped':
+                    self.removefile(args.publish_temp_file)
+
+                syslog.syslog("Channel '%s': %s (%s) from %s" % (channel, application, state, ip))
 
     def run(self):
 
-        self.pubnub = Pubnub(publish_key=args.pubnub_pubkey,
-                        subscribe_key=args.pubnub_subkey,
-                        secret_key='',
-                        cipher_key='',
-                        ssl_on=False
-                        )
+        self.pubnub = Pubnub(
+            publish_key=args.pubnub_pubkey,
+            subscribe_key=args.pubnub_subkey,
+            secret_key='',
+            cipher_key='',
+            ssl_on=False
+            )
+
         syslog.syslog("Listening on Channel '%s'" % args.pubnub_channel)
         self.pubnub.subscribe(args.pubnub_channel, self.callback)
 
@@ -139,15 +167,6 @@ if __name__ == "__main__":
         help='Status file'
     )
 
-
-    parser.add_argument(
-        '--external-history', required=True,
-        default='',
-        dest='external_history',
-        help='Status file'
-    )
-
-
     parser.add_argument(
         '--start', required=False,
         default=False,
@@ -186,8 +205,8 @@ if __name__ == "__main__":
 
     elif args.do_stop is True:
         syslog.syslog("Stopping...")
-	daemon.removefile(args.publish_temp_file)
-	daemon.stop()
+        daemon.removefile(args.publish_temp_file)
+        daemon.stop()
 
     elif args.do_status is True:
         daemon.is_running()
@@ -195,6 +214,7 @@ if __name__ == "__main__":
     elif args.do_restart is True:
         syslog.syslog("Restarting...")
         daemon.restart()
+
     else:
         print "usage: %s start|stop|restart" % sys.argv[0]
         sys.exit(2)
