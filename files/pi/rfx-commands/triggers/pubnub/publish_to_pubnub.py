@@ -103,6 +103,15 @@ parser.add_argument(
     help='Send refresh'
 )
 
+parser.add_argument(
+    '--message', required=False,
+    default='',
+    dest='message',
+    help='Message to Hallonet'
+)
+
+
+
 args = parser.parse_args()
 
 
@@ -127,6 +136,13 @@ def publish_refresh():
     ps['target'] = 'sensors'
     pubnub.publish(args.pubnub_channel, ps)
 
+def publish_message(msg = ''):
+    ps = {}
+    ps['type'] = 'message'
+    ps['message'] = msg
+    
+    if len(msg):
+        pubnub.publish(args.pubnub_channel, ps)
 
 def processSensors(a, id, value, humidity, stamp, signal):
 
@@ -205,3 +221,6 @@ with open(args.file) as data_file:
 
     if args.refresh is True:
         publish_refresh()
+    
+    if len(args.message):
+        publish_message(args.message)

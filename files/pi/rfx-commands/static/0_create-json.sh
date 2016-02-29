@@ -212,6 +212,32 @@ cat "${stampfile}"
 log "Collect from pi done..."
 
 
+#
+#	Get coldest/warmest cities
+#
+
+if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
+	log "Counter % 2 -> Fetch warmest/coldest cities"
+	call -o ${citiestmpfile} ${scriptDir}/../cities/top-cities.sh 
+	to_static ${citiestmpfile} 
+fi
+
+
+#
+#	Get nmap data
+#
+
+log "Wait for nmap scan to finish..."
+
+(
+flock -x -w 180 300 || logger -t "${0}" "Failed to aquire lock for nmap"
+mysql nmap -urfxuser -prfxuser1 \
+	-e "source ${scriptDir}/../nmap/sql/scan.sql;" > "${scantmpfile}"
+) 300> /var/lock/nmap.lock
+
+log "Got nmap results..."
+
+
 
 #	Sql stuff
 
@@ -269,37 +295,9 @@ log "Collect from mysql done..."
 
 
 #
-#	Get coldest/warmest cities
-#
-
-
-if [ -n "${runCounter}" ] && [[ $(( ${runCounter} % 2)) -eq 0 ]] ; then
-	log "Counter % 2 -> Fetch warmest/coldest cities"
-	call -o ${citiestmpfile} ${scriptDir}/../cities/top-cities.sh 
-	to_static ${citiestmpfile} 
-fi
-
-
-#
-# Get nmap data
-#
-
-log "Wait for nmap scan to finish..."
-
-(
-flock -x -w 180 300 || logger -t "${0}" "Failed to aquire lock for nmap"
-mysql nmap -urfxuser -prfxuser1 \
-	-e "source ${scriptDir}/../nmap/sql/scan.sql;" > "${scantmpfile}"
-) 300> /var/lock/nmap.lock
-
-log "Got nmap results..."
-
-
-
-
-#
 #	Convert to json
 #
+
 log "Calling '$(basename ${scriptDir}/1_data-to-json.py)'..."
 
 (

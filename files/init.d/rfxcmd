@@ -39,19 +39,20 @@ echo "$1" >> /var/rfxcmd/rfxcmd-error.log
 
 case "$1" in
 start)
-	/home/pi/rfx-commands/commands/mailme.sh "Service rfxcmd ${1}"
+    	/home/pi/rfx-commands/pubnub/publish-message.sh -f "Service rfxcmd ${1}"
 
 	printf "%-50s" "Starting $NAME..."
-    # Check if PID exists, and if process is active
+    	
+	# Check if PID exists, and if process is active
 	if [ -f $PIDFILE ]; then
-    	PID=`cat $PIDFILE`
-        if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
-			# Process not active remove PID file
-            rm -f $PIDFILE
-		else
-			printf "%s\n" "Process already started..."
-			exit 1
-        fi
+    	    PID=`cat $PIDFILE`
+            if [ -z "`ps axf | grep ${PID} | grep -v grep`" ]; then
+		# Process not active remove PID file
+                rm -f $PIDFILE
+	    else
+		printf "%s\n" "Process already started..."
+		exit 1
+            fi
 	fi
 
 	($DAEMON_PATH$DAEMON $DAEMONOPTS >> /var/rfxcmd/sensor.csv 2>> /var/rfxcmd/rfxcmd-error.log)
@@ -78,17 +79,18 @@ status)
     fi
 ;;
 stop)
-    /home/pi/rfx-commands/commands/mailme.sh "Service rfxcmd ${1}"
+    /home/pi/rfx-commands/pubnub/publish-message.sh -f "Service rfxcmd ${1}"
     printf "%-50s" "Stopping $NAME"
-	PID=`cat $PIDFILE`
-	cd $DAEMON_PATH
+    PID=`cat $PIDFILE`
+    cd $DAEMON_PATH
+    
     if [ -f $PIDFILE ]; then
     	kill -HUP $PID
         printf "%s\n" "Ok"
         rm -f $PIDFILE
-	else
+    else
     	printf "%s\n" "pidfile not found"
-	fi
+    fi
 ;;
 
 restart)
