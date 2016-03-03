@@ -244,13 +244,6 @@ log "Got nmap results..."
 log "Collect from mysql..."
 
 #
-#	State of all switches
-#
-
-mysql rfx -urfxuser -prfxuser1 \
-	-e "set @switches_all:='${switches_all}'; source ${scriptDir}/sql/last-switches.sql;" > "${switchfile}"
-
-#
 #	Last, min and max temps
 #
 
@@ -289,6 +282,13 @@ mysql rfx -urfxuser -prfxuser1 \
 
 mysql rfx -urfxuser -prfxuser1 \
 	-e "set @sensors_humidity:='${sensors_humidity}'; source ${scriptDir}/sql/max-humidity-today.sql;" > "${maxhumfile}"
+
+#
+#	State of all switches
+#
+
+mysql rfx -urfxuser -prfxuser1 \
+	-e "set @switches_all:='${switches_all}'; source ${scriptDir}/sql/last-switches.sql;" > "${switchfile}"
 
 
 log "Collect from mysql done..."

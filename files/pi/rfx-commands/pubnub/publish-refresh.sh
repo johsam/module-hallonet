@@ -40,8 +40,6 @@ if [ -r "${PUBNUB_ALLOWPUBLISH}" ] ; then
 		--pubnub-pubkey   "${PUBNUB_PUBKEY}" \
 		--pubnub-channel  "${PUBNUB_CHANNEL_SENSORS}" \
 		--refresh
-else 
-	logger "Should send '${1}' to channel '${PUBNUB_CHANNEL_SENSORS}'"
 fi
 
 

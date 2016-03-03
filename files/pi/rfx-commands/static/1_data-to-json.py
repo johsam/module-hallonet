@@ -206,30 +206,35 @@ switchAliases = {
         "alias": "Vid Tv:n",
         "type":  "light",
         "nexaid": 1,
+        "fab": True,
         "order": 1
     },
     "00D81332_2": {
         "alias": u"K\u00f6ksf\u00f6nstret",
         "type":  "light",
         "nexaid": 2,
+        "fab": True,
         "order": 2
     },
     "00D81332_3": {
         "alias": "Ebbas rum",
         "type":  "light",
         "nexaid": 3,
+        "fab": True,
         "order": 3
     },
     "00D81332_5": {
         "alias": "Hallen",
         "type":  "light",
         "nexaid": 5,
+        "fab": True,
         "order": 4
     },
     "00D81332_4": {
         "alias": "Julgranen",
         "type":  "light",
         "nexaid": 4,
+        "fab": False,
         "order": 5
     },
     "03D242AA_16": {
@@ -554,6 +559,8 @@ with open(args.switch_file, 'rb') as csvfile:
                 switchData[sensorid]['subtype'] = switchAliases[sensorid]['subtype']
             if 'nexaid' in switchAliases[sensorid]:
                 switchData[sensorid]['nexaid'] = switchAliases[sensorid]['nexaid']
+            if 'fab' in switchAliases[sensorid]:
+                switchData[sensorid]['fab'] = switchAliases[sensorid]['fab']
 
         switchData[sensorid]['id'] = sensorid
         switchData[sensorid]['alias'] = alias

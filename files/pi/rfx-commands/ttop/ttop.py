@@ -10,6 +10,7 @@ import locale
 import sys
 import Queue
 import socket
+import time
 
 from os import path
 from pubnub import Pubnub
@@ -230,15 +231,17 @@ def process_log_line(filename, line, stdscr):
     stdscr.refresh()
 
 #
-# pn_send_status
+# pn_send_state
 #
 
-def pn_send_status(status):
+def pn_send_state(state):
     ip = [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+    now = time.strftime("%F %T")
     
     msg = {}
     msg['type'] = 'status'
-    msg['status'] = {'application': 'ttop', 'state': status ,'ip': ip}
+    msg['info'] = {'application': 'ttop','ip': ip, 'version': '1.0', 'timestamp': now}
+    msg['status'] = {'state': state}
     
     pubnub.publish(args.pubnub_channel, msg)
 
@@ -252,7 +255,7 @@ def ttop(stdscr):
     stdscr.nodelay(True)
 
 
-    pn_send_status('started')
+    pn_send_state('started')
 
 
     # Color stuff
@@ -265,13 +268,13 @@ def ttop(stdscr):
     sensors.addsensor(id='0000', alias='Rapporterat', location='artificial')
 
     # Outdoor
-    sensors.addsensor(id='3B00', alias='Anna:s', offset=0)
-    sensors.addsensor(id='0700', alias='Förrådet (T)', offset=1)
-    sensors.addsensor(id='B700', alias='Förrådet (G)', offset=2)
-    sensors.addsensor(id='CF00', alias='Hammocken', offset=3)
-    sensors.addsensor(id='8700', alias='Tujan', offset=4)
-    sensors.addsensor(id='A700', alias='Komposten', offset=5)
-    sensors.addsensor(id='AC00', alias='Cyklarna', offset=6)
+    #sensors.addsensor(id='3B00', alias='Anna:s', offset=0)
+    sensors.addsensor(id='0700', alias='Förrådet (T)', offset=0)
+    sensors.addsensor(id='B700', alias='Förrådet (G)', offset=1)
+    sensors.addsensor(id='CF00', alias='Hammocken', offset=2)
+    sensors.addsensor(id='8700', alias='Tujan', offset=3)
+    sensors.addsensor(id='A700', alias='Komposten', offset=4)
+    sensors.addsensor(id='AC00', alias='Cyklarna', offset=5)
 
     # Indoor
     sensors.addsensor(id='9700', alias='Bokhyllan', location='inside')
@@ -335,7 +338,7 @@ def ttop(stdscr):
     thread2.stop()
     thread3.stop()
 
-    pn_send_status('stopped')
+    pn_send_state('stopped')
 
 
 

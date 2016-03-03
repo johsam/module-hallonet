@@ -21,11 +21,30 @@ class MyDaemon(Daemon):
             os.remove(filename)
 
     def error(self, message, channel):
-        syslog.syslog("Error " + message)
+        syslog.syslog(syslog.LOG_ERR, "Error " + message)
 
     def send_message(self, channel, message):
         self.pubnub.publish(channel, {"type": "message", "message": message})
-	syslog.syslog("Sent '" + message + "' to channel (" + channel + ")")
+    	syslog.syslog("Sent '" + message + "' to channel (" + channel + ")")
+
+    def call_command(self, info, command, feedback=False):
+
+        try:
+            syslog.syslog("Calling '" + command + "'")
+            result = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+            syslog.syslog("Done processing external script")
+            if feedback is True:
+            	self.send_message(args.pubnub_channel + "-sensors", "Excuted: '" + command + "'")
+
+        except subprocess.CalledProcessError as e:
+            msg = "Output from command was '" + e.output.rstrip('\n') + "' exitcode=" + str(e.returncode)
+            syslog.syslog(syslog.LOG_WARNING, msg)
+            self.send_message(args.pubnub_channel + "-sensors", msg)
+        pass
+
+    #
+    #   Message from pubnub received
+    #
 
     def callback(self, message, channel):
 
@@ -36,6 +55,12 @@ class MyDaemon(Daemon):
         if not 'type' in message:
             syslog.syslog("Channel '%s': 'type' not found in message (%s)" % (channel, json.dumps(message)))
             return
+
+        if not 'info' in message:
+            syslog.syslog("Channel '%s': 'info' not found in message (%s)" % (channel, json.dumps(message)))
+            return
+
+        info = message['info']
 
         #
         # Request ?
@@ -53,8 +78,6 @@ class MyDaemon(Daemon):
                 syslog.syslog("Channel '%s': 'target' not found in message (%s)" % (channel, json.dumps(message)))
                 return
 
-            syslog.syslog("Channel '%s': %s -> %s" % (channel, message['type'], json.dumps(request)))
-
             action = request['action']
             target = request['target']
             command = ''
@@ -70,20 +93,8 @@ class MyDaemon(Daemon):
                     command = "/sbin/reboot"
 
                 if len(command):
-
                     syslog.syslog("Channel '%s': %s -> %s" % (channel, action, target))
-
-                    try:
-                        syslog.syslog("Calling '" + command + "'")
-                        result = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
-                        syslog.syslog("Done processing external script")
-			self.send_message(channel + "-sensors", "Excuted: '" + command + "'")
-
-                    except subprocess.CalledProcessError as e:
-                        msg = "Output from command was '" + e.output.rstrip('\n') + "' exitcode=" + str(e.returncode)
-			syslog.syslog(syslog.LOG_WARNING, msg)
-                        self.send_message(channel + "-sensors", msg)
-			pass
+                    self.call_command(info, command)
 
                 else:
                     syslog.syslog("Channel '%s': Unknown target '%s' for action '%s' (%s)" % (channel, target, action, json.dumps(message)))
@@ -95,10 +106,11 @@ class MyDaemon(Daemon):
         if message['type'] == 'status' and 'status' in message:
 
             status = message['status']
-
-            ip = status['ip']
             state = status['state']
-            application = status['application']
+
+            ip = info['ip']
+            application = info['application']
+            version = info['version']
 
             # Only hallonet for now
 
@@ -108,7 +120,30 @@ class MyDaemon(Daemon):
                 elif state == 'stopped':
                     self.removefile(args.publish_temp_file)
 
-                syslog.syslog("Channel '%s': %s (%s) from %s" % (channel, application, state, ip))
+            syslog.syslog("Channel '%s': %s[%s] (%s) from %s" % (channel, application, version, state, ip))
+
+        #
+        # Switch ?
+        #
+
+        if message['type'] == 'switch' and 'switch' in message:
+
+            switch = message['switch']
+
+            if not 'nexaid' in switch:
+                syslog.syslog("Channel '%s': 'nexaid' not found in message (%s)" % (channel, json.dumps(message)))
+                return
+
+            if not 'state' in switch:
+                syslog.syslog("Channel '%s': 'state' not found in message (%s)" % (channel, json.dumps(message)))
+                return
+
+            state = switch['state']
+            nexaid = switch['nexaid']
+            command = "/home/pi/rfx-commands/commands/cmd-to-nexa.sh %s %s" % (nexaid, state)
+
+            syslog.syslog("Channel '%s': %s -> %s -> %s" % (channel, "switch", nexaid, state))
+            self.call_command(info, command)
 
     def run(self):
 
@@ -119,7 +154,7 @@ class MyDaemon(Daemon):
             cipher_key='',
             ssl_on=False
             )
-
+    	syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_DAEMON)
         syslog.syslog("Listening on Channel '%s'" % args.pubnub_channel)
         self.pubnub.subscribe(args.pubnub_channel, self.callback)
 
