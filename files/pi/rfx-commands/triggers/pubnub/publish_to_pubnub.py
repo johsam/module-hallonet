@@ -2,6 +2,8 @@
 # coding=iso-8859-1
 import argparse
 import json
+import syslog
+
 from pubnub import Pubnub
 
 from dateutil.parser import *
@@ -114,13 +116,16 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+def log_publish(t,i):
+    syslog.syslog("Channel '{0}': type:'{1}' info:'{2}'".format(args.pubnub_channel, t, i))
+
 
 def publish_sensor(s):
     ps = {}
     ps['type'] = 'sensor'
     ps['sensor'] = s
-
     pubnub.publish(args.pubnub_channel, ps)
+    #log_publish(ps['type'],s)
 
 
 def publish_switch(s):
@@ -128,6 +133,12 @@ def publish_switch(s):
     ps['type'] = 'switch'
     ps['switch'] = s
     pubnub.publish(args.pubnub_channel, ps)
+    if 'subtype' in s:
+        log_publish(ps['type'],"{0}:{1}->{2}".format(s['alias'].encode('utf-8'), s['subtype'].encode('utf-8'), s['state'].encode('utf-8')))
+    elif 'type' in s:
+        log_publish(ps['type'],"{0}:{1}->{2}".format(s['alias'].encode('utf-8'), s['type'].encode('utf-8'), s['state'].encode('utf-8')))
+    else:
+        log_publish(ps['type'],"{0}:->{1}".format(s['alias'].encode('utf-8'), s['state'].encode('utf-8')))
 
 
 def publish_refresh():
@@ -135,6 +146,8 @@ def publish_refresh():
     ps['type'] = 'refresh'
     ps['target'] = 'sensors'
     pubnub.publish(args.pubnub_channel, ps)
+    log_publish(ps['type'],ps['target'])
+
 
 def publish_message(msg = ''):
     ps = {}
@@ -143,6 +156,8 @@ def publish_message(msg = ''):
     
     if len(msg):
         pubnub.publish(args.pubnub_channel, ps)
+        log_publish(ps['type'],msg)
+
 
 def processSensors(a, id, value, humidity, stamp, signal):
 
@@ -201,6 +216,8 @@ pubnub = Pubnub(publish_key=args.pubnub_pubkey,
                 cipher_key='',
                 ssl_on=False
                 )
+
+syslog.openlog(facility=syslog.LOG_DAEMON)
 
 
 with open(args.file) as data_file:

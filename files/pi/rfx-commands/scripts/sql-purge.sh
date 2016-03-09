@@ -5,7 +5,7 @@ for l in $(seq 1 10) ; do
 
 mysql rfx -urfxuser -prfxuser1 -e '\
 	delete from rfxcmd 
-	where unixtime < unix_timestamp(date_sub(CURDATE(),interval 31 day)) 
+	where unixtime < unix_timestamp(date_sub(CURDATE(),interval 1 month)) 
 	order by unixtime asc 
 	limit 3000'
 

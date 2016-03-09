@@ -89,7 +89,7 @@ fi
 
 	fi
 	
-	#logger "$$ -> Jobe done temp ${sensor_id}"
+	#logger "$$ -> Job done temp ${sensor_id}"
 
 ) 200> /var/lock/sensor.lock
 

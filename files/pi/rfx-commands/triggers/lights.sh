@@ -64,5 +64,4 @@ fi
 
 to_openhab "Nexa_${light_unitcode}" "${onOff}" >> ${UPDATE_REST_LOG}
 
-
 exit 0

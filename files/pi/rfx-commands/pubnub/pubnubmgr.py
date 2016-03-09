@@ -120,7 +120,7 @@ class MyDaemon(Daemon):
                 elif state == 'stopped':
                     self.removefile(args.publish_temp_file)
 
-            syslog.syslog("Channel '%s': %s[%s] (%s) from %s" % (channel, application, version, state, ip))
+            syslog.syslog("Channel '{0}': {1}[{2}] ({3}) from {4}".format(channel, application, version, state, ip))
 
         #
         # Switch ?

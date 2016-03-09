@@ -116,7 +116,7 @@ systemAliases = {
         "order": 3
     },
     "pi_last_boot": {
-        "alias": "Omstartad",
+        "alias": "Bootad",
         "order": 4,
         "type": "date"
     },
@@ -149,7 +149,7 @@ systemAliases = {
         "order": 2
     },
     "openhab_restarted": {
-        "alias": "Omstartad",
+        "alias": "Startad",
         "order": 3,
         "type": "date"
     },
@@ -169,7 +169,7 @@ systemAliases = {
         "order": 3
     },
     "mintblack_last_boot": {
-        "alias": "Omstartad",
+        "alias": "Bootad",
         "order": 4,
         "type": "date"
     },
@@ -178,8 +178,14 @@ systemAliases = {
     # Misc
 
     "misc_rfxcmd_last_restart": {
-        "alias": "Rfxcmd Omstartad",
+        "alias": "Rfxcmd Startad",
         "order": 1,
+        "type": "date"
+    },
+    
+    "misc_pubnubmgr_last_restart": {
+        "alias": "Pubnubmgr Startad",
+        "order": 2,
         "type": "date"
     },
 

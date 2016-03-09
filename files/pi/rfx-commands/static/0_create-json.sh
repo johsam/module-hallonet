@@ -171,9 +171,10 @@ fi
 
 last_boot=$(who -b | awk '{print $3" "$4":00"}')
 
-#	Last rfxcmd restart
+#	Last rfxcmd/pubnubmgr restart
 
 rfxcmd_restart=$(stat --printf=%z /var/run/rfxcmd.pid | awk -F. '{print $1}')
+pubnubmgr_restart=$(stat --printf=%z /var/run/pubnubmgr.pid | awk -F. '{print $1}')
 
 
  
@@ -200,7 +201,8 @@ formatSystemInfo "pi" "last_boot"		"${last_boot}"
 
 formatSystemInfo "static" "timestamp"	"${now}" 
 
-formatSystemInfo "misc" "rfxcmd_last_restart"	"${rfxcmd_restart}"
+formatSystemInfo "misc" "rfxcmd_last_restart"    "${rfxcmd_restart}"
+formatSystemInfo "misc" "pubnubmgr_last_restart" "${pubnubmgr_restart}"
 
 curl -s --connect-timeout 5 --max-time 5 'http://mint-black:5000/collect/collect.php' 2> /dev/null
 
