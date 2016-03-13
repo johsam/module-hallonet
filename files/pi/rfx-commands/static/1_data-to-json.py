@@ -91,6 +91,13 @@ parser.add_argument(
     help='Mac mappings'
 )
 
+parser.add_argument(
+    '--missing', required=False,
+    default='',
+    dest='missing_file',
+    help='Missing sensor count for today'
+)
+
 
 args = parser.parse_args()
 
@@ -426,7 +433,7 @@ deviceAliases = {
 
 }
 
-result = {'success': True, 'sensors': [], 'switches': [], 'devices': [], 'toplist': {'coldest': [], 'warmest': []}}
+result = {'success': True, 'hoursmissingcount': 0, 'sensors': [], 'switches': [], 'devices': [], 'toplist': {'coldest': [], 'warmest': []}}
 now = datetime.now()
 tnu_sensors = args.tnu_sensors.split(',')
 
@@ -501,6 +508,22 @@ def readCitiesFile(filename):
             data = json.load(data_file)
             result['cities'] = data
 
+
+#
+# Read missingfile
+#
+
+def readMissingFile(filename):
+    counter = 0
+    with open(filename) as data_file:
+            data = json.load(data_file)
+            signals = data['signal']
+	    
+	    if '0' in signals:
+		for k,v in signals['0']['sensors'].items():
+		    counter += len(v['missed'])	    
+
+    return counter
 
 #
 # Read systemfile
@@ -714,6 +737,14 @@ readSystemFile(args.system_file)
 if args.cities_file:
     readCitiesFile(args.cities_file)
 
+
+#
+# How many hours with missing signals
+#
+
+if args.missing_file:
+    missingcount = readMissingFile(args.missing_file)
+    result['hoursmissingcount'] = missingcount
 
 #
 # Collect all data and output json...

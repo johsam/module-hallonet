@@ -314,7 +314,8 @@ python -u ${scriptDir}/1_data-to-json.py \
         --cities-file   "${STATIC_DIR}/cities.json" \
 	--tnu-sensors   "${sensors_tnu}" \
 	--macs          "${ALL_MACS}" \
-	--devices-file  "${scantmpfile}"
+	--devices-file  "${scantmpfile}" \
+	--missing       "${STATIC_DIR}/signal-history.json"
 ) > ${destFile} 2>&1
 
 exit 0
