@@ -1,0 +1,9 @@
+#
+#   Managed by puppet, Do NOT edit...
+#
+MAILTO=<%= scope.lookupvar("mailme") %>
+#
+#
+# Scan network and save in mysql database nmap
+#
+*/10 * * * * pi /home/pi/rfx-commands/nmap/scan.sh

@@ -1,1 +1,0 @@
-*/5 * * * * pi /home/pi/rfx-commands/scripts/to-graphite-switches.sh

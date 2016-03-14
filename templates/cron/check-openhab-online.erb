@@ -1,0 +1,6 @@
+#
+#   Managed by puppet, Do NOT edit...
+#
+MAILTO=<%= scope.lookupvar("mailme") %>
+#
+*/30 7-23 * * * pi [ -w /var/log ] && /home/pi/rfx-commands/scripts/check-openhab-online.sh >> /var/rfxcmd/openhab-status.log 2>&1

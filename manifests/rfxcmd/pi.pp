@@ -1,7 +1,9 @@
 class hallonet::rfxcmd::pi {
 
-    require	hallonet::openhabconfig
+    $mailme = hiera('mailme','')
 
+    require	hallonet::openhabconfig
+	
 
     File {
         owner => 'pi',
@@ -20,85 +22,119 @@ class hallonet::rfxcmd::pi {
     #	Cron jobs
     #
 
+
     file {'cron_update_openhab':
-        ensure => present,
-        path   => '/etc/cron.d/update-openhab',
-        source => "puppet:///modules/${module_name}/cron.d/update-openhab",
+        ensure  => present,
+        path    => '/etc/cron.d/update-openhab',
+        source  => "puppet:///modules/${module_name}/cron.d/update-openhab",
         require => [File['rfx_commands']],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
 
     file {'cron_update_temperatur_nu':
-        ensure => present,
-        path   => '/etc/cron.d/update-temperatur-nu',
-        source => "puppet:///modules/${module_name}/cron.d/update-temperatur-nu",
+        ensure  => present,
+        path    => '/etc/cron.d/update-temperatur-nu',
+        source  => "puppet:///modules/${module_name}/cron.d/update-temperatur-nu",
         require => [File['rfx_commands']],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
 
-    file {'cron_check_openhab_online':
-        ensure => present,
-        path   => '/etc/cron.d/check-openhab-online',
-        source => "puppet:///modules/${module_name}/cron.d/check-openhab-online",
+    file {'cron_sql_backup':
+        ensure  => present,
+        path    => '/etc/cron.d/mysql-backup',
+        content => template("${module_name}/cron/mysql-backup.erb"),
+        require => Package[$params::rfxcmd_packages],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+    }
+
+
+    file {'cron_wifi_check':
+        ensure  => present,
+        path    => '/etc/cron.d/wifi-check',
+        content => template("${module_name}/cron/wifi-check.erb"),
         require => [File['rfx_commands']],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+    }
+
+    file {'cron_nmap':
+        ensure  => present,
+        path    => '/etc/cron.d/nmap',
+        content => template("${module_name}/cron/nmap.erb"),
+        require => [File['rfx_commands']],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+    }
+
+
+
+    file {'cron_check_openhab_online':
+        ensure  => present,
+        path    => '/etc/cron.d/check-openhab-online',
+        content => template("${module_name}/cron/check-openhab-online.erb"),
+        require => [File['rfx_commands']],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
 
     file {'cron_nexa_lights':
-        ensure => present,
-        path   => '/etc/cron.d/nexa-lights',
-        source => "puppet:///modules/${module_name}/cron.d/nexa-lights",
+        ensure  => present,
+        path    => '/etc/cron.d/nexa-lights',
+        content => template("${module_name}/cron/nexa-lights.erb"),
         require => [File['rfx_commands']],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
 
-
-    file {'graphite_core_temp':
-        ensure => present,
-        path   => '/etc/cron.d/graphite-core-temp',
-        source => "puppet:///modules/${module_name}/cron.d/graphite-core-temp",
+ 
+    file {'cron_to_graphite_coretemp':
+        ensure  => present,
+        path    => '/etc/cron.d/to-graphite-coretemp',
+        content => template("${module_name}/cron/to-graphite-coretemp.erb"),
         require => [File['rfx_commands']],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
 
-    file {'magnets_to_graphite':
-        ensure => present,
-        path   => '/etc/cron.d/magnets-to-graphite',
-        source => "puppet:///modules/${module_name}/cron.d/magnets-to-graphite",
-        require => [File['rfx_commands']],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+    file {'cron_to_graphite_magnets':
+        ensure  => present,
+        path    => '/etc/cron.d/to-graphite-magnets',
+        content => template("${module_name}/cron/to-graphite-magnets.erb"),
+	require => [File['rfx_commands']],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
 
-    file {'update_sun_rise_set':
-        ensure => present,
-        path   => '/etc/cron.d/update-sun-rise-set',
-        source => "puppet:///modules/${module_name}/cron.d/update-sun-rise-set",
+    file {'cron_update_sun_rise_set':
+        ensure  => present,
+        path    => '/etc/cron.d/update-sun-rise-set',
+        content => template("${module_name}/cron/update-sun-rise-set.erb"),
         require => [File['rfx_commands']],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
   
-     file {'schedule_lights_around_sunset':
-        ensure => present,
-        path   => '/etc/cron.d/schedule-lights-around-sunset',
-        source => "puppet:///modules/${module_name}/cron.d/schedule-lights-around-sunset",
+     file {'cron_schedule_lights_around_sunset':
+        ensure  => present,
+        path    => '/etc/cron.d/schedule-lights-around-sunset',
+        content => template("${module_name}/cron/schedule-lights-around-sunset.erb"),
         require => [File['rfx_commands']],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
     }
  
   

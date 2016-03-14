@@ -38,14 +38,5 @@ class hallonet::rfxcmd::opt {
         require => [File['rfxcmd_var','rfxcmd_initd'],Package[$params::rfxcmd_packages]]
     }
 
-    file {'cron_sql_backup':
-        ensure => present,
-        path   => '/etc/cron.d/mysql-backup',
-        source => "puppet:///modules/${module_name}/cron.d/mysql-backup",
-        require => Package[$params::rfxcmd_packages],
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
 
 }

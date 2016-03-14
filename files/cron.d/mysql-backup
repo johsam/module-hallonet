@@ -1,1 +1,0 @@
-05 08,20 * * * pi /home/pi/rfx-commands/scripts/sql-backup.sh

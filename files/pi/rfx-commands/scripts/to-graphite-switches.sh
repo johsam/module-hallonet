@@ -32,8 +32,14 @@ sensors=${scriptDir}/../sensors.cfg
 #	State of all magnets
 #
 
-mysql rfx -urfxuser -prfxuser1 \
-	-e "set @switches_all:='${switches_magnets}'; source ${scriptDir}/../static/sql/last-switches.sql;" > "${sqlfile}"
+mysql rfx -uxrfxuser -prfxuser1 \
+	-e "set @switches_all:='${switches_magnets}'; source ${scriptDir}/../static/sql/last-switches.sql;" > "${sqlfile}" 2> /dev/null
+status=$?
+
+if [ ${status} -ne 0 ] ; then
+    logger -t $(basename $0) "MySQL query failed..."
+    exit 1
+fi
 
 #
 #	Prepare for graphite

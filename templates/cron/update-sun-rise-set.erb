@@ -1,0 +1,6 @@
+#
+#   Managed by puppet, Do NOT edit...
+#
+MAILTO=<%= scope.lookupvar("mailme") %>
+#
+05 00 * * * pi [ -w /var/log ] && /home/pi/rfx-commands/scripts/update-sun-rise-set.sh

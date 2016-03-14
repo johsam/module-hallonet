@@ -1,1 +1,0 @@
-05 00 * * * pi /home/pi/rfx-commands/scripts/update-sun-rise-set.sh

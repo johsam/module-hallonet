@@ -1,0 +1,6 @@
+#
+#   Managed by puppet, Do NOT edit...
+#
+MAILTO=<%= scope.lookupvar("mailme") %>
+#
+*/10 * * * * root [ -w /var/log ] && /usr/local/bin/WiFi_Check.sh 2>&1 >> /var/log/WiFi_Check.log
