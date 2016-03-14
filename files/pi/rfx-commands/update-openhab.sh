@@ -29,6 +29,15 @@ settings=${scriptDir}/settings.cfg
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
 #
+#   Check if we could write our logs
+#
+
+if [ ! -w "/var/rfxcmd" ] ; then
+    logger -t $(basename $0) "Directory '/var/rfxcmd' is not writable..."
+    exit 1
+fi
+
+#
 #	Start work
 #
 

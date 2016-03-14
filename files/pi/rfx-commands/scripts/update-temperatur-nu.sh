@@ -39,6 +39,15 @@ temperaturHash="443da56c96fc336d3ba366eb9e685f0f"
 temperaturUrl="${temperaturBaseUrl}?hash=${temperaturHash}&t="
 now="$(date '+%F %T')"
 
+#
+#   Check if we could write our logs
+#
+
+if [ ! -w "/var/rfxcmd" ] ; then
+    logger -t $(basename $0) "Directory '/var/rfxcmd' is not writable..."
+    exit 1
+fi
+
 #	Log it all 
 
 exec >> /var/rfxcmd/update-temperatur-nu-out.log 2>&1 
