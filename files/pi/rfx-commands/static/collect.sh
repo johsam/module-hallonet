@@ -76,6 +76,13 @@ shift `expr ${OPTIND} - 1` ; OPTIND=1
 log "Collecting data..."
 call ${scriptDir}/0_create-json.sh -c "${runCounter}" -d ${jsontmpfile}
 
+python -mjson.tool "${jsontmpfile}" > /dev/null 2>&1; status=$?
+
+if [ ${status} -ne 0 ] ; then
+    logger -t $(basename $0) "Invalid json data in '${jsontmpfile}' detected, Skipping upload..."
+    exit 1
+fi
+
 #
 #	Use flock to prevent any script to manipulate sensors.json
 #
