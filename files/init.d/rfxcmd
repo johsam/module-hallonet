@@ -39,7 +39,7 @@ echo "$1" >> /var/rfxcmd/rfxcmd-error.log
 
 case "$1" in
 start)
-    	/home/pi/rfx-commands/pubnub/publish-message.sh -f "Service rfxcmd ${1}"
+    	/home/pi/rfx-commands/pubnub/publish-message.sh -f "${0} ${1}"
 
 	printf "%-50s" "Starting $NAME..."
     	
@@ -79,7 +79,7 @@ status)
     fi
 ;;
 stop)
-    /home/pi/rfx-commands/pubnub/publish-message.sh -f "Service rfxcmd ${1}"
+    /home/pi/rfx-commands/pubnub/publish-message.sh -f "${0} ${1}"
     printf "%-50s" "Stopping $NAME"
     PID=`cat $PIDFILE`
     cd $DAEMON_PATH

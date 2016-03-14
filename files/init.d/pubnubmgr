@@ -31,7 +31,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 DAEMON=/home/pi/rfx-commands/pubnub/pubnubmgr.py
 DAEMONOPTS="--pid-file ${PIDFILE} --allow-publish-file ${PUBNUB_ALLOWPUBLISH} --pubnub-subkey ${PUBNUB_SUBKEY} --pubnub-pubkey ${PUBNUB_PUBKEY} --pubnub-channel ${PUBNUB_CHANNEL}"
 
-/home/pi/rfx-commands/pubnub/publish-message.sh -f "Service ${0} ${1}"
+/home/pi/rfx-commands/pubnub/publish-message.sh -f "${0} ${1}"
 
 
 case "$1" in
