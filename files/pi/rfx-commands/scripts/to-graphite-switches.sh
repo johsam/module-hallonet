@@ -32,7 +32,7 @@ sensors=${scriptDir}/../sensors.cfg
 #	State of all magnets
 #
 
-mysql rfx -uxrfxuser -prfxuser1 \
+mysql rfx -urfxuser -prfxuser1 \
 	-e "set @switches_all:='${switches_magnets}'; source ${scriptDir}/../static/sql/last-switches.sql;" > "${sqlfile}" 2> /dev/null
 status=$?
 
