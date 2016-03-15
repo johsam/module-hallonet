@@ -38,6 +38,18 @@ exit 0
 #
 #-------------------------------------------------------------------------------
 
+
+[ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
+
+functions=${scriptDir}/../functions.sh
+settings=${scriptDir}/../settings.cfg
+
+# Sanity checks
+
+[ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
+[ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
+
+
 /bin/ping -c 2 -I wlan0 my.openhab.org > /dev/null 2> /dev/null ; status=$?
 
 if [ ${status} -ne 0 ] ; then
@@ -53,8 +65,8 @@ fi
 	--silent \
 	--connect-timeout 15 \
 	--max-time        30 \
-	--user j.samuelson@bredband.net:hallonet@ripan \
-	--url "https://my.openhab.org/openhab.app?sitemap=ripan#_Home"
+	--user            ${MY_OPENHAB_USER} \
+	--url             "https://my.openhab.org/openhab.app?sitemap=ripan#_Home"
   
 ) > "${tmpfile}" ; status=$?
 
