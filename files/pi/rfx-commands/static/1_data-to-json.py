@@ -426,9 +426,16 @@ deviceAliases = {
         "alias": "Sony Android TV",
         "order": 11
     },
+    
     "11": {
         "alias": "Smultronet",
-        "order": 12
+        "order": 12,
+        "divider": True
+    },
+
+    "13": {
+        "alias": "Edup Wifi Socket",
+        "order": 13
     }
 
 }

@@ -17,6 +17,7 @@ trap "exit 2" 1 2 3 15
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
 forceSend=0
+notify=""
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
@@ -32,10 +33,11 @@ settings=${scriptDir}/../settings.cfg
 
 # Any parameters ?
 
-while getopts "f" _opts
+while getopts "fn" _opts
 do
 	case "${_opts}" in
 	f) forceSend=1;;
+	n) notify="--notify";;
 	?) exit 1 ;;
 	esac
 done
@@ -55,7 +57,8 @@ if [ ${forceSend} -ne 0 ] || [ -r "${PUBNUB_ALLOWPUBLISH}" ] ; then
 		--pubnub-subkey   "${PUBNUB_SUBKEY}" \
 		--pubnub-pubkey   "${PUBNUB_PUBKEY}" \
 		--pubnub-channel  "${PUBNUB_CHANNEL_SENSORS}" \
-		--message         "${1}"
+		--message         "${1}" \
+		${notify}
 else 
 	logger "Should send '${1}' to channel '${PUBNUB_CHANNEL_SENSORS}'"
 fi

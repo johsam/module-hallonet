@@ -112,12 +112,21 @@ parser.add_argument(
     help='Message to Hallonet'
 )
 
+parser.add_argument(
+    '--notify', required=False,
+    dest='notify',
+    action='store_true',
+    help='Send notify'
+)
 
 
 args = parser.parse_args()
 
-def log_publish(t,i):
-    syslog.syslog("Channel '{0}': type:'{1}' info:'{2}'".format(args.pubnub_channel, t, i))
+def log_publish(t,i,l=None):
+    if l is not None:
+    	syslog.syslog("Channel '{0}': type:'{1}' info:'{2}' level:'{3}'".format(args.pubnub_channel, t, i,l))
+    else:
+    	syslog.syslog("Channel '{0}': type:'{1}' info:'{2}'".format(args.pubnub_channel, t, i))
 
 
 def publish_sensor(s):
@@ -153,10 +162,22 @@ def publish_message(msg = ''):
     ps = {}
     ps['type'] = 'message'
     ps['message'] = msg
-    
+    ps['level'] = 'toast'
+
     if len(msg):
         pubnub.publish(args.pubnub_channel, ps)
         log_publish(ps['type'],msg)
+
+
+def publish_notify(msg = ''):
+    ps = {}
+    ps['type'] = 'message'
+    ps['message'] = msg
+    ps['level'] = 'notify'
+    
+    if len(msg):
+        pubnub.publish(args.pubnub_channel, ps)
+        log_publish(ps['type'],msg,ps['level'])
 
 
 def processSensors(a, id, value, humidity, stamp, signal):
@@ -238,6 +259,9 @@ with open(args.file) as data_file:
 
     if args.refresh is True:
         publish_refresh()
-    
+ 
     if len(args.message):
-        publish_message(args.message)
+    	if args.notify is True:
+            publish_notify(args.message)
+    	else:   
+            publish_message(args.message)
