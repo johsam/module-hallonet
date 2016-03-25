@@ -145,6 +145,16 @@ class MyDaemon(Daemon):
             syslog.syslog("Channel '%s': %s -> %s -> %s" % (channel, "switch", nexaid, state))
             self.call_command(info, command)
 
+        #
+        # Message ?
+        #
+
+        if message['type'] == 'message' and 'message' in message:
+	    msg = message['message']
+            syslog.syslog("Channel '%s': message from hallonet -> '%s'" % (channel, msg))
+
+
+
     def run(self):
 
         self.pubnub = Pubnub(
