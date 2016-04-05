@@ -119,6 +119,12 @@ parser.add_argument(
     help='Send notify'
 )
 
+parser.add_argument(
+    '--devices', required=False,
+    default='',
+    dest='devices',
+    help='Devices to Hallonet'
+)
 
 args = parser.parse_args()
 
@@ -180,6 +186,16 @@ def publish_notify(msg = ''):
         log_publish(ps['type'],msg,ps['level'])
 
 
+def publish_devices(d,dl):
+    ps = {}
+    ps['type'] = 'devices'
+    ps['devices'] = d
+
+    pubnub.publish(args.pubnub_channel, ps)
+    log_publish(ps['type'],dl)
+
+
+
 def processSensors(a, id, value, humidity, stamp, signal):
 
     for i, item in enumerate(a):
@@ -226,6 +242,15 @@ def processSwitches(a, id, state, stamp, signal):
             publish_switch(a[i])
             break
 
+def processDevices(a,dev_ids):
+    result = []
+    dl = dev_ids.split(',')
+    for d in a:
+	if d['id'] in dl:
+	    result.append(d)
+    
+    publish_devices(result,dev_ids)
+	
 
 #
 # main starts here
@@ -265,3 +290,8 @@ with open(args.file) as data_file:
             publish_notify(args.message)
     	else:   
             publish_message(args.message)
+
+    if args.devices != '':
+    	if 'devices' in json_data:
+	    processDevices(json_data['devices'],args.devices)
+ 
