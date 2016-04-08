@@ -250,7 +250,7 @@ switchAliases = {
         "fab": False,
         "order": 5
     },
-    "03D242AA_16": {
+    "00CFDCEE_10": {
         "alias":   u"Ytterd\u00F6rren",
         "type":    "magnet",
         "subtype": "door",

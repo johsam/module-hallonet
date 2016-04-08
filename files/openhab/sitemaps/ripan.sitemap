@@ -155,7 +155,7 @@ sitemap ripan label="Ripstigen" {
    }
 
    Frame label="Dörrar och fönster" {
-	Text  item=M_03D242AA_16
+	Text  item=M_00CFDCEE_10
 	Text  item=M_00CFDEEA_10
 	Text  item=M_00CFD656_10
    }
