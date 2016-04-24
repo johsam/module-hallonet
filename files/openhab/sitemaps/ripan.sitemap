@@ -10,13 +10,7 @@ sitemap ripan label="Ripstigen" {
    Frame label="Utomhus just nu" {
         Text item=OutAvgLast valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"] {
    		
-		Frame label="Anna:s" {
-        		Text item=T_50_3B00_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_3B00_last_stamp
-        		Text item=T_50_3B00_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_3B00_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-   		}
-   		Frame label="Förrådet Tak" {
+  		Frame label="Förrådet Tak" {
         		Text item=T_50_0700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_last_stamp
         		Text item=T_50_0700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -71,11 +65,6 @@ sitemap ripan label="Ripstigen" {
 
    Frame label="Utomhus idag" {
         Text item=OutMaxToday valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"] {
-   		
-		Frame label="Anna:s" {
-			Text item=T_50_3B00_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_3B00_max_stamp
-		}	
 
 		Frame label="Förrådet Tak" {
 			Text item=T_50_0700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -111,10 +100,6 @@ sitemap ripan label="Ripstigen" {
 
         Text item=OutMinToday valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"] {
 
-		Frame label="Anna:s" {
-			Text item=T_50_3B00_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_3B00_min_stamp
-		}	
 
 		Frame label="Förrådet Tak" {
 			Text item=T_50_0700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
