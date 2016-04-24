@@ -97,6 +97,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	/usr/bin/curl \
 		-silent \
 		--fail \
+		--location \
 		--connect-timeout 15 \
 		--max-time        30 \
 		--url             "${temperaturUrl}${tnumber}" \

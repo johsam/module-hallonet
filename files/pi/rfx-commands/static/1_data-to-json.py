@@ -528,7 +528,8 @@ def readMissingFile(filename):
 	    
 	    if '0' in signals:
 		for k,v in signals['0']['sensors'].items():
-		    counter += len(v['missed'])	    
+		    #counter += len(v['missed'])	    
+		    counter += 1	    
 
     return counter
 
