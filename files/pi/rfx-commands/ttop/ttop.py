@@ -12,6 +12,9 @@ import Queue
 import socket
 import time
 
+from math import sin, radians
+
+
 from os import path
 from pubnub import Pubnub
 
@@ -20,8 +23,8 @@ sys.path.append(path.dirname(path.abspath(__file__)) + '/lib')
 
 from FileFollower import FileFollower
 from Sensors import SensorList
-
-
+from drawille import drawille
+from graph import *
 
 #
 # Parse arguments
@@ -30,25 +33,40 @@ from Sensors import SensorList
 parser = argparse.ArgumentParser(description='Simple top for sensors')
 
 parser.add_argument(
-	'--pubnub-subkey', required=True,
-	default='',
-	dest='pubnub_subkey',
-	help='Pubnub subscribe key'
+    '--pubnub-subkey', required=True,
+    default='',
+    dest='pubnub_subkey',
+    help='Pubnub subscribe key'
 )
 
 
 parser.add_argument(
-	'--pubnub-pubkey', required=True,
-	default='',
-	dest='pubnub_pubkey',
-	help='Pubnub publish key'
+    '--pubnub-pubkey', required=True,
+    default='',
+    dest='pubnub_pubkey',
+    help='Pubnub publish key'
 )
 
 parser.add_argument(
-	'--pubnub-channel', required=True,
-	default='',
-	dest='pubnub_channel',
-	help='Pubnub channel'
+    '--pubnub-channel', required=True,
+    default='',
+    dest='pubnub_channel',
+    help='Pubnub channel'
+)
+
+parser.add_argument(
+    '--seed', required=False,
+    default='',
+    dest='seedfile',
+    help='Initial history data'
+)
+
+parser.add_argument(
+    '--max-vals', required=False,
+    type=int,
+    default=145,
+    dest='maxvals',
+    help='Length of data to keep'
 )
 
 
@@ -56,12 +74,12 @@ args = parser.parse_args()
 
 
 #
-#	Variables
+#   Variables
 #
 
 locale.setlocale(locale.LC_ALL, "")
 
-re_50 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});\d+;50;..;..;(....);\d;(\d);(.*)')
+re_50 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});(\d+);50;..;..;(....);\d;(\d);(.*)')
 re_52 = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2});\d+;52;..;..;(....);\w+;(.*?);(\d+);\d;(\d)')
 re_tnu = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+\d+\s+\d+\s+(.*?)\s+')
 re_rest = re.compile('\d{4}-\d{2}-\d{2}\s(\d{2}:\d{2}:\d{2})\s+PI_core_temp\s+\-\>\s+(\d{2,3}\.\d{2,3})')
@@ -88,17 +106,25 @@ sensorHeaders = [
     ("outside_median", "Median Utomhus"),
     ("inside", "Inomhus"),
     ("humidity", "Luftfuktighet"),
-    ("pi", "Pi")
+    ("graph", "Historik")
 ]
 
 
 pubnub = Pubnub(publish_key=args.pubnub_pubkey,
-                    subscribe_key=args.pubnub_subkey,
-                    secret_key='',
-                    cipher_key='',
-                    ssl_on=False
-)
+                subscribe_key=args.pubnub_subkey,
+                secret_key='',
+                cipher_key='',
+                ssl_on=False
+                )
 
+
+history = graph.Graph(windowWidth - 2, 8, args.maxvals)
+
+if args.seedfile != '':
+    with open(args.seedfile) as seedfile:
+        for line in seedfile:
+            s = str.split(line, "\t")
+            history.append(int(s[0]), float(s[1]))
 
 # debugFile = open('/tmp/ttop.log', 'w' ,0)
 
@@ -145,13 +171,18 @@ def process_log_line(filename, line, stdscr):
     lastRowUpdated = 1
     stamp = '00:00:00'
     signal = ' '
-    
+    temp = None
+
     m = re_50.match(line)
     if m:
         stamp = m.group(1)
-        id = m.group(2)
-        signal = m.group(3)
-        temp = m.group(4)
+        epoch = m.group(2)
+        id = m.group(3)
+        signal = m.group(4)
+        temp = m.group(5)
+        #if id == 'CF00':
+    #    history.append(int(epoch),float(temp))
+    #    history.draw()
 
     m = re_52.match(line)
     if m:
@@ -162,8 +193,8 @@ def process_log_line(filename, line, stdscr):
         signal = m.group(5)
 
         if id == '9700':
-            sensors.settemp(id='FFF0', stamp=stamp, temp=float(humidity),signal=signal)
-	if id == 'B700':
+            sensors.settemp(id='FFF0', stamp=stamp, temp=float(humidity), signal=signal)
+        if id == 'B700':
             sensors.settemp(id='FFF1', stamp=stamp, temp=float(humidity),signal=signal)
         if id == '8700':
             sensors.settemp(id='FFF2', stamp=stamp, temp=float(humidity),signal=signal)
@@ -175,6 +206,8 @@ def process_log_line(filename, line, stdscr):
         stamp = m.group(1)
         id = '0000'
         temp = m.group(2)
+    	history.append(int(time.time()), float(temp))
+    	history.draw()
 
     m = re_rest.match(line)
     if m:
@@ -183,10 +216,30 @@ def process_log_line(filename, line, stdscr):
         temp = m.group(2)
 
     if id != '':
-        sensors.settemp(id=id, stamp=stamp, temp=temp,signal=signal)
-        # debugFile.write(id + " -> " + stamp + " -> " + sensors.sensorFormatTemp(temp) + "\n")
+        sensors.settemp(id=id, stamp=stamp, temp=temp, signal=signal)
 
     stdscr.erase()
+
+    doLines = history.getLines()
+    doAverage = history.getAverage()
+    doBresenHam = history.getBresenHam()
+
+    title = "Historik"
+    options = ""
+
+    if doAverage is False:
+        options = options + "a"
+
+    if doLines is False:
+        options = options + "l"
+
+    if doBresenHam is False:
+        options = options + "b"
+
+    if len(options) > 0:
+        title = title + " (-" + options + ")"
+
+    sensorHeaders[6] = (sensorHeaders[6][0], title)
 
     for loc, head in sensorHeaders:
 
@@ -196,7 +249,7 @@ def process_log_line(filename, line, stdscr):
 
         for rid in sensors.getsidsfromlocation(loc):
             alias = sensors.getsensoralias(rid)
-	    histtemp = sensors.getsensorhistformatted(rid)
+            histtemp = sensors.getsensorhistformatted(rid)
             temp = sensors.getsensortempformatted(rid)
             stamp = sensors.getsensorstamp(rid)
             signal = sensors.getsensorsignal(rid)
@@ -207,28 +260,38 @@ def process_log_line(filename, line, stdscr):
 
             print_vbarsAt(stdscr, offset, windowWidth)
 
-	    alias_colstart = 2
-	    signal_colstart = 16
-	    stamp_colstart = signal_colstart + 2
-	    hist_colstart = stamp_colstart + 12
-	    trend_colstart = hist_colstart + 6
-	    temp_colstart = trend_colstart + trendsize + 1
+            alias_colstart = 2
+            signal_colstart = 16
+            stamp_colstart = signal_colstart + 2
+            hist_colstart = stamp_colstart + 12
+            trend_colstart = hist_colstart + 6
+            temp_colstart = trend_colstart + trendsize + 1
 
             stdscr.addstr(offset, alias_colstart, alias, curses.color_pair(aliasColor))
             stdscr.addstr(offset, signal_colstart, signal, curses.color_pair(darkColor))
             stdscr.addstr(offset, stamp_colstart, stamp, curses.color_pair(stampColor))
-	    
-            stdscr.addstr(offset, hist_colstart, histtemp,curses.color_pair(darkColor))
-	    stdscr.addstr(offset, trend_colstart, trend)
+
+            stdscr.addstr(offset, hist_colstart, histtemp, curses.color_pair(darkColor))
+            stdscr.addstr(offset, trend_colstart, trend)
             stdscr.addstr(offset, temp_colstart, temp)
-	    
+
             row = row + 1
 
-    offset = offset + 1
+    offset = offset + 5
+    c = [160, 166, 172, 32, 26, 20]
+    c = [88, 89, 90, 91, 92, 93]
+    i = 0
+    for r in history.rows():
+        print_vbarsAt(stdscr, offset, windowWidth)
+        stdscr.addstr(offset, 1, "".join(r).encode('utf-8'))
+        offset = offset + 1
+        i = i + 1
+
     print_bottomHeaderAt(stdscr, offset, windowWidth)
 
     stdscr.move(lastRowUpdated, 2)
     stdscr.refresh()
+
 
 #
 # pn_send_state
@@ -237,12 +300,12 @@ def process_log_line(filename, line, stdscr):
 def pn_send_state(state):
     ip = [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
     now = time.strftime("%F %T")
-    
+
     msg = {}
     msg['type'] = 'status'
-    msg['info'] = {'application': 'ttop','ip': ip, 'version': '1.0', 'timestamp': now}
+    msg['info'] = {'application': 'ttop', 'ip': ip, 'version': '1.0', 'timestamp': now}
     msg['status'] = {'state': state}
-    
+
     pubnub.publish(args.pubnub_channel, msg)
 
 
@@ -254,9 +317,7 @@ def pn_send_state(state):
 def ttop(stdscr):
     stdscr.nodelay(True)
 
-
     pn_send_state('started')
-
 
     # Color stuff
     curses.start_color()
@@ -280,7 +341,7 @@ def ttop(stdscr):
     sensors.addsensor(id='9700', alias='Bokhyllan', location='inside')
 
     # Pi
-    sensors.addsensor(id='FFFA', alias='Pi', location='pi')
+    #sensors.addsensor(id='FFFA', alias='Pi', location='pi')
 
     # Average for outdoor
     sensors.addaverage(id='FFFF', alias='Medel')
@@ -294,22 +355,21 @@ def ttop(stdscr):
     sensors.addsensor(id='FFF2', alias='Tujan', location='humidity', offset=2)
     sensors.addsensor(id='FFF3', alias='Komposten', location='humidity', offset=3)
 
+    history.draw()
+
     process_log_line("", "", stdscr)
 
     # Create new threads
 
-    thread1 = FileFollower('/var/rfxcmd/sensor.csv', lineQueue,1)
+    thread1 = FileFollower('/var/rfxcmd/sensor.csv', lineQueue, 1)
     thread2 = FileFollower('/var/rfxcmd/temperatur-nu.log', lineQueue, 15)
-    thread3 = FileFollower('/var/rfxcmd/update-rest.log', lineQueue, 15)
 
     thread1.setDaemon(True)
     thread2.setDaemon(True)
-    thread3.setDaemon(True)
 
     # Start new Threads
     thread1.start()
     thread2.start()
-    thread3.start()
 
     #
     # Waith for input
@@ -317,29 +377,44 @@ def ttop(stdscr):
 
     while True:
         try:
-            line = lineQueue.get()
-            process_log_line("", line, stdscr)
+            log_line = lineQueue.get(True, 2)
+            process_log_line("", log_line, stdscr)
+        except Queue.Empty:
+            pass
         except:
             raise
 
         try:
             key = stdscr.getkey()
-        except:  # in no delay mode getkey raise and exeption if no key is press
+        except:
             key = None
 
-        if key == "r":  # of we got a space then break
+        if key == "r":
             sensors.resettrend()
             process_log_line("", "", stdscr)
 
-        if key == "q":  # of we got a space then break
-            break
+        if key == "a":
+            history.toggleAverage()
+            history.draw()
+            process_log_line("", "", stdscr)
+
+        if key == "l":
+            history.toggleLines()
+            history.draw()
+            process_log_line("", "", stdscr)
+
+        if key == "b":
+            history.toggleBresenham()
+            history.draw()
+            process_log_line("", "", stdscr)
+
+        if key == "q":
+                break
 
     thread1.stop()
     thread2.stop()
-    thread3.stop()
 
     pn_send_state('stopped')
-
 
 
 # Run through wrapper...
