@@ -42,7 +42,7 @@ while getopts "l:wph" opt
 do
         case $opt in
             l) arg_count="${OPTARG}";;
-            w) args="--all" ; signals="3";;
+            w) args="--all" ; signals="4";;
             p) pretty="--pretty";;
             h) human="--human";;
             \?) usage ;;

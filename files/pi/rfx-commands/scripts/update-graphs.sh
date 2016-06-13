@@ -39,7 +39,7 @@ shift `expr $OPTIND - 1` ; OPTIND=1
 
 
 if [ ${donow} -eq 1 ] ; then
-	curl -s "http://localhost:8080/rrdchart.png?&items=T_NU_last,T_52_8700_last,T_50_0700_last,T_52_B700_last,T_50_CF00_last,T_50_AC00_last,T_50_3B00_last,T_52_A700_last&period=D&w=1024&h=442" > ${tmpfile}
+	curl -s "http://localhost:8080/rrdchart.png?&items=T_NU_last,T_52_8700_last,T_50_0700_last,T_52_B700_last,T_50_CF00_last,T_50_AC00_last,T_52_A700_last&period=D&w=1024&h=442" > ${tmpfile}
 	mv ${tmpfile} ${imageDir}/now.png
 fi
 
