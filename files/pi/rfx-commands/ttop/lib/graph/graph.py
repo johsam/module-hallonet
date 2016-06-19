@@ -1,5 +1,6 @@
 import drawille
 import time
+import json
 
 
 class Graph(object):
@@ -46,7 +47,46 @@ class Graph(object):
     def rows(self):
         return self.drows
 
-    def _bresenham(self, x, y, x2, y2):
+    def _bresenham_1(self, x0, y0, x1, y1):
+
+    # implemented straight from WP pseudocode
+
+        dx = x1 - x0
+        if dx < 0:
+                dx = -dx
+
+        dy = y1 - y0
+        if dy < 0:
+                dy = -dy
+
+        if x0 < x1:
+                sx = 1
+        else:
+                sx = -1
+
+        if y0 < y1:
+                sy = 1
+        else:
+                sy = -1
+
+        err = dx - dy
+
+        while True:
+            self._set(x0, y0)
+
+            if x0 == x1 and y0 == y1:
+                break
+
+            e2 = 2 * err
+            if e2 > -dy:
+                err -= dy
+                x0 += sx
+
+            if e2 < dx:
+                err += dx
+                y0 += sy
+
+    def _bresenham_2(self, x, y, x2, y2):
         """Brensenham line algorithm"""
         steep = 0
         coords = []
@@ -89,7 +129,7 @@ class Graph(object):
             y2 = 0
 
         if (self.doBresenham):
-            self._bresenham(
+            self._bresenham_1(
                 drawille.normalize(x1),
                 drawille.normalize(y1),
                 drawille.normalize(x2),
@@ -110,8 +150,8 @@ class Graph(object):
 
     def _normalize(self):
         self.normalized = []
-        self.miny = 1000
-        self.maxy = -1000
+        self.miny = 10000.0
+        self.maxy = -10000.0
 
         for d in self.data:
             if d > self.maxy:
@@ -124,11 +164,12 @@ class Graph(object):
             self.miny *= 0.95
 
         dy = float(self.maxy - self.miny)
-        if dy == 0.0:
-            dy = 1.0
 
         for d in self.data:
-            v = 1.0 - (float(d - self.miny) / dy)
+            if dy != 0.0:
+                v = 1.0 - (float(d - self.miny) / dy)
+            else:
+            	v = 0.5
             self.normalized.append(v)
 
     def _formatFloat2(self, temp):
@@ -136,11 +177,6 @@ class Graph(object):
 
     def _formatFloat1(self, temp):
         return "{:.1f}".format(round(float(temp), 1))
-
-    def _drawxtick(self, tx):
-        ty = self.ph - 1
-        self._set(tx, ty)
-        self._set(tx, ty-1)
 
     def _drawlegend(self, nl):
         ltop = self._formatFloat1(self.maxy)
@@ -152,6 +188,24 @@ class Graph(object):
 
         self.canvas.set_text(0, 0, ltop)
         self.canvas.set_text(0, self.ph - 4, lbottom)
+
+    def _drawxtick(self, tx):
+        ty = self.ph - 1
+        self._set(tx, ty)
+        self._set(tx, ty-1)
+
+    def _drawxticks(self, t):
+        tlen = len(t)
+
+        #   Sort the ticks
+
+        tk = sorted(t.keys())
+
+        for i, x in enumerate(tk):
+            if i == tlen / 2:
+                stamp = time.strftime('%H:%M', time.localtime(float(t[x])))
+                self.canvas.set_text(x - 4, self.ph - 4, stamp)
+            self._drawxtick(x)
 
     def box(self):
         rw = self.pw - 1
@@ -176,54 +230,52 @@ class Graph(object):
         self._drawlegend(nlen)
 
         if nlen > 1:
-            lastx = 0
-            deltay = []
-            px = 0.0
-            py = 0.0
+            transform = {}
+            xticks = {}
 
             for x, d in enumerate(self.normalized):
-                rx = (x * (self.pw - 1)) / (nlen - 1)
+                rx = int(round((x * (self.pw - 1)) / (nlen - 1)))
                 ry = d * (self.ph - 1)
+
+                if rx not in transform:
+                    transform[rx] = []
+                transform[rx].append(ry)
 
                 if self.doTicks is True:
                     tick = self.stamps[x]
                     tick5 = tick - (tick % 300)
 
                     if (tick5 % (3600 * 1)) == 0:
-                        self._drawxtick(rx)
+                        xticks[rx] = tick
 
-                if int(rx) == self.pw / 2:
-                    stamp = time.strftime('%H:%M', time.localtime(float(self.stamps[x])))
-                    self.canvas.set_text(rx - 4, self.ph - 4, stamp)
+            keys = sorted(transform.keys())
 
-                if int(rx) != lastx:
+            # Get the first position
 
-                    if len(deltay) == 0:
-                            deltay.append(ry)
+            lastx = 0
+            lasty = newy = sum(transform[keys[0]]) / float(len(transform[keys[0]]))
 
-                    if self.doAverage is True:
-                        dy = sum(deltay) / float(len(deltay))
-                    else:
-                        dy = deltay[0]
+            for i, newx in enumerate(keys):
+                if i == 0:
+                    continue
 
-                    if self.doLines is True and rx != 0.0 and lastx != 0.0:
-                        self.line(px, py, lastx, dy)
-                    else:
-                        self._set(lastx, dy)
-
-                    px = lastx
-                    py = dy
-
-                    lastx = rx
-                    deltay = []
+                dy = transform[newx]
+                if self.doAverage is True:
+                    newy = sum(dy) / float(len(dy))
                 else:
-                    deltay.append(ry)
+                    newy = dy[len(dy) - 1]
 
-            #   And the last point
+                if self.doLines is True:
+                    self.line(lastx, lasty, newx, newy)
+                else:
+                    self._set(newx, newy)
 
-            if self.doLines is True:
-                self.line(px, py, lastx, dy)
-            else:
-                self._set(rx, ry)
+            	lastx = newx
+            	lasty = newy
+
+            if self.doTicks is True:
+                self._drawxticks(xticks)
 
         self.drows = self.canvas.rows()
+
+        return
