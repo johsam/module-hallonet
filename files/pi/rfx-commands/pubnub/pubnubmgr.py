@@ -27,7 +27,7 @@ class MyDaemon(Daemon):
         self.pubnub.publish(channel, {"type": "message", "message": message})
     	syslog.syslog("Sent '" + message + "' to channel (" + channel + ")")
 
-    def call_command(self, info, command, feedback=False):
+    def call_command(self, info, command, feedback=False,reportError=True):
 
         try:
             syslog.syslog("Calling '" + command + "'")
@@ -39,7 +39,8 @@ class MyDaemon(Daemon):
         except subprocess.CalledProcessError as e:
             msg = "Output from command was '" + e.output.rstrip('\n') + "' exitcode=" + str(e.returncode)
             syslog.syslog(syslog.LOG_WARNING, msg)
-            self.send_message(args.pubnub_channel + "-sensors", msg)
+            if reportError is True:
+	    	self.send_message(args.pubnub_channel + "-sensors", msg)
         pass
 
     #
@@ -81,6 +82,7 @@ class MyDaemon(Daemon):
             action = request['action']
             target = request['target']
             command = ''
+    	    sendError = True
 
             if action == 'restart':
                 if target == 'rfxcmd':
@@ -89,12 +91,19 @@ class MyDaemon(Daemon):
                 if target == 'openhab':
                     command = "/usr/sbin/service openhab restart"
 
+                if target == 'has':
+                    command = "su - pi -c 'ssh smultronet sudo /usr/sbin/service home-assistant restart'"
+
+                if target == 'smultronet':
+                    command = "su - pi -c 'ssh smultronet sudo /sbin/reboot'"
+		    sendError = False
+
                 if target == 'hallonet':
                     command = "/sbin/reboot"
 
                 if len(command):
                     syslog.syslog("Channel '%s': %s -> %s" % (channel, action, target))
-                    self.call_command(info, command)
+                    self.call_command(info, command, reportError = sendError)
 
                 else:
                     syslog.syslog("Channel '%s': Unknown target '%s' for action '%s' (%s)" % (channel, target, action, json.dumps(message)))

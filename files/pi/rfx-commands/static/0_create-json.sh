@@ -16,7 +16,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" "${switchfile}" "${citiestmpfile}" "${scantmpfile}" > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" "${switchfile}" "${citiestmpfile}" "${scantmpfile}" "${hitsfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 
@@ -38,6 +38,7 @@ minhumfile="/tmp/`basename $0`-$$-minhum.tmp"
 maxhumfile="/tmp/`basename $0`-$$-maxhum.tmp"
 
 stampfile="/tmp/`basename $0`-$$-stamp.tmp"
+hitsfile="/tmp/`basename $0`-$$-hits.tmp"
 
 systemfile="/tmp/`basename $0`-$$-system.tmp"
 
@@ -131,7 +132,7 @@ openhab_load=$(awk -v pid="${openHabPid}" 'BEGIN {s=0;c=1} $1 ~ pid {s += $9;c++
 openhab_restarted=$(stat --printf=%z /var/run/openhab.pid | awk -F. '{print $1}')
 openhab_status=$(${scriptDir}/../scripts/check-openhab-online.sh | awk '{print $3}')
 
-log "Collect from pi..."
+log "Collect from host(s)..."
 
 #	loadavg
 
@@ -204,14 +205,19 @@ formatSystemInfo "static" "timestamp"	"${now}"
 formatSystemInfo "misc" "rfxcmd_last_restart"    "${rfxcmd_restart}"
 formatSystemInfo "misc" "pubnubmgr_last_restart" "${pubnubmgr_restart}"
 
+cat "${stampfile}"
+
+#   Collect from mint-black
 curl -s --connect-timeout 5 --max-time 5 'http://mint-black:5000/collect/collect.php' 2> /dev/null
 
-cat "${stampfile}"
+#Collect from smultronet
+ssh pi@smultronet ~/bin/smultronet.sh
+  
 
 } > "${systemfile}"
 
 
-log "Collect from pi done..."
+log "Collect from host(s) done..."
 
 
 #
@@ -240,13 +246,12 @@ mysql nmap -urfxuser -prfxuser1 \
 log "Got nmap results..."
 
 
-
 #	Sql stuff
 
 log "Collect from mysql..."
 
 #
-#	Last, min and max temps
+#	Last,min and max temps
 #
 
 mysql rfx -urfxuser -prfxuser1 \
@@ -258,6 +263,10 @@ mysql rfx -urfxuser -prfxuser1 \
 mysql rfx -urfxuser -prfxuser1 \
 	-e "set @sensors_all:='${sensors_all}'; source ${scriptDir}/sql/max-today.sql;" > "${maxfile}"
 
+#   Number of hits during the last hour
+
+mysql rfx -urfxuser -prfxuser1 \
+	-e "source ${scriptDir}/sql/last-hour-count.sql;" > "${hitsfile}"
 
 #	Append tnu data i.e fake sensor 0000
 
@@ -304,18 +313,20 @@ log "Calling '$(basename ${scriptDir}/1_data-to-json.py)'..."
 
 (
 python -u ${scriptDir}/1_data-to-json.py \
-        --last-file     "${lastfile}" \
-        --min-file      "${minfile}" \
-        --max-file      "${maxfile}" \
-        --min-hum-file  "${minhumfile}" \
-        --max-hum-file  "${maxhumfile}" \
-        --system-file   "${systemfile}" \
-        --switch-file   "${switchfile}" \
-        --cities-file   "${STATIC_DIR}/cities.json" \
-	--tnu-sensors   "${sensors_tnu}" \
-	--macs          "${ALL_MACS}" \
-	--devices-file  "${scantmpfile}" \
-	--missing       "${STATIC_DIR}/signal-history.json"
+        --last-file      "${lastfile}" \
+        --min-file       "${minfile}" \
+        --max-file       "${maxfile}" \
+        --min-hum-file   "${minhumfile}" \
+        --max-hum-file   "${maxhumfile}" \
+        --system-file    "${systemfile}" \
+        --switch-file    "${switchfile}" \
+        --cities-file    "${STATIC_DIR}/cities.json" \
+	--tnu-sensors    "${sensors_tnu}" \
+	--macs           "${ALL_MACS}" \
+	--devices-file   "${scantmpfile}" \
+	--missing        "${STATIC_DIR}/signal-history.json" \
+        --hits-file      "${hitsfile}" \
+	--device-max-age "${DEVICES_MAX_AGE}"
 ) > ${destFile} 2>&1
 
 exit 0

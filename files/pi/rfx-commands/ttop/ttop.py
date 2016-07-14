@@ -126,7 +126,7 @@ if args.seedfile != '':
             s = str.split(line, "\t")
             history.append(int(s[0]), float(s[1]))
 
-# debugFile = open('/tmp/ttop.log', 'w' ,0)
+#debugFile = open('/tmp/ttop.log', 'w' ,0)
 
 
 def print_HeaderAt(s, o, w, t):
@@ -247,7 +247,17 @@ def process_log_line(filename, line, stdscr):
         row = row + 1
         startrow = row
 
-        for rid in sensors.getsidsfromlocation(loc):
+    	sids = sensors.getsidsfromlocation(loc)
+	
+	# Sort temp:s descending if location = 'outside'
+	
+	if loc == 'outside':
+	    sids = sorted(sids, key=lambda k: sensors.getsensortemp(k),reverse = True) 
+	    # Reorder offset
+	    for idx, rid in enumerate(sids):
+	    	sensors.setOffset(rid,idx)
+
+	for rid in sids:
             alias = sensors.getsensoralias(rid)
             histtemp = sensors.getsensorhistformatted(rid)
             temp = sensors.getsensortempformatted(rid)
@@ -278,8 +288,8 @@ def process_log_line(filename, line, stdscr):
             row = row + 1
 
     offset = offset + 5
-    c = [160, 166, 172, 32, 26, 20]
-    c = [88, 89, 90, 91, 92, 93]
+    #c = [160, 166, 172, 32, 26, 20]
+    #c = [88, 89, 90, 91, 92, 93]
     i = 0
     for r in history.rows():
         print_vbarsAt(stdscr, offset, windowWidth)
@@ -331,7 +341,7 @@ def ttop(stdscr):
     # Outdoor
     #sensors.addsensor(id='3B00', alias='Anna:s', offset=0)
     sensors.addsensor(id='0700', alias='Förrådet (T)', offset=0)
-    sensors.addsensor(id='B700', alias='Förrådet (G)', offset=1)
+    sensors.addsensor(id='B700', alias='Stuprännan', offset=1)
     sensors.addsensor(id='CF00', alias='Hammocken', offset=2)
     sensors.addsensor(id='8700', alias='Tujan', offset=3)
     sensors.addsensor(id='A700', alias='Komposten', offset=4)

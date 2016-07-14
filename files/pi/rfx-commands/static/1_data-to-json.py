@@ -98,6 +98,22 @@ parser.add_argument(
     help='Missing sensor count for today'
 )
 
+parser.add_argument(
+    '--hits-file', required=True,
+    default='',
+    dest='hits_file',
+    help='Csv file'
+)
+
+
+parser.add_argument(
+	'--device-max-age', required=False,
+	default=3600 * 24 * 30,
+	type=int,
+	dest='device_max_age',
+	help='Max age in seconds for devices'
+)
+
 
 args = parser.parse_args()
 
@@ -145,6 +161,27 @@ systemAliases = {
         "order": 8
     },
 
+    # smultronet
+
+    "pib_core_temp": {
+        "alias": "Cpu Temp",
+        "order": 1
+    },
+    "pib_loadavg": {
+        "alias": "Cpu Medel",
+        "order": 2
+    },
+    "pib_uptime": {
+        "alias": "Upptid",
+        "order": 3
+    },
+    "pib_last_boot": {
+        "alias": "Bootad",
+        "order": 4,
+        "type": "date"
+    },
+
+
     # openhab
 
     "openhab_status": {
@@ -160,6 +197,19 @@ systemAliases = {
         "order": 3,
         "type": "date"
     },
+
+    # home-assistant
+
+    "has_started": {
+        "alias": "Startad",
+        "order": 1,
+        "type": "date"
+   },
+    "has_status": {
+        "alias": "Status",
+        "order": 2
+    },
+
 
     # Mint black
 
@@ -250,6 +300,12 @@ switchAliases = {
         "fab": False,
         "order": 5
     },
+    "00123456_7": {
+        "alias":   "Z-wave",
+        "type":    "magnet",
+        "subtype": "door",
+        "order":   -11
+    },
     "00CFDCEE_10": {
         "alias":   u"Ytterd\u00F6rren",
         "type":    "magnet",
@@ -327,20 +383,21 @@ sensorAliases = {
         "order": 1
     },
 
-    "B700": {
-        "alias": u"F\u00f6rr\u00e5d Golv",
-        "location": "outside",
-        "order": 2
-    },
 
     "CF00": {
         "alias": "Hammocken",
         "location": "outside",
-        "order": 3
+        "order": 2
     },
 
     "8700": {
         "alias": "Tujan",
+        "location": "outside",
+        "order": 3
+    },
+
+    "B700": {
+        "alias": u"Stupr\u00e4nnan",
         "location": "outside",
         "order": 4
     },
@@ -371,7 +428,8 @@ sensorAliases = {
 deviceAliases = {
     "1": {
         "alias": "Johans Galaxy S6",
-        "order": 1
+        "order": 1,
+	"hilite": True
     },
     "2": {
         "alias": "Johans Samsung",
@@ -381,7 +439,8 @@ deviceAliases = {
 
     "3": {
         "alias": "Catarinas iPhone 6",
-        "order": 3
+        "order": 3,
+	"hilite": True
     },
 
     "4": {
@@ -403,7 +462,8 @@ deviceAliases = {
 
     "12": {
         "alias": "Ebbas iPhone 6",
-        "order": 7
+        "order": 7,
+	"hilite": True
     },
 
     "7": {
@@ -440,14 +500,13 @@ deviceAliases = {
 
 }
 
-result = {'success': True, 'hoursmissingcount': 0, 'sensors': [], 'switches': [], 'devices': [], 'toplist': {'coldest': [], 'warmest': []}}
+result = {'success': True, 'hoursmissingcount': 0, 'sensors': [], 'switches': [], 'devices': [], 'lasthour': [],'toplist': {'coldest': [], 'warmest': []}}
 now = datetime.now()
 tnu_sensors = args.tnu_sensors.split(',')
 
 #
 # Collect coldest/warmest outside sensors
 #
-
 
 def toplist(r):
 
@@ -567,6 +626,25 @@ def readSystemFile(filename):
                 result["system"][section] = []
 
             result["system"][section].append({"alias": alias, "section_key": section_key, "value": value, "order": order, "type": infotype})
+
+
+#
+#   Read hits file
+#
+
+with open(args.hits_file, 'rb') as csvfile:
+    sqlData = csv.DictReader(csvfile, dialect="excel-tab")
+    
+    for row in sqlData:
+        sensorid = row['sensorid']
+        count = int(row['hits'])
+
+	if sensorid in sensorAliases:
+            alias = sensorAliases[sensorid]['alias']
+            order = sensorAliases[sensorid]['order']
+	    result["lasthour"].append({'alias': alias, 'id': sensorid, 'count': count, 'order': order})
+ 
+
 
 
 #
@@ -706,10 +784,16 @@ with open(args.devices_file, 'rb') as csvfile:
             else:
                 divider = False
 
+	    if 'hilite' in deviceAliases[id]:
+                hilite = deviceAliases[id]['hilite']
+            else:
+                hilite = False
+
             datetime = row['datetime']
             delta = format_timedelta(int(row['age']), threshold=1, granularity='second',format='medium', locale='sv_SE')
 
-            result['devices'].append({'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age,'delta': delta, 'divider': divider})
+            if int(age) <= args.device_max_age:
+	    	result['devices'].append({'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age,'delta': delta, 'divider': divider, 'hilite': hilite})
 
 
 #
@@ -767,8 +851,9 @@ for sensorid in sensorData:
 
 
 result['switches'] = sorted(result['switches'], key=lambda k: k['order'])
-result['sensors'] = sorted(result['sensors'], key=lambda k: k['order'])
+result['sensors'] = sorted(result['sensors'], key=lambda k: (k['temperature']['last']['value'], -k['order']), reverse=True)
 result['devices'] = sorted(result['devices'], key=lambda k: k['order'])
+result['lasthour'] = sorted(result['lasthour'], key=lambda k: k['order'])
 
 # Sort system entries
 

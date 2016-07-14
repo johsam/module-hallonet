@@ -181,6 +181,11 @@ class SensorList(object):
             return s['temp']
         return 0.0
 
+    def setOffset(self, id, offset):
+        s = self.__getsensor(id)
+        if 'temp' in s:
+            s['offset'] = offset 
+
     def sensorFormatTemp(self, temp):
         return "{:.1f}".format(round(float(temp),1))
 
