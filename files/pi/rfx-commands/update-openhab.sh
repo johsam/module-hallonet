@@ -72,7 +72,7 @@ fi
 if [[ $(( ${runCounter} % 6)) -eq 0 ]] ; then
 	log "Counter % 6 -> Updating json graph for 72 hours"
 	call "${scriptDir}/static/4_hallonet_json.sh" "-l"
-	fi
+fi
 
 if [[ $(( ${runCounter} % 36)) -eq 0 ]] ; then
 	log "Counter % 36 -> Updating json graph for 168 hours"

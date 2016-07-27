@@ -40,7 +40,7 @@ echo "${when} -> ${switchid} -> ${state}" >> /tmp/xxx
 
 switchId="00123456"
 unitcode=${id}
-signal=7
+signal=-1
 
 if [ "${state}" == "Off" ] ; then
     dimlevel=0

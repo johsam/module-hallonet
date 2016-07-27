@@ -139,7 +139,10 @@ log "Collect from host(s)..."
 loadavg=$(awk '{print $1" "$2" "$3}' /proc/loadavg)
 
 #	core
-core_temp=$(cat /sys/devices/virtual/thermal/thermal_zone0/temp | awk '{printf("%.2f °C",$0 / 1000.0)};')
+
+core_temp_raw=$(cat /sys/devices/virtual/thermal/thermal_zone0/temp)
+core_temp=$(python -c 'import sys;print u"{:.1f} \u00b0C".format(float(sys.argv[1]) / 1000.0).encode("utf-8")' ${core_temp_raw})
+
 core_volts=$(vcgencmd measure_volts core | awk -F'=' '{print $2}')
 
 
@@ -190,15 +193,15 @@ formatSystemInfo "openhab" "load"	"${openhab_load} %"
 formatSystemInfo "openhab" "restarted"	"${openhab_restarted}"
 formatSystemInfo "openhab" "status"	"${openhab_status}"
 
-formatSystemInfo "pi" "uptime"			"${uptime}"
-formatSystemInfo "pi" "core_temp"		"${core_temp}"
-formatSystemInfo "pi" "core_volts"		"${core_volts}"
-formatSystemInfo "pi" "loadavg"			"${loadavg}"
-formatSystemInfo "pi" "wifi_restart"		"${wifi_restart}"
-formatSystemInfo "pi" "wifi_link"		"${wifi_link}"
-formatSystemInfo "pi" "wifi_level"		"${wifi_level}"
-formatSystemInfo "pi" "public_ip"		"${public_ip}"
-formatSystemInfo "pi" "last_boot"		"${last_boot}"
+formatSystemInfo "pi" "uptime"	        "${uptime}"
+formatSystemInfo "pi" "core_temp"       "${core_temp}"
+formatSystemInfo "pi" "core_volts"      "${core_volts}"
+formatSystemInfo "pi" "loadavg"	        "${loadavg}"
+formatSystemInfo "pi" "wifi_restart"    "${wifi_restart}"
+formatSystemInfo "pi" "wifi_link"       "${wifi_link}"
+formatSystemInfo "pi" "wifi_level"      "${wifi_level}"
+formatSystemInfo "pi" "public_ip"       "${public_ip}"
+formatSystemInfo "pi" "last_boot"       "${last_boot}"
 
 formatSystemInfo "static" "timestamp"	"${now}" 
 
@@ -215,7 +218,6 @@ ssh pi@smultronet ~/bin/smultronet.sh
   
 
 } > "${systemfile}"
-
 
 log "Collect from host(s) done..."
 
@@ -244,7 +246,6 @@ mysql nmap -urfxuser -prfxuser1 \
 ) 300> /var/lock/nmap.lock
 
 log "Got nmap results..."
-
 
 #	Sql stuff
 

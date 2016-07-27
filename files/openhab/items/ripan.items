@@ -107,25 +107,25 @@ Number T_50_0700_max
         <ripan_small_red_temp>
         (Outside,OutMaxToday,StorageRoofMaxToday)
 
-/*	Förrådet Golvet No average	*/
+/*	Stuprännan	*/
 
 Number T_52_B700_last
-        "Temperatur (Fg) [%.1f °C]"
+        "Temperatur (St) [%.1f °C]"
         <ripan_temp>
-        (Outside)
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
 
 Number T_52_B700_min
         "Kallast [%.1f °C]"
         <ripan_small_blue_temp>
-        (Outside,OutMinToday,StorageGroundMinToday)
+        (Outside,OutMinToday,StuprannanMinToday)
 
 Number T_52_B700_max
         "Varmast [%.1f °C]"
         <ripan_small_red_temp>
-        (Outside,OutMaxToday,StorageGroundMaxToday)
+        (Outside,OutMaxToday,StuprannanMaxToday)
 
 Number H_52_B700_last
-        "Förrådet Golv [%d %%]"
+        "Stuprännan [%d %%]"
         <ripan_humidity>
         (Outside)
 
@@ -308,13 +308,13 @@ Group:Number:MAX StorageRoofMaxToday
         <ripan_small_red_temp>
         (Outside)
 
-Group:Number:MIN StorageGroundMinToday
-        "Förrådet (G) [%.1f °C]"
+Group:Number:MIN StuprannanMinToday
+        "Stuprännan [%.1f °C]"
         <ripan_small_blue_temp>
         (Outside)
 
-Group:Number:MAX StorageGoundMaxToday
-        "Förrådet (G) [%.1f °C]"
+Group:Number:MAX StuprannanMaxToday
+        "Stuprännan [%.1f °C]"
         <ripan_small_red_temp>
         (Outside)
 
@@ -378,6 +378,11 @@ String M_00CFDCEE_10
         <ripan_door>
         (Magnets)
 
+String M_00123456_7
+        "Z-wave [%s]"
+        <ripan_door>
+        (Magnets)
+
 String M_00CFD656_10
         "Förrådet [%s]"
         <ripan_door>
@@ -394,14 +399,20 @@ String M_0115A1F6_10
         <ripan_door>
         (Magnets)
 
+
 String M_010865CA_10
         "Skymning [%s]"
         <ripan_door>
         (Magnets)
+
 
 String M_032C96AA_16
         "Bokhyllan [%s]"
         <ripan_door>
         (Magnets)
 
+String M_0128ED32_10
+        "Grinden"
+        <ripan_door>
+        (Magnets)
 

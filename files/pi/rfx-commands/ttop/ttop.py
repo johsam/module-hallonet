@@ -360,10 +360,10 @@ def ttop(stdscr):
     sensors.addmedian(id='EEEE', alias='Median')
 
     # Humidity
-    sensors.addsensor(id='FFF0', alias='Bokhyllan', location='humidity', offset=0)
-    sensors.addsensor(id='FFF1', alias='Förrådet (G)',location='humidity', offset=1)
-    sensors.addsensor(id='FFF2', alias='Tujan', location='humidity', offset=2)
-    sensors.addsensor(id='FFF3', alias='Komposten', location='humidity', offset=3)
+    sensors.addsensor(id='FFF0', alias='Komposten', location='humidity', offset=0)
+    sensors.addsensor(id='FFF1', alias='Tujan', location='humidity', offset=1)
+    sensors.addsensor(id='FFF2', alias='Stuprännan',location='humidity', offset=2)
+    sensors.addsensor(id='FFF3', alias='Bokhyllan', location='humidity', offset=3)
 
     history.draw()
 

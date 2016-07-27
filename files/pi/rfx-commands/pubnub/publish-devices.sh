@@ -49,7 +49,7 @@ shift `expr $OPTIND - 1` ; OPTIND=1
 
 if [ ${forceSend} -ne 0 ] || [ -r "${PUBNUB_ALLOWPUBLISH}" ] ; then
 	
-	logger "Sending devices '${WIDGET_DEVICES}' to channel '${PUBNUB_CHANNEL_SENSORS}'"
+	logger -t $(basename $0) "Sending devices '${WIDGET_DEVICES}' to channel '${PUBNUB_CHANNEL_SENSORS}'"
 	
 	${scriptDir}/../triggers/pubnub/publish_to_pubnub.py \
 		--file 		  "${JSON_FILE}" \

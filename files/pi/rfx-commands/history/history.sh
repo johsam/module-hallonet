@@ -31,7 +31,7 @@ settings=${scriptDir}/../settings.cfg
 
 
 histlen=30
-signals="0,1,2,3,4,5,6,7,8,9"
+signals="-1,0,1,2,3,4,5,6,7,8,9"
 arg_count=10
 args=""
 
@@ -42,7 +42,7 @@ while getopts "l:wph" opt
 do
         case $opt in
             l) arg_count="${OPTARG}";;
-            w) args="--all" ; signals="4";;
+            w) args="--all" ; signals="3,4";;
             p) pretty="--pretty";;
             h) human="--human";;
             \?) usage ;;

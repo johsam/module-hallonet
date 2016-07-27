@@ -96,17 +96,17 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--rise', required=False,
+    '--sun-rise', required=False,
     default='',
-    dest='rise',
+    dest='sun_rise',
     help='Sun rise'
 )
 
 
 parser.add_argument(
-    '--set', required=False,
+    '--sun-set', required=False,
     default='',
-    dest='set',
+    dest='sun_set',
     help='Sun set'
 )
 
@@ -118,7 +118,22 @@ parser.add_argument(
     help='Number of cities'
 )
 
+parser.add_argument(
+    '--sun-elevation', required=False,
+    dest='sun_elevation',
+    help='Sun elevation'
+)
+
+parser.add_argument(
+    '--sun-azimuth', required=False,
+    dest='sun_azimuth',
+    help='Sun azimuth'
+)
+
 args = parser.parse_args()
+
+def formatFloat1(v):
+    return "{:.1f}".format(round(float(v), 1))
 
 #
 # Start to work
@@ -159,6 +174,7 @@ try:
 
     # Skip ourselves
     citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
+    citylist = sorted(citylist, key=lambda k: (k['temp'], k['city']), reverse=True)
     insert_cities(citylist, 'nearby')
 except:
     no_data('nearby')
@@ -187,10 +203,21 @@ except:
 if args.now:
     cities['timestamp'] = args.now
 
-if args.rise:
-    cities['bergshamra'].append({'alias': u'Soluppg\u00E5ng', 'time': args.rise, 'section_key': 'bergshamra_1'}) 
+if args.sun_rise:
+    cities['bergshamra'].append({'alias': u'Soluppg\u00E5ng', 'time': args.sun_rise, 'value': args.sun_rise, 'section_key': 'bergshamra_1'}) 
 
-if args.set:
-    cities['bergshamra'].append({'alias': u'Solnedg\u00E5ng', 'time': args.set, 'section_key': 'bergshamra_2'}) 
+if args.sun_set:
+    cities['bergshamra'].append({'alias': u'Solnedg\u00E5ng', 'time': args.sun_set, 'value': args.sun_set, 'section_key': 'bergshamra_2'}) 
+
+
+
+if args.sun_azimuth:
+    sun_azimuth=formatFloat1(args.sun_azimuth) + u'\u00B0'
+    cities['bergshamra'].append({'alias': u'Solens riktning', 'time': sun_azimuth ,'value': sun_azimuth, 'section_key': 'bergshamra_3'}) 
+
+if args.sun_elevation:
+    sun_elevation=formatFloat1(args.sun_elevation) + u'\u00B0'
+    cities['bergshamra'].append({'alias': u'Solens h\u00F6jd', 'time': sun_elevation,'value': sun_elevation, 'section_key': 'bergshamra_4'}) 
+
 
 print json.dumps(cities, indent=2)

@@ -128,6 +128,15 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+
+def callback(message):
+    syslog.syslog("Error: Got-> " + str(message))
+
+
+def publish_main(c,o):
+    pubnub.publish(c, o, error=callback)
+
+
 def log_publish(t,i,l=None):
     if l is not None:
     	syslog.syslog("Channel '{0}': type:'{1}' info:'{2}' level:'{3}'".format(args.pubnub_channel, t, i,l))
@@ -139,7 +148,7 @@ def publish_sensor(s):
     ps = {}
     ps['type'] = 'sensor'
     ps['sensor'] = s
-    pubnub.publish(args.pubnub_channel, ps)
+    publish_main(args.pubnub_channel, ps)
     #log_publish(ps['type'],s)
 
 
@@ -147,7 +156,7 @@ def publish_switch(s):
     ps = {}
     ps['type'] = 'switch'
     ps['switch'] = s
-    pubnub.publish(args.pubnub_channel, ps)
+    publish_main(args.pubnub_channel, ps)
     if 'subtype' in s:
         log_publish(ps['type'],"{0}:{1}->{2}".format(s['alias'].encode('utf-8'), s['subtype'].encode('utf-8'), s['state'].encode('utf-8')))
     elif 'type' in s:
@@ -160,7 +169,7 @@ def publish_refresh():
     ps = {}
     ps['type'] = 'refresh'
     ps['target'] = 'sensors'
-    pubnub.publish(args.pubnub_channel, ps)
+    publish_main(args.pubnub_channel, ps)
     log_publish(ps['type'],ps['target'])
 
 
@@ -171,7 +180,7 @@ def publish_message(msg = ''):
     ps['level'] = 'toast'
 
     if len(msg):
-        pubnub.publish(args.pubnub_channel, ps)
+        publish_main(args.pubnub_channel, ps)
         log_publish(ps['type'],msg)
 
 
@@ -182,7 +191,7 @@ def publish_notify(msg = ''):
     ps['level'] = 'notify'
     
     if len(msg):
-        pubnub.publish(args.pubnub_channel, ps)
+        publish_main(args.pubnub_channel, ps)
         log_publish(ps['type'],msg,ps['level'])
 
 
@@ -191,7 +200,7 @@ def publish_devices(d,dl):
     ps['type'] = 'devices'
     ps['devices'] = d
 
-    pubnub.publish(args.pubnub_channel, ps)
+    publish_main(args.pubnub_channel, ps)
     log_publish(ps['type'],dl)
 
 

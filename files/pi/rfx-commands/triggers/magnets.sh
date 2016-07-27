@@ -51,12 +51,9 @@ magnet_signal=${5}
 msg=$(printf "${magnet_id}\t${magnet_command}\t${magnet_dimlevel}\t${magnet_signal}")
 plainlog "${msg}" >> ${logfile}
 
+#	Send it to pubnub
 
-#	Send it to openhab
-
-magnet_status="Stängd ${shortnow}" ; [ "${magnet_command}" = "On" ] && magnet_status="Öppen ${shortnow}"	
-
-to_openhab "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_REST_LOG}
+call "${scriptDir}/pubnub/publish_switch.sh" "${magnet_id}_${magnet_unitcode} ${magnet_command} ${magnet_signal}" >> ${UPDATE_REST_LOG}
 
 
 #	Send it to graphite
@@ -64,8 +61,17 @@ to_openhab "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_RE
 to_graphite "${magnet_id}_${magnet_unitcode}" "${magnet_command}" >> ${UPDATE_REST_LOG}
 
 
-#	Send it to pubnub
+#	Send it to openhab
 
-call "${scriptDir}/pubnub/publish_switch.sh" "${magnet_id}_${magnet_unitcode} ${magnet_command} ${magnet_signal}" >> ${UPDATE_REST_LOG}
+if [ "${magnet_command}" = "On" ] ; then
+    utf8_str=$(echo "Öppen" | iconv -f ISO-8859-15 -t UTF-8)
+else
+    utf8_str=$(echo "Stängd" | iconv -f ISO-8859-15 -t UTF-8)
+fi
+
+magnet_status="${utf8_str} ${shortnow}"
+
+to_openhab "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_REST_LOG}
+
 
 exit 0

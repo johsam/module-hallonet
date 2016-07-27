@@ -27,7 +27,7 @@ Items {
 
     T_50_3B00_last  : // Annas
     T_50_0700_last  : // Förrådet Tak
-    T_52_B700_last  : // Förrådet Golv
+    T_52_B700_last  : // Stuprännan
     T_50_CF00_last  : // Hammocken
     T_50_AC00_last  : // Cyklarna
 
@@ -38,6 +38,6 @@ Items {
     H_52_8700_last  : // Tujan
     H_52_9700_last  : // Bokhyllan
     H_52_A700_last  : // Komposten
-    H_52_B700_last  : // Förrådet Golv
+    H_52_B700_last  : // Stuprännan
   
 }

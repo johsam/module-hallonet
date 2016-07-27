@@ -19,5 +19,6 @@
 	<sensor>0B1100..0115A1F6........</sensor>
 	<sensor>0B1100..010865CA........</sensor>
 	<sensor>0B1100..032C96AA........</sensor>
+	<sensor>0B1100..0128ED32........</sensor>
 </whitelist>
 </xml>

@@ -16,14 +16,7 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_0700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_0700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
-    		Frame label="Förrådet Golv" {
-        		Text item=T_52_B700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_B700_last_stamp
-        		Text item=T_52_B700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_B700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=H_52_B700_last
-   		}
-  		Frame label="Hammocken" {
+ 		Frame label="Hammocken" {
         		Text item=T_50_CF00_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_CF00_last_stamp
         		Text item=T_50_CF00_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -37,7 +30,14 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_52_8700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=H_52_8700_last
    		}
-
+    		Frame label="Stuprännan" {
+        		Text item=T_52_B700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_B700_last_stamp
+        		Text item=T_52_B700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_B700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=H_52_B700_last
+   		}
+ 
   		Frame label="Komposten" {
         		Text item=T_52_A700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_52_A700_last_stamp
@@ -71,10 +71,6 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_0700_max_stamp
 		}	
 		
-		Frame label="Förrådet Golv" {
-			Text item=T_52_B700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_B700_max_stamp
-		}	
 
 		Frame label="Hammocken" {
 			Text item=T_50_CF00_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -84,6 +80,11 @@ sitemap ripan label="Ripstigen" {
 		Frame label="Tujan" {
 			Text item=T_52_8700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_52_8700_max_stamp
+		}	
+
+		Frame label="Stuprännan" {
+			Text item=T_52_B700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_B700_max_stamp
 		}	
 
 		Frame label="Komposten" {
@@ -106,11 +107,6 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_0700_min_stamp
 		}	
 		
-		Frame label="Förrådet Golv" {
-			Text item=T_52_B700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_B700_min_stamp
-		}	
-
 		Frame label="Hammocken" {
 			Text item=T_50_CF00_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_50_CF00_min_stamp
@@ -119,6 +115,11 @@ sitemap ripan label="Ripstigen" {
 		Frame label="Tujan" {
 			Text item=T_52_8700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_52_8700_min_stamp
+		}	
+		
+		Frame label="Stuprännan" {
+			Text item=T_52_B700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_B700_min_stamp
 		}	
 
 		Frame label="Komposten" {
@@ -140,9 +141,11 @@ sitemap ripan label="Ripstigen" {
    }
 
    Frame label="Dörrar och fönster" {
+	Text  item=M_00123456_7
 	Text  item=M_00CFDCEE_10
 	Text  item=M_00CFDEEA_10
 	Text  item=M_00CFD656_10
+	Text  item=M_0128ED32_10
    }
 
    Frame label="Luftfuktighet Inne" {

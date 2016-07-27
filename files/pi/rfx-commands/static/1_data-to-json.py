@@ -204,10 +204,45 @@ systemAliases = {
         "alias": "Startad",
         "order": 1,
         "type": "date"
-   },
+    },
     "has_status": {
         "alias": "Status",
         "order": 2
+    },
+    "has_version": {
+        "alias": "Version",
+        "order": 3
+    },
+    "has_latest": {
+        "alias": "Senaste",
+        "order": 4
+    },
+
+    # YR.no "//api.met.no/weatherapi/weathericon/1.1/?symbol=3;content_type=image/png"
+
+    "yr_sensor.yr_cloudiness": {
+        "alias": "Molnighet",
+        "order": 1
+    },
+
+    "yr_sensor.yr_pressure": {
+        "alias": "Lufttryck",
+        "order": 2
+    },
+
+    "yr_sensor.yr_wind_direction": {
+        "alias": "Vind riktning",
+        "order": 3
+    },
+
+    "yr_sensor.yr_wind_speed": {
+        "alias": "Vind styrka",
+        "order": 4
+    },
+
+    "yr_sensor.yr_symbol_not_yet": {
+        "alias": "Symbol",
+        "order": 5
     },
 
 
@@ -310,6 +345,7 @@ switchAliases = {
         "alias":   u"Ytterd\u00F6rren",
         "type":    "magnet",
         "subtype": "door",
+        "nowarn":  True,
         "order":   -10
     },
     "00CFDEEA_10": {
@@ -324,29 +360,36 @@ switchAliases = {
         "subtype": "door",
         "order":   -8
     },
+    "0128ED32_10": {
+        "alias":   "Grinden",
+        "type":    "magnet",
+        "subtype": "door",
+	"divider": True,
+        "order":   -7
+    },
     "032C96AA_16": {
         "alias":   "Bokhyllan (*)",
         "type":    "magnet",
         "subtype": "door",
-        "order":   -7
+        "order":   -6
     },
     "00EF07E6_10": {
         "alias":   "Vardagsrum",
         "type":    "magnet",
         "subtype": "ir",
-        "order":   -6
+        "order":   -5
     },
     "0115A1F6_10": {
         "alias":   "Altanen",
         "type":    "magnet",
         "subtype": "ir",
-        "order":   -5
+        "order":   -4
     },
     "010865CA_10": {
         "alias":   "Staketet (*)",
         "type":    "magnet",
         "subtype": "duskdawn",
-        "order":   -4
+        "order":   -3
     }
 
 }
@@ -433,8 +476,7 @@ deviceAliases = {
     },
     "2": {
         "alias": "Johans Samsung",
-        "order": 2,
-        "divider": True
+        "order": 2
     },
 
     "3": {
@@ -450,8 +492,7 @@ deviceAliases = {
 
     "5": {
         "alias": "Catarinas Surface",
-        "order": 5,
-        "divider": True
+        "order": 5
     },
 
     "6": {
@@ -478,21 +519,15 @@ deviceAliases = {
 
     "9": {
         "alias": "Ebbas Surface",
-        "order": 10,
-        "divider": True
+        "order": 10
     },
 
     "10": {
         "alias": "Sony Android TV",
-        "order": 11
+        "dividerabove": True,
+	"order": 11
     },
     
-    "11": {
-        "alias": "Smultronet",
-        "order": 12,
-        "divider": True
-    },
-
     "13": {
         "alias": "Edup Wifi Socket",
         "order": 13
@@ -617,7 +652,8 @@ def readSystemFile(filename):
             if 'type' in systemAliases[section_key]:
                 infotype = systemAliases[section_key]['type']
 
-            value = value.decode('iso8859-1')
+            # Values are now in utf-8
+	    # value = value.decode('iso8859-1')
 
             if "system" not in result:
                 result["system"] = {}
@@ -662,6 +698,8 @@ with open(args.switch_file, 'rb') as csvfile:
         alias = 'n/a'
         swtype = 'n/a'
         order = 0
+    	divider = False
+    	nowarn = False
 
         if sensorid not in switchData:
             switchData[sensorid] = {}
@@ -676,6 +714,10 @@ with open(args.switch_file, 'rb') as csvfile:
                 switchData[sensorid]['nexaid'] = switchAliases[sensorid]['nexaid']
             if 'fab' in switchAliases[sensorid]:
                 switchData[sensorid]['fab'] = switchAliases[sensorid]['fab']
+            if 'divider' in switchAliases[sensorid]:
+                switchData[sensorid]['divider'] = switchAliases[sensorid]['divider']
+            if 'nowarn' in switchAliases[sensorid]:
+                switchData[sensorid]['nowarn'] = switchAliases[sensorid]['nowarn']
 
         switchData[sensorid]['id'] = sensorid
         switchData[sensorid]['alias'] = alias
@@ -714,6 +756,7 @@ with open(args.last_file, 'rb') as csvfile:
             location = sensorAliases[sensorid]['location']
             order = sensorAliases[sensorid]['order']
 
+
         # Check if datetime is stale
 
         delta = relativedelta(now, parse(datetime))
@@ -741,6 +784,8 @@ with open(args.last_file, 'rb') as csvfile:
 
         if sensorid in tnu_sensors:
             sensorData[sensorid]['tnu'] = True
+
+
 
         if tnumedian:
             for s in tnumedian.split(','):
@@ -779,10 +824,10 @@ with open(args.devices_file, 'rb') as csvfile:
             alias = deviceAliases[id]['alias']
             order = deviceAliases[id]['order']
 
-	    if 'divider' in deviceAliases[id]:
-                divider = deviceAliases[id]['divider']
+	    if 'dividerabove' in deviceAliases[id]:
+                dividerabove = deviceAliases[id]['dividerabove']
             else:
-                divider = False
+                dividerabove = False
 
 	    if 'hilite' in deviceAliases[id]:
                 hilite = deviceAliases[id]['hilite']
@@ -793,7 +838,10 @@ with open(args.devices_file, 'rb') as csvfile:
             delta = format_timedelta(int(row['age']), threshold=1, granularity='second',format='medium', locale='sv_SE')
 
             if int(age) <= args.device_max_age:
-	    	result['devices'].append({'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age,'delta': delta, 'divider': divider, 'hilite': hilite})
+	    	sw = {'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age,'delta': delta, 'hilite': hilite}
+		if dividerabove is True:
+		    sw['dividerabove'] = True
+		result['devices'].append(sw)
 
 
 #
@@ -853,7 +901,7 @@ for sensorid in sensorData:
 result['switches'] = sorted(result['switches'], key=lambda k: k['order'])
 result['sensors'] = sorted(result['sensors'], key=lambda k: (k['temperature']['last']['value'], -k['order']), reverse=True)
 result['devices'] = sorted(result['devices'], key=lambda k: k['order'])
-result['lasthour'] = sorted(result['lasthour'], key=lambda k: k['order'])
+result['lasthour'] = sorted(result['lasthour'], key=lambda k: (k['count'], -k['order']), reverse=True)
 
 # Sort system entries
 
