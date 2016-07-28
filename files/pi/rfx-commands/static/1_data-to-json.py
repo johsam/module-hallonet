@@ -351,41 +351,41 @@ switchAliases = {
         "order": 5
     },
     "00123456_7": {
-        "alias":   "Z-wave",
+        "alias":   u"Ytterd\u00F6rren (Z)",
         "type":    "magnet",
         "subtype": "door",
         "order":   -11
-    },
-    "00CFDCEE_10": {
-        "alias":   u"Ytterd\u00F6rren",
-        "type":    "magnet",
-        "subtype": "door",
-        "nowarn":  True,
-        "order":   -10
     },
     "00CFDEEA_10": {
         "alias":   "Altanen",
         "type":    "magnet",
         "subtype": "door",
-        "order":   -9
+        "order":   -10
     },
     "00CFD656_10": {
         "alias":   u"F\u00f6rr\u00e5det",
         "type":    "magnet",
         "subtype": "door",
-        "order":   -8
+        "order":   -9
     },
     "0128ED32_10": {
         "alias":   "Grinden",
         "type":    "magnet",
         "subtype": "door",
 	"divider": True,
-        "order":   -7
+        "order":   -8
     },
     "032C96AA_16": {
         "alias":   "Bokhyllan (*)",
         "type":    "magnet",
         "subtype": "door",
+        "order":   -7
+    },
+    "00CFDCEE_10": {
+        "alias":   "Badrummet",
+        "type":    "magnet",
+        "subtype": "door",
+        "nowarn":  True,
         "order":   -6
     },
     "00EF07E6_10": {

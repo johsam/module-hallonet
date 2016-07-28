@@ -32,7 +32,7 @@ settings=${scriptDir}/../settings.cfg
 
 #	Create logfile if needed
 
-umask 022
+umask 0011
 
 [ ! -r ${logfile} ] && touch ${logfile} && chown pi:pi ${logfile}
 

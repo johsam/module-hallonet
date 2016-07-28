@@ -13,4 +13,9 @@ sitemap ripan_small label="Ripstigen-Small" {
         Switch item=Nexa_5
    }
 
+   Frame label="Dörrar och fönster" {
+	Text  item=M_00123456_7
+	Text  item=M_00CFDEEA_10
+   }
+
  }

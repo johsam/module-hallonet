@@ -36,8 +36,6 @@ state=${state^}
 
 # Run external script
 
-echo "${when} -> ${switchid} -> ${state}" >> /tmp/xxx
-
 switchId="00123456"
 unitcode=${id}
 signal=-1
@@ -48,13 +46,18 @@ else
     dimlevel=100
 fi
 
+
+#   Update the database
+
 (
 mysql rfx -urfxuser -prfxuser1 <<-SQL_END
 INSERT INTO rfxcmd 
 (datetime, unixtime, packettype, subtype, seqnbr, battery, rssi, processed, data1, data2, data3, data4,data5, data6, data7, data8, data9, data10, data11, data12, data13)
 VALUES ("${when}",${now},'11','00','00',255,${signal},0,"${switchId}",'0',"${state}",${unitcode},${dimlevel},0,0,0.0000,0.0000,0.0000,0.0000,0.0000,'0000-00-00 00:00:00');
 SQL_END
-) > /tmp/yyy 2>&1
+) >> /var/rfxcmd/zmagnet-error.log 2>&1
+
+#   Call normal trigger script
 
 /home/pi/rfx-commands/triggers/magnets.sh "${switchId}" "${state}" "${dimlevel}" "${unitcode}" "${signal}"
 

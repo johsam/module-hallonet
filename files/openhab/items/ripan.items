@@ -374,12 +374,12 @@ String M_00CFDEEA_10
         (Magnets)
 
 String M_00CFDCEE_10
-        "Ytterdörren [%s]"
+        "Badrummet [%s]"
         <ripan_door>
         (Magnets)
 
 String M_00123456_7
-        "Z-wave [%s]"
+        "Ytterdörren (Z) [%s]"
         <ripan_door>
         (Magnets)
 
@@ -388,11 +388,17 @@ String M_00CFD656_10
         <ripan_door>
         (Magnets)
 
+String M_0128ED32_10
+        "Grinden [%s]"
+        <ripan_door>
+        (Magnets)
+
+
+
 String M_00EF07E6_10
         "IR Vardagsrum [%s]"
         <ripan_door>
         (Magnets)
-
 
 String M_0115A1F6_10
         "IR Altanen [%s]"
@@ -400,19 +406,15 @@ String M_0115A1F6_10
         (Magnets)
 
 
+
 String M_010865CA_10
         "Skymning [%s]"
         <ripan_door>
         (Magnets)
-
 
 String M_032C96AA_16
         "Bokhyllan [%s]"
         <ripan_door>
         (Magnets)
 
-String M_0128ED32_10
-        "Grinden"
-        <ripan_door>
-        (Magnets)
 

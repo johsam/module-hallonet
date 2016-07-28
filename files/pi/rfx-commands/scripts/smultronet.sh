@@ -65,7 +65,7 @@ has_version=$(curl -s http://smultronet:8123/api/config | jq -r .version)
 
 #	Clear cache
 
-if [[ $(( ${runCounter} % 18)) -eq 0 ]] ; then
+if [[ $(( ${runCounter} % 36)) -eq 0 ]] ; then
 	rm -f ${has_version_file} ${has_latest_file}
 fi
 
