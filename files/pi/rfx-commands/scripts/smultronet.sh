@@ -19,6 +19,7 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 
 has_version_file="/tmp/has_version.txt"
 has_latest_file="/tmp/has_version_latest.txt"
+updates_file="/tmp/$(uname -n)-updates.txt"
 
 #-------------------------------------------------------------------------------
 #
@@ -100,19 +101,28 @@ fi
 has_version="$(cat ${has_version_file})"
 has_latest_version="$(cat ${has_latest_file})"
 
+#	Any updates ?
+
+updates=0
+
+if [ -r "${updates_file}" ] ; then
+	updates=$(awk 'END {print NR}' ${updates_file})
+fi
+
 #
 #	Done...
 #
 
-formatSystemInfo "pib" "uptime"	      "${uptime}"
-formatSystemInfo "pib" "core_temp"    "${core_temp}"
-formatSystemInfo "pib" "core_volts"   "${core_volts}"
-formatSystemInfo "pib" "loadavg"      "${loadavg}"
-formatSystemInfo "pib" "last_boot"    "${last_boot}"
-formatSystemInfo "has"  "started"     "${has_started}"
-formatSystemInfo "has"  "status"      "${has_status}"
-formatSystemInfo "has"  "version"     "${has_version}"
-formatSystemInfo "has"  "latest"      "${has_latest_version}"
+formatSystemInfo "pib" "uptime"	     "${uptime}"
+formatSystemInfo "pib" "core_temp"   "${core_temp}"
+formatSystemInfo "pib" "core_volts"  "${core_volts}"
+formatSystemInfo "pib" "loadavg"     "${loadavg}"
+formatSystemInfo "pib" "last_boot"   "${last_boot}"
+formatSystemInfo "pib" "updates"     "${updates}"
+formatSystemInfo "has" "started"     "${has_started}"
+formatSystemInfo "has" "status"      "${has_status}"
+formatSystemInfo "has" "version"     "${has_version}"
+formatSystemInfo "has" "latest"      "${has_latest_version}"
 
 #
 #	YR weather data

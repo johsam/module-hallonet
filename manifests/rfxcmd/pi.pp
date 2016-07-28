@@ -137,7 +137,16 @@ class hallonet::rfxcmd::pi {
         mode    => '0644',
     }
  
-  
+     file {'cron_check_apt_updates':
+        ensure  => present,
+        path    => '/etc/cron.d/check-apt-updates',
+        content => template("${module_name}/cron/check-apt-updates.erb"),
+        require => [File['rfx_commands']],
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+    }
+   
     #
     #	Stuff for /usr/local/bin
     #

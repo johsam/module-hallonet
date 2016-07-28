@@ -180,6 +180,14 @@ last_boot=$(who -b | awk '{print $3" "$4":00"}')
 rfxcmd_restart=$(stat --printf=%z /var/run/rfxcmd.pid | awk -F. '{print $1}')
 pubnubmgr_restart=$(stat --printf=%z /var/run/pubnubmgr.pid | awk -F. '{print $1}')
 
+#	Any updates ?
+
+updates=0
+updates_file="/tmp/$(uname -n)-updates.txt"
+
+if [ -r "${updates_file}" ] ; then
+	updates=$(awk 'END {print NR}' ${updates_file})
+fi
 
  
 #
@@ -194,6 +202,7 @@ formatSystemInfo "openhab" "restarted"	"${openhab_restarted}"
 formatSystemInfo "openhab" "status"	"${openhab_status}"
 
 formatSystemInfo "pi" "uptime"	        "${uptime}"
+formatSystemInfo "pi" "updates"	        "${updates}"
 formatSystemInfo "pi" "core_temp"       "${core_temp}"
 formatSystemInfo "pi" "core_volts"      "${core_volts}"
 formatSystemInfo "pi" "loadavg"	        "${loadavg}"

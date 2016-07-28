@@ -138,27 +138,32 @@ systemAliases = {
         "alias": "Upptid",
         "order": 3
     },
+    "pi_updates": {
+        "alias": "Uppdateringar",
+        "order": 4,
+	"type": "counter"
+    },
     "pi_last_boot": {
         "alias": "Bootad",
-        "order": 4,
+        "order": 5,
         "type": "date"
     },
     "pi_wifi_restart": {
         "alias": "Wifi Omstart",
-        "order": 5,
+        "order": 6,
         "type": "date"
     },
     "pi_wifi_link": {
         "alias": u"Wifi L\u00e4nk",
-        "order": 6,
+        "order": 7,
     },
     "pi_wifi_level": {
         "alias": u"Wifi Niv\u00e5",
-        "order": 7,
+        "order": 8,
     },
     "pi_public_ip": {
         "alias": "Publik Ip",
-        "order": 8
+        "order": 9
     },
 
     # smultronet
@@ -175,9 +180,14 @@ systemAliases = {
         "alias": "Upptid",
         "order": 3
     },
-    "pib_last_boot": {
-        "alias": "Bootad",
+    "pib_updates": {
+        "alias": "Uppdateringar",
         "order": 4,
+	"type": "counter"
+    },
+     "pib_last_boot": {
+        "alias": "Bootad",
+        "order": 5,
         "type": "date"
     },
 
@@ -260,9 +270,14 @@ systemAliases = {
         "alias": "Upptid",
         "order": 3
     },
+    "mintblack_updates": {
+        "alias": "Uppdateringar",
+        "order": 4,
+	"type": "counter"
+    },
     "mintblack_last_boot": {
         "alias": "Bootad",
-        "order": 4,
+        "order": 5,
         "type": "date"
     },
 
