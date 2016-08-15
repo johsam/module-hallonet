@@ -118,7 +118,7 @@ pubnub = Pubnub(publish_key=args.pubnub_pubkey,
                 )
 
 
-history = graph.Graph(windowWidth - 2, 8, args.maxvals)
+history = graph.Graph(windowWidth - 2, 7, args.maxvals)
 
 if args.seedfile != '':
     with open(args.seedfile) as seedfile:
@@ -180,6 +180,7 @@ def process_log_line(filename, line, stdscr):
         id = m.group(3)
         signal = m.group(4)
         temp = m.group(5)
+
         #if id == 'CF00':
     #    history.append(int(epoch),float(temp))
     #    history.draw()
@@ -192,14 +193,16 @@ def process_log_line(filename, line, stdscr):
         humidity = m.group(4)
         signal = m.group(5)
 
-        if id == '9700':
-            sensors.settemp(id='FFF0', stamp=stamp, temp=float(humidity), signal=signal)
-        if id == 'B700':
-            sensors.settemp(id='FFF1', stamp=stamp, temp=float(humidity),signal=signal)
-        if id == '8700':
-            sensors.settemp(id='FFF2', stamp=stamp, temp=float(humidity),signal=signal)
         if id == 'A700':
+            sensors.settemp(id='FFF0', stamp=stamp, temp=float(humidity),signal=signal)
+        if id == '8700':
+            sensors.settemp(id='FFF1', stamp=stamp, temp=float(humidity),signal=signal)
+        if id == 'B700':
+            sensors.settemp(id='FFF2', stamp=stamp, temp=float(humidity),signal=signal)
+        if id == '8900':
             sensors.settemp(id='FFF3', stamp=stamp, temp=float(humidity),signal=signal)
+        if id == '9700':
+            sensors.settemp(id='FFF4', stamp=stamp, temp=float(humidity), signal=signal)
 
     m = re_tnu.match(line)
     if m:
@@ -252,7 +255,7 @@ def process_log_line(filename, line, stdscr):
 	# Sort temp:s descending if location = 'outside'
 	
 	if loc == 'outside':
-	    sids = sorted(sids, key=lambda k: sensors.getsensortemp(k),reverse = True) 
+	    sids = sorted(sids, key=lambda k: (sensors.getsensortemp(k),sensors.getsensorsignal(k)),reverse = True) 
 	    # Reorder offset
 	    for idx, rid in enumerate(sids):
 	    	sensors.setOffset(rid,idx)
@@ -271,9 +274,9 @@ def process_log_line(filename, line, stdscr):
             print_vbarsAt(stdscr, offset, windowWidth)
 
             alias_colstart = 2
-            signal_colstart = 16
+            signal_colstart = 18
             stamp_colstart = signal_colstart + 2
-            hist_colstart = stamp_colstart + 12
+            hist_colstart = stamp_colstart + 10
             trend_colstart = hist_colstart + 6
             temp_colstart = trend_colstart + trendsize + 1
 
@@ -287,7 +290,7 @@ def process_log_line(filename, line, stdscr):
 
             row = row + 1
 
-    offset = offset + 5
+    offset = offset + 2
     #c = [160, 166, 172, 32, 26, 20]
     #c = [88, 89, 90, 91, 92, 93]
     i = 0
@@ -340,15 +343,17 @@ def ttop(stdscr):
 
     # Outdoor
     #sensors.addsensor(id='3B00', alias='Anna:s', offset=0)
-    sensors.addsensor(id='0700', alias='Förrådet (T)', offset=0)
+    sensors.addsensor(id='0700', alias='Förrådet Tak', offset=0)
     sensors.addsensor(id='B700', alias='Stuprännan', offset=1)
-    sensors.addsensor(id='CF00', alias='Hammocken', offset=2)
-    sensors.addsensor(id='8700', alias='Tujan', offset=3)
-    sensors.addsensor(id='A700', alias='Komposten', offset=4)
-    sensors.addsensor(id='AC00', alias='Cyklarna', offset=5)
+    sensors.addsensor(id='8900', alias='Stuprännan (v)', offset=2)
+    sensors.addsensor(id='CF00', alias='Hammocken', offset=3)
+    sensors.addsensor(id='8700', alias='Tujan', offset=4)
+    sensors.addsensor(id='A700', alias='Komposten', offset=5)
+    sensors.addsensor(id='AC00', alias='Cyklarna', offset=6)
 
     # Indoor
-    sensors.addsensor(id='9700', alias='Bokhyllan', location='inside')
+    sensors.addsensor(id='9700', alias='Bokhyllan', location='inside', offset=0)
+    sensors.addsensor(id='8F00', alias='Golv TV:n', location='inside', offset=1)
 
     # Pi
     #sensors.addsensor(id='FFFA', alias='Pi', location='pi')
@@ -363,7 +368,8 @@ def ttop(stdscr):
     sensors.addsensor(id='FFF0', alias='Komposten', location='humidity', offset=0)
     sensors.addsensor(id='FFF1', alias='Tujan', location='humidity', offset=1)
     sensors.addsensor(id='FFF2', alias='Stuprännan',location='humidity', offset=2)
-    sensors.addsensor(id='FFF3', alias='Bokhyllan', location='humidity', offset=3)
+    sensors.addsensor(id='FFF3', alias='Stuprännan (v)', location='humidity', offset=3)
+    sensors.addsensor(id='FFF4', alias='Bokhyllan', location='humidity', offset=4)
 
     history.draw()
 

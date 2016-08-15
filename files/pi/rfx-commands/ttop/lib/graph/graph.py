@@ -12,7 +12,7 @@ class Graph(object):
         self.w = w
         self.h = h
         self.pw = (w * 2) - 0
-        self.ph = h * 4
+        self.ph = (h * 4)
         self.m = m
         self.canvas = drawille.Canvas()
 
@@ -235,7 +235,7 @@ class Graph(object):
 
             for x, d in enumerate(self.normalized):
                 rx = int(round((x * (self.pw - 1)) / (nlen - 1)))
-                ry = d * (self.ph - 1)
+                ry = (d * (self.ph - 1 - 2))
 
                 if rx not in transform:
                     transform[rx] = []

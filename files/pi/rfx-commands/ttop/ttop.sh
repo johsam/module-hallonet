@@ -3,8 +3,8 @@
 (
 clear
 export TERM=xterm-256color
+export LC_ALL="en_US.UTF-8"
 source /home/pi/rfx-commands/settings.cfg
-
 
 mysql tnu -urfxuser -prfxuser1 --skip-column-names  \
     -e 'select UNIX_TIMESTAMP(datetime),temp from tnu where datetime >= (now() - INTERVAL 24 HOUR) order by datetime desc;' | tac | tail -500000 > /tmp/seed.log
@@ -16,7 +16,7 @@ mysql tnu -urfxuser -prfxuser1 --skip-column-names  \
 
 # Resize window
 
-printf "\e[8;30;58t"
+printf "\e[8;32;58t"
 
 /home/pi/rfx-commands/ttop/ttop.py \
     --pubnub-subkey "${PUBNUB_SUBKEY}" \
