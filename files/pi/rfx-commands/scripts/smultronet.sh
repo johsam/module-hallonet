@@ -101,6 +101,15 @@ fi
 has_version="$(cat ${has_version_file})"
 has_latest_version="$(cat ${has_latest_file})"
 
+
+if [ "${has_version}" != "${has_latest_version}" ] ; then
+	has_version="|${has_version} -> ${has_latest_version}"
+fi
+
+if [ "${has_status}" != "running" ] ; then
+	has_status="!${has_status}"
+fi
+
 #	Any updates ?
 
 updates=0
@@ -122,7 +131,6 @@ formatSystemInfo "pib" "updates"     "${updates}"
 formatSystemInfo "has" "started"     "${has_started}"
 formatSystemInfo "has" "status"      "${has_status}"
 formatSystemInfo "has" "version"     "${has_version}"
-formatSystemInfo "has" "latest"      "${has_latest_version}"
 
 #
 #	YR weather data

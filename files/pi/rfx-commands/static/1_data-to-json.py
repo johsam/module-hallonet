@@ -115,6 +115,13 @@ parser.add_argument(
 )
 
 
+parser.add_argument(
+	'--tnu-history-file', required=False,
+	dest='tnu_history_file',
+	help='JSON array of last unique values to Temperatur.nu'
+)
+
+
 args = parser.parse_args()
 
 
@@ -141,7 +148,7 @@ systemAliases = {
     "pi_updates": {
         "alias": "Uppdateringar",
         "order": 4,
-	"type": "counter"
+	"type": "hilite_non_zero"
     },
     "pi_last_boot": {
         "alias": "Bootad",
@@ -183,7 +190,7 @@ systemAliases = {
     "pib_updates": {
         "alias": "Uppdateringar",
         "order": 4,
-	"type": "counter"
+	"type": "hilite_non_zero"
     },
      "pib_last_boot": {
         "alias": "Bootad",
@@ -223,10 +230,7 @@ systemAliases = {
         "alias": "Version",
         "order": 3
     },
-    "has_latest": {
-        "alias": "Senaste",
-        "order": 4
-    },
+
 
     # YR.no "//api.met.no/weatherapi/weathericon/1.1/?symbol=3;content_type=image/png"
 
@@ -240,19 +244,24 @@ systemAliases = {
         "order": 2
     },
 
-    "yr_sensor.yr_wind_direction": {
-        "alias": "Vind riktning",
+    "yr_sensor.yr_condition": {
+        "alias": "Regn",
         "order": 3
     },
 
-    "yr_sensor.yr_wind_speed": {
-        "alias": "Vind styrka",
+    "yr_sensor.yr_wind_direction": {
+        "alias": "Vindriktning",
         "order": 4
+    },
+
+    "yr_sensor.yr_wind_speed": {
+        "alias": "Vindstyrka",
+        "order": 5
     },
 
     "yr_sensor.yr_symbol_not_yet": {
         "alias": "Symbol",
-        "order": 5
+        "order": 6
     },
 
 
@@ -273,7 +282,7 @@ systemAliases = {
     "mintblack_updates": {
         "alias": "Uppdateringar",
         "order": 4,
-	"type": "counter"
+	"type": "hilite_non_zero"
     },
     "mintblack_last_boot": {
         "alias": "Bootad",
@@ -354,12 +363,14 @@ switchAliases = {
         "alias":   u"Ytterd\u00F6rren (Z)",
         "type":    "magnet",
         "subtype": "door",
+	"badge":   True,
         "order":   -11
     },
     "00CFDEEA_10": {
         "alias":   "Altanen",
         "type":    "magnet",
         "subtype": "door",
+	"badge":   True,
         "order":   -10
     },
     "00CFD656_10": {
@@ -372,6 +383,7 @@ switchAliases = {
         "alias":   "Grinden",
         "type":    "magnet",
         "subtype": "door",
+	"badge":   True,
 	"divider": True,
         "order":   -8
     },
@@ -471,13 +483,19 @@ sensorAliases = {
         "location": "outside",
         "order": 6
     },
- 
+
+    "8900": {
+        "alias":    u"Stupr\u00e4nnan (v)",
+        "location": "outside",
+        "order": 7
+    },
+  
     # Inside sensors
 
     "9700": {
         "alias": "Bokhyllan",
         "location": "inside",
-        "order": 7
+        "order": 8
     }
 
 }
@@ -550,7 +568,7 @@ deviceAliases = {
 
 }
 
-result = {'success': True, 'hoursmissingcount': 0, 'sensors': [], 'switches': [], 'devices': [], 'lasthour': [],'toplist': {'coldest': [], 'warmest': []}}
+result = {'success': True, 'hoursmissingcount': 0, 'sensors': [], 'switches': [], 'devices': [], 'lasthour': [], 'tnu_trend': [], 'toplist': {'coldest': [], 'warmest': []}}
 now = datetime.now()
 tnu_sensors = args.tnu_sensors.split(',')
 
@@ -621,8 +639,17 @@ def readFile(filename, section, colname, dictkey):
 
 def readCitiesFile(filename):
     with open(filename) as data_file:
-            data = json.load(data_file)
-            result['cities'] = data
+    	data = json.load(data_file)
+    	result['cities'] = data
+
+#
+# Read trend file
+#
+
+def readTrendFile(filename):
+    with open(filename) as data_file:
+    	data = json.load(data_file)
+    	result['tnu_trend'] = data
 
 
 #
@@ -715,6 +742,7 @@ with open(args.switch_file, 'rb') as csvfile:
         order = 0
     	divider = False
     	nowarn = False
+    	badge = False
 
         if sensorid not in switchData:
             switchData[sensorid] = {}
@@ -733,6 +761,8 @@ with open(args.switch_file, 'rb') as csvfile:
                 switchData[sensorid]['divider'] = switchAliases[sensorid]['divider']
             if 'nowarn' in switchAliases[sensorid]:
                 switchData[sensorid]['nowarn'] = switchAliases[sensorid]['nowarn']
+            if 'badge' in switchAliases[sensorid]:
+                switchData[sensorid]['badge'] = switchAliases[sensorid]['badge']
 
         switchData[sensorid]['id'] = sensorid
         switchData[sensorid]['alias'] = alias
@@ -892,6 +922,8 @@ readSystemFile(args.system_file)
 if args.cities_file:
     readCitiesFile(args.cities_file)
 
+if args.tnu_history_file:
+    readTrendFile(args.tnu_history_file)
 
 #
 # How many hours with missing signals

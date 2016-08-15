@@ -16,7 +16,7 @@
 #
 ######################################################################
 
-trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" "${switchfile}" "${citiestmpfile}" "${scantmpfile}" "${hitsfile}" > /dev/null 2>&1' 0
+trap 'rm -f "${tmpfile}" "${lastfile}" "${minfile}" "${maxfile}" "${minhumfile}" "${maxhumfile}"  "${stampfile}" "${systemfile}" "${loadfile}" "${switchfile}" "${citiestmpfile}" "${scantmpfile}" "${hitsfile}" "${trendfile}" > /dev/null 2>&1' 0
 trap "exit 2" 1 2 3 15
 
 
@@ -48,6 +48,7 @@ switchfile="/tmp/`basename $0`-$$-switches.tmp"
 citiestmpfile="/tmp/cities.json"
 scantmpfile="/tmp/`basename $0`-$$-scan.tmp"
 
+trendfile="/tmp/`basename $0`-$$-trend.tmp"
 
 
 openhabPidFile=/var/run/openhab.pid
@@ -189,7 +190,18 @@ if [ -r "${updates_file}" ] ; then
 	updates=$(awk 'END {print NR}' ${updates_file})
 fi
 
- 
+#
+#   Temperatur.nu trend array (history)
+#
+
+cat /var/rfxcmd/temperatur-nu.log \
+| tail -1000 \
+| awk '{print $5}' \
+| tail -$((12 * 12)) \
+| perl -e 'chomp(my @a = <>); print "[".join(",",@a)."]"' > ${trendfile}
+##| sed '$!N; /^\(.*\)\n\1$/!P; D' \
+
+
 #
 #	Create the systemfile
 #
@@ -226,6 +238,8 @@ curl -s --connect-timeout 5 --max-time 5 'http://mint-black:5000/collect/collect
 ssh pi@smultronet ~/bin/smultronet.sh
   
 
+
+
 } > "${systemfile}"
 
 log "Collect from host(s) done..."
@@ -249,7 +263,7 @@ fi
 log "Wait for nmap scan to finish..."
 
 (
-flock -x -w 180 300 || logger -t "${0}" "Failed to aquire lock for nmap"
+flock -x -w 180 300 || logger -t "$(basename $0)" "Failed to aquire lock for nmap"
 mysql nmap -urfxuser -prfxuser1 \
 	-e "source ${scriptDir}/../nmap/sql/scan.sql;" > "${scantmpfile}"
 ) 300> /var/lock/nmap.lock
@@ -323,20 +337,21 @@ log "Calling '$(basename ${scriptDir}/1_data-to-json.py)'..."
 
 (
 python -u ${scriptDir}/1_data-to-json.py \
-        --last-file      "${lastfile}" \
-        --min-file       "${minfile}" \
-        --max-file       "${maxfile}" \
-        --min-hum-file   "${minhumfile}" \
-        --max-hum-file   "${maxhumfile}" \
-        --system-file    "${systemfile}" \
-        --switch-file    "${switchfile}" \
-        --cities-file    "${STATIC_DIR}/cities.json" \
-	--tnu-sensors    "${sensors_tnu}" \
-	--macs           "${ALL_MACS}" \
-	--devices-file   "${scantmpfile}" \
-	--missing        "${STATIC_DIR}/signal-history.json" \
-        --hits-file      "${hitsfile}" \
-	--device-max-age "${DEVICES_MAX_AGE}"
+        --last-file        "${lastfile}" \
+        --min-file         "${minfile}" \
+        --max-file         "${maxfile}" \
+        --min-hum-file     "${minhumfile}" \
+        --max-hum-file     "${maxhumfile}" \
+        --system-file      "${systemfile}" \
+        --switch-file      "${switchfile}" \
+        --cities-file      "${STATIC_DIR}/cities.json" \
+	--tnu-sensors      "${sensors_tnu}" \
+	--macs             "${ALL_MACS}" \
+	--devices-file     "${scantmpfile}" \
+	--missing          "${STATIC_DIR}/signal-history.json" \
+        --hits-file        "${hitsfile}" \
+	--device-max-age   "${DEVICES_MAX_AGE}" \
+	--tnu-history-file "${trendfile}"
 ) > ${destFile} 2>&1
 
 exit 0

@@ -34,7 +34,7 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 # Can we create our lock file ?
 #
 
-[ ! -w /var/lock/ ] && { logger -t "${0}" "Could not create lock file '/var/lock/nmap.lock'"; exit 1;}
+[ ! -w /var/lock/ ] && { logger -t "$(basename $0)" "Could not create lock file '/var/lock/nmap.lock'"; exit 1;}
 
 #
 #	Use flock to prevent multiple executions
@@ -43,7 +43,7 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 umask 011
 
 (
-flock -x -w 120 300 || { logger -t "${0}" "Failed to aquire lock for nmap"; exit 1; }
+flock -x -w 120 300 || { logger -t "$(basename $0)" "Failed to aquire lock for nmap"; exit 1; }
 python ${scriptDir}/scan.py
 ) 300> /var/lock/nmap.lock
 

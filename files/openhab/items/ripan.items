@@ -379,7 +379,7 @@ String M_00CFDCEE_10
         (Magnets)
 
 String M_00123456_7
-        "Ytterdörren (Z) [%s]"
+        "Ytterdörren [%s]"
         <ripan_door>
         (Magnets)
 
