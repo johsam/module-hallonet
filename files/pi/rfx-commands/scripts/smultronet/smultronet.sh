@@ -137,3 +137,6 @@ formatSystemInfo "has" "version"     "${has_version}"
 #
 
 curl -s http://smultronet:8123/api/states | jq -r '.[] | select(.entity_id| contains("sensor.yr")) | "yr\t" + .entity_id + "\t" + .state + " " + .attributes.unit_of_measurement' | sort
+
+
+exit 0

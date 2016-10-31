@@ -35,7 +35,7 @@ DESC="rfxcmd daemon startup script"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
-echo "$1" >> /var/rfxcmd/rfxcmd-error.log
+echo "$(date '+%F %T') -> $1" >> /var/rfxcmd/rfxcmd-error.log
 
 case "$1" in
 start)

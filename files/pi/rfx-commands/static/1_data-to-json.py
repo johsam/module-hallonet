@@ -564,6 +564,11 @@ deviceAliases = {
     "13": {
         "alias": "Edup Wifi Socket",
         "order": 13
+    },
+
+    "14": {
+        "alias": "Johans Lenovo",
+        "order": 14
     }
 
 }

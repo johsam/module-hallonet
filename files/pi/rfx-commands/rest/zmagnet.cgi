@@ -61,6 +61,10 @@ SQL_END
 
 /home/pi/rfx-commands/triggers/magnets.sh "${switchId}" "${state}" "${dimlevel}" "${unitcode}" "${signal}"
 
+#   Rescan devices
 
+#if [ "${state}" == "On" ] ; then
+#    /home/pi/rfx-commands/scripts/rescan-devices.sh &
+#fi
 
 exit 0

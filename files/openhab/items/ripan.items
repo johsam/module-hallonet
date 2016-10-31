@@ -130,6 +130,28 @@ Number H_52_B700_last
         (Outside)
 
 
+/*	Stuprännan (v)	*/
+
+Number T_52_8900_last
+        "Temperatur (Stv) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_52_8900_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,StuprannanVikingMinToday)
+
+Number T_52_8900_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,StuprannanVikingMaxToday)
+
+Number H_52_8900_last
+        "Stuprännan (v)[%d %%]"
+        <ripan_humidity>
+        (Outside)
+
 
 
 /*	Inomhus	*/
@@ -220,11 +242,15 @@ String T_52_B700_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_B700_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_B700_last_stamp "Klockan [%s]" <ripan_clock>
 
+String T_52_8900_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_8900_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_8900_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_8900_last_stamp "Klockan [%s]" <ripan_clock>
 
 /*	Grupper	*/
 
 Group:Number:AVG OutAvgLast
-        "Medel [%.1f °C]"
+        "Medel [%.1f °C ►]"
         <ripan_new_temp>
         (Outside)
 
@@ -239,12 +265,12 @@ Group:Number:MAX OutMaxLast
         (Outside)
 
 Group:Number:MIN OutMinToday
-        "Kallast [%.1f °C]"
+        "Kallast [%.1f °C ►]"
         <ripan_small_blue_temp>
         (Outside)
 
 Group:Number:MAX OutMaxToday
-        "Varmast [%.1f °C]"
+        "Varmast [%.1f °C ►]"
         <ripan_small_red_temp>
         (Outside)
 
@@ -318,6 +344,15 @@ Group:Number:MAX StuprannanMaxToday
         <ripan_small_red_temp>
         (Outside)
 
+Group:Number:MAX StuprannanVikingMinToday
+        "Stuprännan [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+Group:Number:MAX StuprannanVikingMaxToday
+        "Stuprännan [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
 
 Switch Nexa_1
     "Vid Tv:n"
@@ -355,6 +390,7 @@ String PI_wifi_link    "Wifi link [%s]"    <ripan_pi>
 String PI_wifi_level   "Wifi Level [%s]"   <ripan_pi>
 String PI_public_ip    "Public Ip [%s]"    <ripan_pi>
 String PI_last_boot    "Last Boot [%s]"    <ripan_pi>
+String PI_updates      "Updates [%s]"      <ripan_pi>
 
 String OPENHAB_load      "Load [%s]"      <ripan_openhab>
 String OPENHAB_restarted "Restarted [%s]" <ripan_openhab>
