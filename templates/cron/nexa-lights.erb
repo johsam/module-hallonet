@@ -6,10 +6,9 @@ MAILTO=<%= scope.lookupvar("mailme") %>
 #
 #	Lamporna
 #
-#00 06 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 2 on
-#00 08 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh "group off"
+00 06 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 2 on
+00 09 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh "group off"
 #
-#00 18 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh "group on"
 00 23 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 2 off
 30 23 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh "group off"
 #
@@ -23,15 +22,16 @@ MAILTO=<%= scope.lookupvar("mailme") %>
 #
 #	Julgranen
 #
-#00 06 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
-#15 08 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
+00 06 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
+00 09 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
 #
-#45 15 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
-#45 00 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
+00 15 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 on
+45 00 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 4 off
 #
 #	Hallen
 #
-30 08 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 on
-00 10 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 off
+15 07 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 on
+00 10 * * 1-5 pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 off
 #
 00 15 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 on
+30 23 * * * pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh 5 off

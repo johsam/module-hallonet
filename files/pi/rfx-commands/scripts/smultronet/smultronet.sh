@@ -61,7 +61,7 @@ last_boot=$(uptime -s)
 
 has_started=$(awk '$1 ~ /Active/ {print $6" "$7}' ${tmpfile})
 has_status=$(awk '$1 ~ /Active/ {print $3}' ${tmpfile} | tr -d '()')
-has_version=$(curl -s http://smultronet:8123/api/config | jq -r .version)
+has_version=$(curl -s http://localhost:8123/api/config | jq -r .version)
 
 #	Clear cache
 
@@ -77,7 +77,7 @@ if [ ! -r "${has_version_file}" ] ; then
 	echo "?" > ${has_version_file}
 	
 	(
-	curl -s http://smultronet:8123/api/config | jq -r .version > ${tmpfile} 
+	curl -s http://localhost:8123/api/config | jq -r .version > ${tmpfile} 
 	) 2> /dev/null ; status=$?
 	if [ ${status} -eq 0 ] ; then
 		cp ${tmpfile} ${has_version_file}
@@ -136,7 +136,7 @@ formatSystemInfo "has" "version"     "${has_version}"
 #	YR weather data
 #
 
-curl -s http://smultronet:8123/api/states | jq -r '.[] | select(.entity_id| contains("sensor.yr")) | "yr\t" + .entity_id + "\t" + .state + " " + .attributes.unit_of_measurement' | sort
+curl -s http://localhost:8123/api/states | jq -r '.[] | select(.entity_id| contains("sensor.yr")) | "yr\t" + .entity_id + "\t" + .state + " " + .attributes.unit_of_measurement' | sort
 
 
 exit 0

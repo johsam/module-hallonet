@@ -156,21 +156,27 @@ sitemap ripan label="Ripstigen" {
 
    Frame label="Inomhus" {
         Text  item=T_52_9700_last
+        Text  item=T_50_8F00_last
    }
 
-   Frame label="Dörrar och fönster" {
+   Frame label="Dörrar Utomhus" {
 	Text  item=M_00123456_7
-	Text  item=M_00CFDCEE_10
 	Text  item=M_00CFDEEA_10
 	Text  item=M_00CFD656_10
 	Text  item=M_0128ED32_10
    }
 
-   Frame label="Luftfuktighet Inne" {
+   Frame label="Dörrar och skåp Inomhus" {
+	Text  item=M_00CFDCEE_10
+	Text  item=M_0128DCFA_10
+   }
+
+
+   Frame label="Luftfuktighet Inomhus" {
         Text item=H_52_9700_last
    }
 
-   Frame label="Luftfuktighet Ute" {
+   Frame label="Luftfuktighet Utomhus" {
         Text item=H_52_B700_last
 	Text item=H_52_8900_last
 	Text item=H_52_8700_last
@@ -200,7 +206,13 @@ sitemap ripan label="Ripstigen" {
         Text item=OPENHAB_load
         Text item=OPENHAB_restarted
    }
-   
+
+   Frame label="Home-Assistant" {
+        Text item=HAS_started
+        Text item=HAS_status
+        Text item=HAS_version
+   }
+    
    Frame label="Sensordata" {
         Text item=STATIC_timestamp
         Text item=SQL_timestamp

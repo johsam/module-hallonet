@@ -198,6 +198,30 @@ systemAliases = {
         "type": "date"
     },
 
+   # jordgubben
+
+    "pij_core_temp": {
+        "alias": "Cpu Temp",
+        "order": 1
+    },
+    "pij_loadavg": {
+        "alias": "Cpu Medel",
+        "order": 2
+    },
+    "pij_uptime": {
+        "alias": "Upptid",
+        "order": 3
+    },
+    "pij_updates": {
+        "alias": "Uppdateringar",
+        "order": 4,
+	"type": "hilite_non_zero"
+    },
+     "pij_last_boot": {
+        "alias": "Bootad",
+        "order": 5,
+        "type": "date"
+    },
 
     # openhab
 
@@ -290,6 +314,31 @@ systemAliases = {
         "type": "date"
     },
 
+    # Mint fuji
+
+    "mintfuji_core_temp": {
+        "alias": "Cpu Temp",
+        "order": 1
+    },
+    "mintfuji_loadavg": {
+        "alias": "Cpu Medel",
+        "order": 2
+    },
+    "mintfuji_uptime": {
+        "alias": "Upptid",
+        "order": 3
+    },
+    "mintfuji_updates": {
+        "alias": "Uppdateringar",
+        "order": 4,
+	"type": "hilite_non_zero"
+    },
+    "mintfuji_last_boot": {
+        "alias": "Bootad",
+        "order": 5,
+        "type": "date"
+    },
+
 
     # Misc
 
@@ -356,7 +405,7 @@ switchAliases = {
         "alias": "Julgranen",
         "type":  "light",
         "nexaid": 4,
-        "fab": False,
+        "fab": True,
         "order": 5
     },
     "00123456_7": {
@@ -387,7 +436,7 @@ switchAliases = {
 	"divider": True,
         "order":   -8
     },
-    "032C96AA_16": {
+    "0128DCFA_10": {
         "alias":   "Bokhyllan (*)",
         "type":    "magnet",
         "subtype": "door",
@@ -494,6 +543,12 @@ sensorAliases = {
 
     "9700": {
         "alias": "Bokhyllan",
+        "location": "inside",
+        "order": 8
+    },
+    
+    "8F00": {
+        "alias": "Golv TV:n",
         "location": "inside",
         "order": 8
     }

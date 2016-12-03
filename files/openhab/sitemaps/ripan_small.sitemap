@@ -10,10 +10,11 @@ sitemap ripan_small label="Ripstigen-Small" {
         Switch item=Nexa_1
         Switch item=Nexa_2
         Switch item=Nexa_3
+        Switch item=Nexa_4
         Switch item=Nexa_5
    }
 
-   Frame label="Dörrar och fönster" {
+   Frame label="Dörrar Utomhus" {
 	Text  item=M_00123456_7
 	Text  item=M_00CFDEEA_10
    }

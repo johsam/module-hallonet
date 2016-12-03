@@ -121,5 +121,6 @@ with open(args.file) as data_file:
 	processSection('system', 'pi')
 	processSection('system', 'openhab')
 	processSection('system', 'sql')
+	processSection('system', 'has')
 	processSection('system', 'static')
 

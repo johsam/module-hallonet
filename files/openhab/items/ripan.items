@@ -171,6 +171,25 @@ Number T_52_9700_max
         <ripan_temp>
         (Inside)
 
+Number T_50_8F00_last
+        "Golv TV:n [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+Number T_50_8F00_min
+        "Kallast [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+Number T_50_8F00_max
+        "Varmast [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+
+
+
+
 /*	Luftfuktighet inomhus */
 
 Number H_52_9700_last
@@ -231,6 +250,12 @@ String T_52_9700_last_stamp "Avläst [%s]" <ripan_clock>
 String T_52_9700_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_9700_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_9700_last_stamp "Klockan [%s]" <ripan_clock>
+
+String T_50_8F00_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_8F00_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_8F00_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_50_8F00_last_stamp "Klockan [%s]" <ripan_clock>
+
 
 String T_52_A700_last_stamp "Avläst [%s]" <ripan_clock>
 String T_52_A700_min_stamp  "Klockan [%s]" <ripan_clock>
@@ -379,7 +404,9 @@ Switch Nexa_5
     (Lights)
     {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 5 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 5 off"}
 
-
+String HAS_started    "Startad [%s]"      <ripan_has>
+String HAS_status     "Status [%s]"       <ripan_has>
+String HAS_version    "Version [%s]"      <ripan_has>
 
 String PI_uptime       "Uptime [%s]"       <ripan_pi>
 String PI_loadavg      "Load Average [%s]" <ripan_pi>
@@ -448,7 +475,7 @@ String M_010865CA_10
         <ripan_door>
         (Magnets)
 
-String M_032C96AA_16
+String M_0128DCFA_10
         "Bokhyllan [%s]"
         <ripan_door>
         (Magnets)

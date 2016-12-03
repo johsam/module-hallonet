@@ -235,10 +235,16 @@ cat "${stampfile}"
 curl -s --connect-timeout 5 --max-time 5 'http://mint-black:5000/collect/collect.php' 2> /dev/null
 
 #Collect from smultronet
-ssh pi@smultronet ~/bin/smultronet.sh
+
+ssh pi@smultronet '~/bin/smultronet.sh'
   
+#Collect from jordgubben (old pi)
 
+ssh pi@jordgubben '~/bin/jordgubben.sh'
 
+#Collect from mint-fuji
+
+ssh johsam@mint-fuji '~/bin/mint-fuji.sh'
 
 } > "${systemfile}"
 
