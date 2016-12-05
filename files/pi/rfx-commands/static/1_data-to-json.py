@@ -225,34 +225,49 @@ systemAliases = {
 
     # openhab
 
+    "openhab_host": {
+        "alias": u"K\u00F6rs p\u00e5",
+        "order": 1,
+    },
+
     "openhab_status": {
         "alias": "Status",
-        "order": 1,
+        "order": 2,
     },
     "openhab_load": {
         "alias": "Cpu",
-        "order": 2
+        "order": 3
     },
-    "openhab_restarted": {
+    "openhab_started": {
         "alias": "Startad",
-        "order": 3,
+        "order": 4,
         "type": "date"
     },
+
+    "openhab_version": {
+        "alias": "Version",
+        "order": 5
+    },
+
 
     # home-assistant
 
-    "has_started": {
-        "alias": "Startad",
-        "order": 1,
-        "type": "date"
+    "has_host": {
+        "alias": u"K\u00F6rs p\u00e5",
+        "order": 1
     },
     "has_status": {
         "alias": "Status",
         "order": 2
     },
+    "has_started": {
+        "alias": "Startad",
+        "order": 3,
+        "type": "date"
+    },
     "has_version": {
         "alias": "Version",
-        "order": 3
+        "order": 4
     },
 
 
@@ -337,6 +352,52 @@ systemAliases = {
         "alias": "Bootad",
         "order": 5,
         "type": "date"
+    },
+
+    # Influxdb
+
+    "influxdb_host": {
+        "alias": u"K\u00F6rs p\u00e5",
+        "order": 1
+    },
+
+    "influxdb_status": {
+        "alias": "Status",
+        "order": 2
+    },
+
+    "influxdb_started": {
+        "alias": "Startad",
+        "order": 3,
+        "type": "date"
+    },
+
+    "influxdb_version": {
+        "alias": "Version",
+        "order": 4
+    },
+
+    # Grafana
+
+    "grafana_host": {
+        "alias": u"K\u00F6rs p\u00e5",
+        "order": 1
+    },
+
+    "grafana_status": {
+        "alias": "Status",
+        "order": 2
+    },
+
+    "grafana_started": {
+        "alias": "Startad",
+        "order": 3,
+        "type": "date"
+    },
+
+    "grafana_version": {
+        "alias": "Version",
+        "order": 4
     },
 
 

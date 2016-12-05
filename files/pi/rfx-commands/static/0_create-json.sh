@@ -114,7 +114,7 @@ openHabPid=$(cat "${openhabPidFile}")
 
 
 openhab_load="0.0"
-openhab_restarted="0000-00-00 00:00:00"
+openhab_started="0000-00-00 00:00:00"
 openhab_status=""
 
 loadavg="0.0  0.0  0.0"
@@ -130,8 +130,10 @@ log "Collect from openhab..."
 
 top -d 2 -p ${openHabPid} -n 5 -b > ${loadfile}
 openhab_load=$(awk -v pid="${openHabPid}" 'BEGIN {s=0;c=1} $1 ~ pid {s += $9;c++} END {printf("%.1f",s / c);}' ${loadfile})
-openhab_restarted=$(stat --printf=%z /var/run/openhab.pid | awk -F. '{print $1}')
+openhab_started=$(stat --printf=%z /var/run/openhab.pid | awk -F. '{print $1}')
 openhab_status=$(${scriptDir}/../scripts/check-openhab-online.sh | awk '{print $3}')
+openhab_host="$(uname -n)"
+openhab_version=$(dpkg -s openhab-runtime | awk '$1 ~ /Version/ {print $2}')
 
 log "Collect from host(s)..."
 
@@ -210,8 +212,10 @@ cat /var/rfxcmd/temperatur-nu.log \
 formatSystemInfo "section" "key" "value"
 
 formatSystemInfo "openhab" "load"	"${openhab_load} %"
-formatSystemInfo "openhab" "restarted"	"${openhab_restarted}"
+formatSystemInfo "openhab" "started"	"${openhab_started}"
 formatSystemInfo "openhab" "status"	"${openhab_status}"
+formatSystemInfo "openhab" "host"	"${openhab_host}"
+formatSystemInfo "openhab" "version"	"${openhab_version}"
 
 formatSystemInfo "pi" "uptime"	        "${uptime}"
 formatSystemInfo "pi" "updates"	        "${updates}"

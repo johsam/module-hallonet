@@ -62,6 +62,7 @@ last_boot=$(uptime -s)
 has_started=$(awk '$1 ~ /Active/ {print $6" "$7}' ${tmpfile})
 has_status=$(awk '$1 ~ /Active/ {print $3}' ${tmpfile} | tr -d '()')
 has_version=$(curl -s http://localhost:8123/api/config | jq -r .version)
+has_host="$(uname -n)"
 
 #	Clear cache
 
@@ -131,6 +132,7 @@ formatSystemInfo "pib" "updates"     "${updates}"
 formatSystemInfo "has" "started"     "${has_started}"
 formatSystemInfo "has" "status"      "${has_status}"
 formatSystemInfo "has" "version"     "${has_version}"
+formatSystemInfo "has" "host"        "${has_host}"
 
 #
 #	YR weather data
