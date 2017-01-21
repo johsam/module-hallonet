@@ -8,7 +8,6 @@ class hallonet::params {
 	'python-pip',
 	'mlocate',
 	'lighttpd',
-	'collectd',
 	'bc',
 	'libdatetime-astro-sunrise-perl',
 	'libdate-manip-perl',
@@ -36,7 +35,7 @@ class hallonet::params {
 
 
     $myopenhab_version = '1.8.0'
-    $myopenhab = "org.openhab.io.myopenhab-${myopenhab_version}.jar"
+    $myopenhab = "org.openhab.io.openhabcloud_1.9.0.201612192331.jar"
 
 
     $rfxcmd_packages = [

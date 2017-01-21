@@ -97,26 +97,6 @@ class hallonet::rfxcmd::pi {
     }
 
  
-    file {'cron_to_graphite_coretemp':
-        ensure  => present,
-        path    => '/etc/cron.d/to-graphite-coretemp',
-        content => template("${module_name}/cron/to-graphite-coretemp.erb"),
-        require => [File['rfx_commands']],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-    }
-
-    file {'cron_to_graphite_magnets':
-        ensure  => present,
-        path    => '/etc/cron.d/to-graphite-magnets',
-        content => template("${module_name}/cron/to-graphite-magnets.erb"),
-	require => [File['rfx_commands']],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-    }
-
     file {'cron_update_sun_rise_set':
         ensure  => present,
         path    => '/etc/cron.d/update-sun-rise-set',

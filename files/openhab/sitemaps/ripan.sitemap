@@ -188,6 +188,7 @@ sitemap ripan label="Ripstigen" {
         Switch item=Nexa_1
         Switch item=Nexa_2
         Switch item=Nexa_3
+        Switch item=Nexa_6
         Switch item=Nexa_4
         Switch item=Nexa_5
    }
@@ -198,25 +199,35 @@ sitemap ripan label="Ripstigen" {
         Text item=PI_uptime
         Text item=PI_last_boot
         Text item=PI_wifi_restart
-        Text item=PI_public_ip
    }
 
    Frame label="Openhab info" {
         Text item=OPENHAB_status
+        Text item=OPENHAB_version
         Text item=OPENHAB_load
-        Text item=OPENHAB_restarted
+        Text item=OPENHAB_started
    }
 
    Frame label="Home-Assistant" {
-        Text item=HAS_started
         Text item=HAS_status
         Text item=HAS_version
+        Text item=HAS_host
+        Text item=HAS_started
    }
     
    Frame label="Sensordata" {
         Text item=STATIC_timestamp
         Text item=SQL_timestamp
    }
+   
+   Frame label="mintblack.se" {
+        Text item=MISC_public_ip
+   }
+   
+   Frame label="Sensorer" {
+	Text  item=M_0115A1F6_10
+   }
+
 
    Frame label="Grafik" {
         //Chart item=T_52_8700_last period=1d service=rrd4j refresh=300

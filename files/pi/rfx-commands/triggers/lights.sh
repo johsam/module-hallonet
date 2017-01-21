@@ -22,11 +22,13 @@ logfile="/var/rfxcmd/nexa-setstate.log"
 
 functions=${scriptDir}/../functions.sh
 settings=${scriptDir}/../settings.cfg
+sensors=${scriptDir}/../sensors.cfg
 
 # Sanity checks
 
 [ -r ${functions} ] && source ${functions} || { logger -t $(basename $0) "FATAL: Missing '${functions}', Aborting" ; exit 1; }
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
+[ -r ${sensors} ]   && source ${sensors}   || { logger -t $(basename $0) "FATAL: Missing '${sensors}', Aborting" ; exit 1; }
 
 light_id="${1}"
 light_command="${2}"
@@ -60,8 +62,9 @@ if [ "${onOff}" = "GROUP ON" ] ; then
 	exit 0
 fi
 
-#	Send it to openhab, This will trigger a send and a publish
+#	Send it to openhab, This will trigger a send and a publish and data to influxdb
 
 to_openhab "Nexa_${light_unitcode}" "${onOff}" >> ${UPDATE_REST_LOG}
+
 
 exit 0

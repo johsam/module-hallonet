@@ -404,9 +404,16 @@ Switch Nexa_5
     (Lights)
     {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 5 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 5 off"}
 
-String HAS_started    "Startad [%s]"      <ripan_has>
-String HAS_status     "Status [%s]"       <ripan_has>
-String HAS_version    "Version [%s]"      <ripan_has>
+Switch Nexa_6
+    "Ebbas Julstjärna"
+    (Lights)
+    {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 6 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 6 off"}
+
+String HAS_started    "Startad [%s]"       <ripan_has>
+String HAS_status     "Status [%s]"        <ripan_has>
+String HAS_version    "Version [%s]"       <ripan_has>
+String HAS_host       "Körs på [%s]"     <ripan_has>
+String HAS_influxdata "InfluxDB [%s]"      <ripan_has>
 
 String PI_uptime       "Uptime [%s]"       <ripan_pi>
 String PI_loadavg      "Load Average [%s]" <ripan_pi>
@@ -415,16 +422,23 @@ String PI_core_volts   "Core Volts [%s]"   <ripan_pi>
 String PI_wifi_restart "Wifi Restart [%s]" <ripan_pi>
 String PI_wifi_link    "Wifi link [%s]"    <ripan_pi>
 String PI_wifi_level   "Wifi Level [%s]"   <ripan_pi>
-String PI_public_ip    "Public Ip [%s]"    <ripan_pi>
 String PI_last_boot    "Last Boot [%s]"    <ripan_pi>
-String PI_updates      "Updates [%s]"      <ripan_pi>
 
-String OPENHAB_load      "Load [%s]"      <ripan_openhab>
-String OPENHAB_restarted "Restarted [%s]" <ripan_openhab>
-String OPENHAB_status    "Status [%s]"    <ripan_openhab>
+String OPENHAB_load     "Load [%s]"        <ripan_openhab>
+String OPENHAB_started  "Startad [%s]"     <ripan_openhab>
+String OPENHAB_status   "Status [%s]"      <ripan_openhab>
+String OPENHAB_version  "Version [%s]"     <ripan_openhab>
+String OPENHAB_host     "Körs på [%s]"   <ripan_openhab>
 
 String STATIC_timestamp     "JSON [%s]" <ripan_clock>
 String SQL_timestamp        "SQL [%s]"  <ripan_clock>
+
+String MISC_rfxcmd_last_restart        "Unused [%s]"     <ripan_clock>
+String MISC_pubnubmgr_last_restart     "Unused [%s]"     <ripan_clock>
+String MISC_rfxcmd_last_restart        "Unused [%s]"     <ripan_clock>
+
+String MISC_public_ip                  "Publik Ip [%s]"  <settings>
+
 
 String T_NU_last_info       "Senaste [%s]" <ripan_tnu>
 String T_NU_last_max        "Varmast [%s]" <ripan_small_red_temp>

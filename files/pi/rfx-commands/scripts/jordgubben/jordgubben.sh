@@ -45,6 +45,9 @@ core_temp_raw=$(cat /sys/devices/virtual/thermal/thermal_zone0/temp)
 core_temp=$(python -c 'import sys;print u"{:.1f} \u00b0C".format(float(sys.argv[1]) / 1000.0).encode("utf-8")' ${core_temp_raw})
 core_volts=$(vcgencmd measure_volts core | awk -F'=' '{print $2}')
 
+gpu_temp_raw=$(/opt/vc/bin/vcgencmd measure_temp | tr -cd '[0-9\.]')
+gpu_temp=$(python -c 'import sys;print u"{:.1f} \u00b0C".format(float(sys.argv[1])).encode("utf-8")' ${gpu_temp_raw})
+
 uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
 
@@ -66,9 +69,10 @@ fi
 formatSystemInfo "pij" "uptime"	     "${uptime}"
 formatSystemInfo "pij" "core_temp"   "${core_temp}"
 formatSystemInfo "pij" "core_volts"  "${core_volts}"
+formatSystemInfo "pij" "gpu_temp"    "${gpu_temp}"
 formatSystemInfo "pij" "loadavg"     "${loadavg}"
 formatSystemInfo "pij" "last_boot"   "${last_boot}"
-formatSystemInfo "pij" "updates"     "${updates}"
+formatSystemInfo "updates" "pij"     "${updates}"
 
 
 exit 0

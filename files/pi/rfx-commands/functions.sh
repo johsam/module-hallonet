@@ -105,6 +105,46 @@ echo $path | nc -q0 mint-black 2003
 log "Sending ${id}->${state}"
 }
 
+#-------------------------------------------------------------------------------
+#
+#	Function sw_to_influxdb
+#
+#-------------------------------------------------------------------------------
+
+function sw_to_influxdb ()
+{
+local id="${1}"
+local state=$(echo "${2}" | sed -e 's/On/1/gi' -e 's/Off/0/gi')
+local type=${swtype[${id}]:='door'}
+local id_id="ID_${id}"
+local alias="$(echo ${!id_id} | iconv -f ISO-8859-15 -t UTF-8)"
+local influxtime="${3}"
+
+curl -s -XPOST 'http://mint-fuji:8086/write?db=ripan' --data-binary "switches,id=${id},alias=${alias// /\\ },type=${type} value=${state} ${influxtime}"
+
+log "Sending '${alias}'->${id}->${2}"
+}
+
+
+#-------------------------------------------------------------------------------
+#
+#	Function light_to_influxdb
+#
+#-------------------------------------------------------------------------------
+
+function light_to_influxdb ()
+{
+local id="${1}"
+local state=$(echo "${2}" | sed -e 's/On/1/gi' -e 's/Off/0/gi')
+local id_id="ID_${id}"
+local alias="$(echo ${!id_id} | iconv -f ISO-8859-15 -t UTF-8)"
+local influxtime="${3}"
+
+curl -s -XPOST 'http://mint-fuji:8086/write?db=ripan' --data-binary "lights,id=${id},alias=${alias// /\\ } state=${state} ${influxtime}"
+
+log "Sending '${alias}'->${id}->${2}"
+}
+
 
 #-------------------------------------------------------------------------------
 #

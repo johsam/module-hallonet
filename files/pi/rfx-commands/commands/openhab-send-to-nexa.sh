@@ -17,6 +17,8 @@ trap "exit 2" 1 2 3 15
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
+influxtime="$(date +%s)000000000"
+
 tmpfile="/tmp/`basename $0`-$$.tmp"
 
 settings=${scriptDir}/../settings.cfg
@@ -49,5 +51,10 @@ fi
 #	Sent to pubnub
 
 ${scriptDir}/../triggers/pubnub/publish_switch.sh "${remote_nexa}_${switch_id}" "${switch_command}" "0"
+
+#	Send it to influxdb
+
+light_to_influxdb "${remote_nexa}_${switch_id}" "${switch_command}" "${influxtime}" >> ${UPDATE_REST_LOG}
+
 
 exit 0

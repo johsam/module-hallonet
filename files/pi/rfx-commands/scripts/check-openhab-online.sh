@@ -50,7 +50,7 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
 
-/bin/ping -c 2 -I wlan0 my.openhab.org > /dev/null 2> /dev/null ; status=$?
+/bin/ping -c 2 -I wlan0 myopenhab.org > /dev/null 2> /dev/null ; status=$?
 
 if [ ${status} -ne 0 ] ; then
 	reportStatus "unpingable"
@@ -66,7 +66,7 @@ fi
 	--connect-timeout 15 \
 	--max-time        30 \
 	--user            ${MY_OPENHAB_USER} \
-	--url             "https://my.openhab.org/openhab.app?sitemap=ripan#_Home"
+	--url             "https://myopenhab.org/openhab.app?sitemap=ripan#_Home"
   
 ) > "${tmpfile}" ; status=$?
 

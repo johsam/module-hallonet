@@ -148,6 +148,9 @@ core_temp=$(python -c 'import sys;print u"{:.1f} \u00b0C".format(float(sys.argv[
 
 core_volts=$(vcgencmd measure_volts core | awk -F'=' '{print $2}')
 
+gpu_temp_raw=$(/opt/vc/bin/vcgencmd measure_temp | tr -cd '[0-9\.]')
+gpu_temp=$(python -c 'import sys;print u"{:.1f} \u00b0C".format(float(sys.argv[1])).encode("utf-8")' ${gpu_temp_raw})
+
 
 wifi_restart=$(stat --printf=%z /run/sendsigs.omit.d/wpasupplicant.wpa_supplicant.wlan0.pid | awk -F. '{print $1}')
 wifi_link=$(cat /proc/net/wireless | awk '$1 ~ /wlan0/ {gsub(/\./,"");print $3}')
@@ -218,20 +221,22 @@ formatSystemInfo "openhab" "host"	"${openhab_host}"
 formatSystemInfo "openhab" "version"	"${openhab_version}"
 
 formatSystemInfo "pi" "uptime"	        "${uptime}"
-formatSystemInfo "pi" "updates"	        "${updates}"
 formatSystemInfo "pi" "core_temp"       "${core_temp}"
 formatSystemInfo "pi" "core_volts"      "${core_volts}"
+formatSystemInfo "pi" "gpu_temp"        "${gpu_temp}"
 formatSystemInfo "pi" "loadavg"	        "${loadavg}"
 formatSystemInfo "pi" "wifi_restart"    "${wifi_restart}"
 formatSystemInfo "pi" "wifi_link"       "${wifi_link}"
 formatSystemInfo "pi" "wifi_level"      "${wifi_level}"
-formatSystemInfo "pi" "public_ip"       "${public_ip}"
 formatSystemInfo "pi" "last_boot"       "${last_boot}"
 
 formatSystemInfo "static" "timestamp"	"${now}" 
 
 formatSystemInfo "misc" "rfxcmd_last_restart"    "${rfxcmd_restart}"
 formatSystemInfo "misc" "pubnubmgr_last_restart" "${pubnubmgr_restart}"
+formatSystemInfo "misc" "public_ip"              "${public_ip}"
+
+formatSystemInfo "updates" "pi"	        "${updates}"
 
 cat "${stampfile}"
 
@@ -251,7 +256,7 @@ ssh pi@jordgubben '~/bin/jordgubben.sh'
 ssh johsam@mint-fuji '~/bin/mint-fuji.sh'
 
 } > "${systemfile}"
-
+cp ${systemfile} /tmp/xxx.log
 log "Collect from host(s) done..."
 
 

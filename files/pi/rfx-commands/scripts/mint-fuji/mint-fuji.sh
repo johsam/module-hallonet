@@ -53,7 +53,6 @@ fi
 printf "%s\t%s\t%s\n" "mintfuji" "core_temp" "${core_temp} ${degree}C"
 printf "%s\t%s\t%s\n" "mintfuji" "loadavg" "${loadavg}"
 printf "%s\t%s\t%s\n" "mintfuji" "uptime" "${uptime}"
-printf "%s\t%s\t%s\n" "mintfuji" "updates" "${updates}"
 printf "%s\t%s\t%s\n" "mintfuji" "last_boot" "${last_boot}"
 
 printf "%s\t%s\t%s\n" "influxdb" "host" "${influxdb_host}"
@@ -67,6 +66,7 @@ printf "%s\t%s\t%s\n" "grafana" "status" "${grafana_status}"
 printf "%s\t%s\t%s\n" "grafana" "started" "${grafana_started}"
 printf "%s\t%s\t%s\n" "grafana" "version" "${grafana_version}"
 
+printf "%s\t%s\t%s\n" "updates" "mintfuji" "${updates}"
 
 }
 

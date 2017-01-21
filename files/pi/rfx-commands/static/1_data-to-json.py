@@ -145,11 +145,6 @@ systemAliases = {
         "alias": "Upptid",
         "order": 3
     },
-    "pi_updates": {
-        "alias": "Uppdateringar",
-        "order": 4,
-	"type": "hilite_non_zero"
-    },
     "pi_last_boot": {
         "alias": "Bootad",
         "order": 5,
@@ -168,10 +163,6 @@ systemAliases = {
         "alias": u"Wifi Niv\u00e5",
         "order": 8,
     },
-    "pi_public_ip": {
-        "alias": "Publik Ip",
-        "order": 9
-    },
 
     # smultronet
 
@@ -186,11 +177,6 @@ systemAliases = {
     "pib_uptime": {
         "alias": "Upptid",
         "order": 3
-    },
-    "pib_updates": {
-        "alias": "Uppdateringar",
-        "order": 4,
-	"type": "hilite_non_zero"
     },
      "pib_last_boot": {
         "alias": "Bootad",
@@ -212,12 +198,7 @@ systemAliases = {
         "alias": "Upptid",
         "order": 3
     },
-    "pij_updates": {
-        "alias": "Uppdateringar",
-        "order": 4,
-	"type": "hilite_non_zero"
-    },
-     "pij_last_boot": {
+    "pij_last_boot": {
         "alias": "Bootad",
         "order": 5,
         "type": "date"
@@ -260,14 +241,19 @@ systemAliases = {
         "alias": "Status",
         "order": 2
     },
+    "has_influxdata": {
+        "alias": "InfluxDB",
+        "order": 3,
+        "type": "date"
+    },
     "has_started": {
         "alias": "Startad",
-        "order": 3,
+        "order": 4,
         "type": "date"
     },
     "has_version": {
         "alias": "Version",
-        "order": 4
+        "order": 5
     },
 
 
@@ -318,11 +304,6 @@ systemAliases = {
         "alias": "Upptid",
         "order": 3
     },
-    "mintblack_updates": {
-        "alias": "Uppdateringar",
-        "order": 4,
-	"type": "hilite_non_zero"
-    },
     "mintblack_last_boot": {
         "alias": "Bootad",
         "order": 5,
@@ -342,11 +323,6 @@ systemAliases = {
     "mintfuji_uptime": {
         "alias": "Upptid",
         "order": 3
-    },
-    "mintfuji_updates": {
-        "alias": "Uppdateringar",
-        "order": 4,
-	"type": "hilite_non_zero"
     },
     "mintfuji_last_boot": {
         "alias": "Bootad",
@@ -415,6 +391,12 @@ systemAliases = {
         "type": "date"
     },
 
+    "misc_public_ip": {
+        "alias": "Publik Ip",
+        "order": 3
+    },
+
+
     # static
 
     "static_timestamp": {
@@ -425,10 +407,41 @@ systemAliases = {
 
     "sql_timestamp": {
         "alias": "Senaste sql",
-        "order": 1,
+        "order": 2,
         "type": "date"
-    }
+    },
 
+    #	Updates
+
+    "updates_pi": {
+        "alias": "hallonet",
+        "order": 1,
+	"type": "hilite_non_zero"
+    },
+
+    "updates_pib": {
+        "alias": "smultronet",
+        "order": 2,
+	"type": "hilite_non_zero"
+    },
+
+    "updates_pij": {
+        "alias": "jordgubben",
+        "order": 3,
+	"type": "hilite_non_zero"
+    },
+
+    "updates_mintfuji": {
+        "alias": "mint-fuji",
+        "order": 4,
+	"type": "hilite_non_zero"
+    },
+
+    "updates_mintblack": {
+        "alias": "mint-black",
+        "order": 5,
+	"type": "hilite_non_zero"
+    }
 
 }
 
@@ -455,19 +468,26 @@ switchAliases = {
         "fab": True,
         "order": 3
     },
+    "00D81332_6": {
+        "alias": u"Ebbas Julstj\u00E4rna",
+        "type":  "light",
+        "nexaid": 6,
+        "fab": True,
+        "order": 4
+    },
     "00D81332_5": {
         "alias": "Hallen",
         "type":  "light",
         "nexaid": 5,
         "fab": True,
-        "order": 4
+        "order": 5
     },
     "00D81332_4": {
         "alias": "Julgranen",
         "type":  "light",
         "nexaid": 4,
         "fab": True,
-        "order": 5
+        "order": 6
     },
     "00123456_7": {
         "alias":   u"Ytterd\u00F6rren (Z)",
