@@ -16,10 +16,10 @@ trap "exit 2" 1 2 3 15
 ######################################################################
 
 influxtime="$(date +%s)000000000"
+shortnow=$(date +"%T")
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
 logfile="/var/rfxcmd/door-magnet.log"
-shortnow=$(date "+%d/%m %T" | sed -e 's/\/0/\//g')
 debounceFile="/tmp/debounce-switch.tmp"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
@@ -94,14 +94,14 @@ call "${scriptDir}/pubnub/publish_switch.sh" "${magnet_id}_${magnet_unitcode} ${
 
 #	Send it to openhab
 
-if [ "${magnet_command}" = "On" ] ; then
-    if [ "${magnet_type}" == "ir" ] ; then
+if [[ "${magnet_command}" == "On" ]] ; then
+    if [[ "${magnet_type}" == "ir" ]] ; then
     	utf8_str="Aktiv"
     else
     	utf8_str=$(echo "Öppen" | iconv -f ISO-8859-15 -t UTF-8)
     fi
 else
-    if [ "${magnet_type}" == "ir" ] ; then
+    if [[ "${magnet_type}" == "ir" ]] ; then
     	utf8_str="Passiv"
     else
     	utf8_str=$(echo "Stängd" | iconv -f ISO-8859-15 -t UTF-8)
