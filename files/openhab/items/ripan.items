@@ -47,7 +47,7 @@ Number T_52_8700_max
 
 Number H_52_8700_last
         "Tujan [%d %%]"
-        <ripan_humidity>
+        <ripan_humidity4>
         (Outside)
 
 /*	Komposten	*/
@@ -69,7 +69,7 @@ Number T_52_A700_max
 
 Number H_52_A700_last
         "Komposten [%d %%]"
-        <ripan_humidity>
+        <ripan_humidity4>
         (Outside)
 
 
@@ -126,7 +126,7 @@ Number T_52_B700_max
 
 Number H_52_B700_last
         "Stuprännan [%d %%]"
-        <ripan_humidity>
+        <ripan_humidity4>
         (Outside)
 
 
@@ -149,7 +149,7 @@ Number T_52_8900_max
 
 Number H_52_8900_last
         "Stuprännan (v)[%d %%]"
-        <ripan_humidity>
+        <ripan_humidity4>
         (Outside)
 
 
@@ -194,7 +194,7 @@ Number T_50_8F00_max
 
 Number H_52_9700_last
         "Bokhyllan [%d %%]"
-        <ripan_humidity>
+        <ripan_humidity4>
         (Inside)
 
 
@@ -405,7 +405,7 @@ Switch Nexa_5
     {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 5 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 5 off"}
 
 Switch Nexa_6
-    "Ebbas Julstjärna"
+    "Ebbas lampa"
     (Lights)
     {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 6 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 6 off"}
 
@@ -447,51 +447,55 @@ String T_NU_last_min        "Kallast [%s]" <ripan_small_blue_temp>
 
 String M_00CFDEEA_10
         "Altanen [%s]"
-        <ripan_door>
+        <ripan_door2>
         (Magnets)
 
 String M_00CFDCEE_10
         "Badrummet [%s]"
-        <ripan_door>
+        <ripan_door2>
         (Magnets)
 
 String M_00123456_7
         "Ytterdörren [%s]"
-        <ripan_door>
+        <ripan_door2>
         (Magnets)
 
 String M_00CFD656_10
         "Förrådet [%s]"
-        <ripan_door>
+        <ripan_door2>
         (Magnets)
 
 String M_0128ED32_10
         "Grinden [%s]"
-        <ripan_door>
+        <ripan_door2>
         (Magnets)
 
 
 
 String M_00EF07E6_10
         "IR Vardagsrum [%s]"
-        <ripan_door>
+        <ripan_ir_sensor>
         (Magnets)
 
 String M_0115A1F6_10
-        "IR Altanen [%s]"
-        <ripan_door>
+        "IR Förrådet [%s]"
+        <ripan_ir_sensor>
         (Magnets)
 
+String M_0253A7F2_16
+        "IR Altanen [%s]"
+        <ripan_ir_sensor>
+        (Magnets)
 
 
 String M_010865CA_10
         "Skymning [%s]"
-        <ripan_door>
+        <ripan_door2>
         (Magnets)
 
 String M_0128DCFA_10
         "Bokhyllan [%s]"
-        <ripan_door>
+        <ripan_door2>
         (Magnets)
 
 

@@ -25,6 +25,7 @@ sitemap ripan_small label="Ripstigen-Small" {
 
    Frame label="Sensorer" {
 	Text  item=M_0115A1F6_10
+	Text  item=M_0253A7F2_16
    }
 
 

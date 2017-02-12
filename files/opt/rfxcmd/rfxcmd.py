@@ -77,7 +77,7 @@ from optparse import OptionParser
 import socket
 import select
 import inspect
-
+import syslog 
 # RFXCMD modules
 try:
 	from lib.rfx_socket import *
@@ -620,7 +620,7 @@ def decodePacket(message):
 	
 	raw_message = ByteToHex(message)
 	raw_message = raw_message.replace(' ', '')
-	
+	#syslog.syslog(ByteToHex(message))
 	packettype = ByteToHex(message[1])
 
 	if len(message) > 2:
@@ -3363,6 +3363,9 @@ def read_rfx():
 								pass
 					
 						if whitelist_match == False:
+							
+							syslog.syslog("Sensor not in whitelist -> " + ByteToHex(message))
+
 							if cmdarg.printout_complete:
 								print("Sensor not included in whitelist")
 							logger.debug("No match in whitelist, no process")

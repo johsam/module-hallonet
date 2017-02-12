@@ -195,17 +195,6 @@ if [ -r "${updates_file}" ] ; then
 	updates=$(awk 'END {print NR}' ${updates_file})
 fi
 
-#
-#   Temperatur.nu trend array (history)
-#
-
-cat /var/rfxcmd/temperatur-nu.log \
-| tail -1000 \
-| awk '{print $5}' \
-| tail -$((12 * 12)) \
-| perl -e 'chomp(my @a = <>); print "[".join(",",@a)."]"' > ${trendfile}
-##| sed '$!N; /^\(.*\)\n\1$/!P; D' \
-
 
 #
 #	Create the systemfile
@@ -256,7 +245,7 @@ ssh pi@jordgubben '~/bin/jordgubben.sh'
 ssh johsam@mint-fuji '~/bin/mint-fuji.sh'
 
 } > "${systemfile}"
-cp ${systemfile} /tmp/xxx.log
+cp ${systemfile} /tmp/systeminfo.log
 log "Collect from host(s) done..."
 
 
@@ -339,6 +328,12 @@ mysql rfx -urfxuser -prfxuser1 \
 
 mysql rfx -urfxuser -prfxuser1 \
 	-e "set @switches_all:='${switches_all}'; source ${scriptDir}/sql/last-switches.sql;" > "${switchfile}"
+
+#
+#   Temperatur.nu trend array (history)
+#
+
+mysql tnu --skip-column-names -urfxuser -prfxuser1 < ${scriptDir}/sql/tnu-trend.sql > "${trendfile}"
 
 
 log "Collect from mysql done..."

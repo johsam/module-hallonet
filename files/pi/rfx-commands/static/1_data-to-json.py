@@ -2,6 +2,7 @@
 import csv
 import argparse
 import json
+import syslog
 from datetime import *
 from dateutil.relativedelta import *
 from dateutil.parser import *
@@ -469,7 +470,7 @@ switchAliases = {
         "order": 3
     },
     "00D81332_6": {
-        "alias": u"Ebbas Julstj\u00E4rna",
+        "alias": u"Ebbas Lampa",
         "type":  "light",
         "nexaid": 6,
         "fab": True,
@@ -486,7 +487,7 @@ switchAliases = {
         "alias": "Julgranen",
         "type":  "light",
         "nexaid": 4,
-        "fab": True,
+        "fab": False,
         "order": 6
     },
     "00123456_7": {
@@ -537,16 +538,24 @@ switchAliases = {
         "order":   -5
     },
     "0115A1F6_10": {
-        "alias":   "Altanen",
+        "alias":   u"F\u00f6rr\u00e5det",
         "type":    "magnet",
         "subtype": "ir",
         "order":   -4
     },
+    
+    "0253A7F2_16": {
+        "alias":   u"Altanen",
+        "type":    "magnet",
+        "subtype": "ir",
+        "order":   -3
+    },
+
     "010865CA_10": {
         "alias":   "Staketet (*)",
         "type":    "magnet",
         "subtype": "duskdawn",
-        "order":   -3
+        "order":   -2
     }
 
 }
@@ -885,13 +894,15 @@ with open(args.switch_file, 'rb') as csvfile:
     	nowarn = False
     	badge = False
 
-        if sensorid not in switchData:
-            switchData[sensorid] = {}
-
         if sensorid in switchAliases:
+
+            if sensorid not in switchData:
+                switchData[sensorid] = {}
+
             alias = switchAliases[sensorid]['alias']
             swtype = switchAliases[sensorid]['type']
             order = switchAliases[sensorid]['order']
+
             if 'subtype' in switchAliases[sensorid]:
                 switchData[sensorid]['subtype'] = switchAliases[sensorid]['subtype']
             if 'nexaid' in switchAliases[sensorid]:
@@ -905,13 +916,18 @@ with open(args.switch_file, 'rb') as csvfile:
             if 'badge' in switchAliases[sensorid]:
                 switchData[sensorid]['badge'] = switchAliases[sensorid]['badge']
 
-        switchData[sensorid]['id'] = sensorid
-        switchData[sensorid]['alias'] = alias
-        switchData[sensorid]['order'] = order
-        switchData[sensorid]['type'] = swtype
-        switchData[sensorid]['timestamp'] = timestamp
-        switchData[sensorid]['state'] = state
-        switchData[sensorid]['signal'] = signal
+            switchData[sensorid]['id'] = sensorid
+            switchData[sensorid]['alias'] = alias
+            switchData[sensorid]['order'] = order
+            switchData[sensorid]['type'] = swtype
+            switchData[sensorid]['timestamp'] = timestamp
+            switchData[sensorid]['state'] = state
+            switchData[sensorid]['signal'] = signal
+
+        else:
+	    syslog.syslog("Unknown switch '" + sensorid + "' detected")
+	    continue
+	
 
 #
 # Read last data
