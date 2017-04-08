@@ -36,6 +36,10 @@ grafana_status=$(awk '$1 ~ /Active/ {print $3}' ${tmpfile} | tr -d '()')
 grafana_host="$(uname -n)"
 grafana_version=$(dpkg -s grafana | awk '$1 ~ /Version/ {print $2}')
 
+rethinkdb_started=$(stat --printf=%z  /var/run/rethinkdb/default/pid_file  | awk -F. '{print $1}')
+rethinkdb_host="$(uname -n)"
+rethinkdb_version=$(dpkg -s rethinkdb | awk '$1 ~ /Version/ {print $2}')
+[[ -r /var/run/rethinkdb/default/pid_file ]] && rethinkdb_status="runnig" || rethinkdb_status="stopped"
 
 not_yet="Inte klar"
 
@@ -66,7 +70,11 @@ printf "%s\t%s\t%s\n" "grafana" "status" "${grafana_status}"
 printf "%s\t%s\t%s\n" "grafana" "started" "${grafana_started}"
 printf "%s\t%s\t%s\n" "grafana" "version" "${grafana_version}"
 
-printf "%s\t%s\t%s\n" "updates" "mintfuji" "${updates}"
+printf "%s\t%s\t%s\n" "rethinkdb" "host" "${rethinkdb_host}"
+printf "%s\t%s\t%s\n" "rethinkdb" "status" "${rethinkdb_status}"
+printf "%s\t%s\t%s\n" "rethinkdb" "started" "${rethinkdb_started}"
+printf "%s\t%s\t%s\n" "rethinkdb" "version" "${rethinkdb_version}"
 
+printf "%s\t%s\t%s\n" "updates" "mintfuji" "${updates}"
 }
 

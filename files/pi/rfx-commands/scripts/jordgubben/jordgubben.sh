@@ -52,7 +52,7 @@ uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
 
 last_boot=$(uptime -s)
-
+airmon_started=$(stat --printf=%z /var/run/airmonitor.pid | awk -F. '{print $1}')
 
 #	Any updates ?
 
@@ -66,13 +66,14 @@ fi
 #	Done...
 #
 
-formatSystemInfo "pij" "uptime"	     "${uptime}"
-formatSystemInfo "pij" "core_temp"   "${core_temp}"
-formatSystemInfo "pij" "core_volts"  "${core_volts}"
-formatSystemInfo "pij" "gpu_temp"    "${gpu_temp}"
-formatSystemInfo "pij" "loadavg"     "${loadavg}"
-formatSystemInfo "pij" "last_boot"   "${last_boot}"
-formatSystemInfo "updates" "pij"     "${updates}"
+formatSystemInfo "pij"  "uptime"	      "${uptime}"
+formatSystemInfo "pij"  "core_temp"           "${core_temp}"
+formatSystemInfo "pij"  "core_volts"          "${core_volts}"
+formatSystemInfo "pij"  "gpu_temp"            "${gpu_temp}"
+formatSystemInfo "pij"  "loadavg"             "${loadavg}"
+formatSystemInfo "pij"  "last_boot"           "${last_boot}"
+formatSystemInfo "misc" "airmon_last_restart" "${airmon_started}"
+formatSystemInfo "updates" "pij"              "${updates}"
 
 
 exit 0

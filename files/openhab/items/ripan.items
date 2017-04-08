@@ -436,6 +436,7 @@ String SQL_timestamp        "SQL [%s]"  <ripan_clock>
 String MISC_rfxcmd_last_restart        "Unused [%s]"     <ripan_clock>
 String MISC_pubnubmgr_last_restart     "Unused [%s]"     <ripan_clock>
 String MISC_rfxcmd_last_restart        "Unused [%s]"     <ripan_clock>
+String MISC_airmon_last_restart        "Unused [%s]"     <ripan_clock>
 
 String MISC_public_ip                  "Publik Ip [%s]"  <settings>
 

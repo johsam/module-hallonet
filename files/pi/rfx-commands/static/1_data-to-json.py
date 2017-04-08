@@ -108,18 +108,18 @@ parser.add_argument(
 
 
 parser.add_argument(
-	'--device-max-age', required=False,
-	default=3600 * 24 * 30,
-	type=int,
-	dest='device_max_age',
-	help='Max age in seconds for devices'
+    '--device-max-age', required=False,
+    default=3600 * 24 * 30,
+    type=int,
+    dest='device_max_age',
+    help='Max age in seconds for devices'
 )
 
 
 parser.add_argument(
-	'--tnu-history-file', required=False,
-	dest='tnu_history_file',
-	help='JSON array of last unique values to Temperatur.nu'
+    '--tnu-history-file', required=False,
+    dest='tnu_history_file',
+    help='JSON array of last unique values to Temperatur.nu'
 )
 
 
@@ -179,13 +179,13 @@ systemAliases = {
         "alias": "Upptid",
         "order": 3
     },
-     "pib_last_boot": {
+    "pib_last_boot": {
         "alias": "Bootad",
         "order": 5,
         "type": "date"
     },
 
-   # jordgubben
+    # jordgubben
 
     "pij_core_temp": {
         "alias": "Cpu Temp",
@@ -255,6 +255,26 @@ systemAliases = {
     "has_version": {
         "alias": "Version",
         "order": 5
+    },
+
+    # rethinkdb
+
+    "rethinkdb_host": {
+        "alias": u"K\u00F6rs p\u00e5",
+        "order": 1
+    },
+    "rethinkdb_status": {
+        "alias": "Status",
+        "order": 2
+    },
+    "rethinkdb_started": {
+        "alias": "Startad",
+        "order": 3,
+        "type": "date"
+    },
+    "rethinkdb_version": {
+        "alias": "Version",
+        "order": 4
     },
 
 
@@ -385,20 +405,26 @@ systemAliases = {
         "order": 1,
         "type": "date"
     },
-    
+
     "misc_pubnubmgr_last_restart": {
         "alias": "Pubnubmgr Startad",
         "order": 2,
         "type": "date"
     },
 
+    "misc_airmon_last_restart": {
+        "alias": "Airmonitor Startad",
+        "order": 3,
+        "type": "date"
+    },
+
     "misc_public_ip": {
         "alias": "Publik Ip",
-        "order": 3
+        "order": 4
     },
 
 
-    # static
+    # Static
 
     "static_timestamp": {
         "alias": "Senaste data",
@@ -412,36 +438,36 @@ systemAliases = {
         "type": "date"
     },
 
-    #	Updates
+    # Updates
 
     "updates_pi": {
         "alias": "hallonet",
         "order": 1,
-	"type": "hilite_non_zero"
+        "type": "hilite_non_zero"
     },
 
     "updates_pib": {
         "alias": "smultronet",
         "order": 2,
-	"type": "hilite_non_zero"
+        "type": "hilite_non_zero"
     },
 
     "updates_pij": {
         "alias": "jordgubben",
         "order": 3,
-	"type": "hilite_non_zero"
+        "type": "hilite_non_zero"
     },
 
     "updates_mintfuji": {
         "alias": "mint-fuji",
         "order": 4,
-	"type": "hilite_non_zero"
+        "type": "hilite_non_zero"
     },
 
     "updates_mintblack": {
         "alias": "mint-black",
         "order": 5,
-	"type": "hilite_non_zero"
+        "type": "hilite_non_zero"
     }
 
 }
@@ -494,68 +520,68 @@ switchAliases = {
         "alias":   u"Ytterd\u00F6rren (Z)",
         "type":    "magnet",
         "subtype": "door",
-	"badge":   True,
-        "order":   -11
+        "badge":   True,
+        "order": -11
     },
     "00CFDEEA_10": {
         "alias":   "Altanen",
         "type":    "magnet",
         "subtype": "door",
-	"badge":   True,
-        "order":   -10
+        "badge":   True,
+        "order": -10
     },
     "00CFD656_10": {
         "alias":   u"F\u00f6rr\u00e5det",
         "type":    "magnet",
         "subtype": "door",
-        "order":   -9
+        "order": -9
     },
     "0128ED32_10": {
         "alias":   "Grinden",
         "type":    "magnet",
         "subtype": "door",
-	"badge":   True,
-	"divider": True,
-        "order":   -8
+        "badge":   True,
+        "divider": True,
+        "order": -8
     },
     "0128DCFA_10": {
         "alias":   "Bokhyllan (*)",
         "type":    "magnet",
         "subtype": "door",
-        "order":   -7
+        "order": -7
     },
     "00CFDCEE_10": {
         "alias":   "Badrummet",
         "type":    "magnet",
         "subtype": "door",
         "nowarn":  True,
-        "order":   -6
+        "order": -6
     },
     "00EF07E6_10": {
         "alias":   "Vardagsrum",
         "type":    "magnet",
         "subtype": "ir",
-        "order":   -5
+        "order": -5
     },
     "0115A1F6_10": {
         "alias":   u"F\u00f6rr\u00e5det",
         "type":    "magnet",
         "subtype": "ir",
-        "order":   -4
+        "order": -4
     },
-    
+
     "0253A7F2_16": {
         "alias":   u"Altanen",
         "type":    "magnet",
         "subtype": "ir",
-        "order":   -3
+        "order": -3
     },
 
     "010865CA_10": {
         "alias":   "Staketet (*)",
         "type":    "magnet",
         "subtype": "duskdawn",
-        "order":   -2
+        "order": -2
     }
 
 }
@@ -628,7 +654,7 @@ sensorAliases = {
         "location": "outside",
         "order": 7
     },
-  
+
     # Inside sensors
 
     "9700": {
@@ -636,7 +662,7 @@ sensorAliases = {
         "location": "inside",
         "order": 8
     },
-    
+
     "8F00": {
         "alias": "Golv TV:n",
         "location": "inside",
@@ -650,7 +676,7 @@ deviceAliases = {
     "1": {
         "alias": "Johans Galaxy S6",
         "order": 1,
-	"hilite": True
+        "hilite": True
     },
     "2": {
         "alias": "Johans Samsung",
@@ -660,7 +686,7 @@ deviceAliases = {
     "3": {
         "alias": "Catarinas iPhone 6",
         "order": 3,
-	"hilite": True
+        "hilite": True
     },
 
     "4": {
@@ -682,7 +708,7 @@ deviceAliases = {
     "12": {
         "alias": "Ebbas iPhone 6",
         "order": 7,
-	"hilite": True
+        "hilite": True
     },
 
     "7": {
@@ -703,9 +729,9 @@ deviceAliases = {
     "10": {
         "alias": "Sony Android TV",
         "dividerabove": True,
-	"order": 11
+        "order": 11
     },
-    
+
     "13": {
         "alias": "Edup Wifi Socket",
         "order": 13
@@ -725,6 +751,7 @@ tnu_sensors = args.tnu_sensors.split(',')
 #
 # Collect coldest/warmest outside sensors
 #
+
 
 def toplist(r):
 
@@ -789,17 +816,18 @@ def readFile(filename, section, colname, dictkey):
 
 def readCitiesFile(filename):
     with open(filename) as data_file:
-    	data = json.load(data_file)
-    	result['cities'] = data
+        data = json.load(data_file)
+        result['cities'] = data
 
 #
 # Read trend file
 #
 
+
 def readTrendFile(filename):
     with open(filename) as data_file:
-    	data = json.load(data_file)
-    	result['tnu_trend'] = data
+        data = json.load(data_file)
+        result['tnu_trend'] = data
 
 
 #
@@ -809,19 +837,20 @@ def readTrendFile(filename):
 def readMissingFile(filename):
     counter = 0
     with open(filename) as data_file:
-            data = json.load(data_file)
-            signals = data['signal']
-	    
-	    if '0' in signals:
-		for k,v in signals['0']['sensors'].items():
-		    #counter += len(v['missed'])	    
-		    counter += 1	    
+        data = json.load(data_file)
+        signals = data['signal']
+
+        if '0' in signals:
+            for k, v in signals['0']['sensors'].items():
+                # counter += len(v['missed'])
+                counter += 1
 
     return counter
 
 #
 # Read systemfile
 #
+
 
 def readSystemFile(filename):
     with open(filename, 'rb') as csvfile:
@@ -845,7 +874,7 @@ def readSystemFile(filename):
                 infotype = systemAliases[section_key]['type']
 
             # Values are now in utf-8
-	    # value = value.decode('iso8859-1')
+            # value = value.decode('iso8859-1')
 
             if "system" not in result:
                 result["system"] = {}
@@ -862,17 +891,15 @@ def readSystemFile(filename):
 
 with open(args.hits_file, 'rb') as csvfile:
     sqlData = csv.DictReader(csvfile, dialect="excel-tab")
-    
+
     for row in sqlData:
         sensorid = row['sensorid']
         count = int(row['hits'])
 
-	if sensorid in sensorAliases:
+        if sensorid in sensorAliases:
             alias = sensorAliases[sensorid]['alias']
             order = sensorAliases[sensorid]['order']
-	    result["lasthour"].append({'alias': alias, 'id': sensorid, 'count': count, 'order': order})
- 
-
+            result["lasthour"].append({'alias': alias, 'id': sensorid, 'count': count, 'order': order})
 
 
 #
@@ -890,9 +917,9 @@ with open(args.switch_file, 'rb') as csvfile:
         alias = 'n/a'
         swtype = 'n/a'
         order = 0
-    	divider = False
-    	nowarn = False
-    	badge = False
+        divider = False
+        nowarn = False
+        badge = False
 
         if sensorid in switchAliases:
 
@@ -925,9 +952,9 @@ with open(args.switch_file, 'rb') as csvfile:
             switchData[sensorid]['signal'] = signal
 
         else:
-	    syslog.syslog("Unknown switch '" + sensorid + "' detected")
-	    continue
-	
+            syslog.syslog("Unknown switch '" + sensorid + "' detected")
+            continue
+
 
 #
 # Read last data
@@ -958,7 +985,6 @@ with open(args.last_file, 'rb') as csvfile:
             location = sensorAliases[sensorid]['location']
             order = sensorAliases[sensorid]['order']
 
-
         # Check if datetime is stale
 
         delta = relativedelta(now, parse(datetime))
@@ -973,7 +999,7 @@ with open(args.last_file, 'rb') as csvfile:
         sensorData[sensorid]['location'] = location
         sensorData[sensorid]['tnu'] = False
         sensorData[sensorid]['tnuselect'] = False
-      
+
         sensorData[sensorid]['temperature'] = {'min': {}, 'max': {}, 'last': {}}
         sensorData[sensorid]['temperature']['last']['value'] = float(temperature)
         sensorData[sensorid]['temperature']['last']['timestamp'] = datetime
@@ -986,8 +1012,6 @@ with open(args.last_file, 'rb') as csvfile:
 
         if sensorid in tnu_sensors:
             sensorData[sensorid]['tnu'] = True
-
-
 
         if tnumedian:
             for s in tnumedian.split(','):
@@ -1026,24 +1050,24 @@ with open(args.devices_file, 'rb') as csvfile:
             alias = deviceAliases[id]['alias']
             order = deviceAliases[id]['order']
 
-	    if 'dividerabove' in deviceAliases[id]:
+            if 'dividerabove' in deviceAliases[id]:
                 dividerabove = deviceAliases[id]['dividerabove']
             else:
                 dividerabove = False
 
-	    if 'hilite' in deviceAliases[id]:
+            if 'hilite' in deviceAliases[id]:
                 hilite = deviceAliases[id]['hilite']
             else:
                 hilite = False
 
             datetime = row['datetime']
-            delta = format_timedelta(int(row['age']), threshold=1, granularity='second',format='medium', locale='sv_SE')
+            delta = format_timedelta(int(row['age']), threshold=1, granularity='second', format='medium', locale='sv_SE')
 
             if int(age) <= args.device_max_age:
-	    	sw = {'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age,'delta': delta, 'hilite': hilite}
-		if dividerabove is True:
-		    sw['dividerabove'] = True
-		result['devices'].append(sw)
+                sw = {'alias': alias, 'id': id, 'timestamp': datetime, 'order': order, 'ip': ip, 'age': age, 'delta': delta, 'hilite': hilite}
+                if dividerabove is True:
+                    sw['dividerabove'] = True
+                result['devices'].append(sw)
 
 
 #
