@@ -86,17 +86,7 @@ class hallonet::rfxcmd::pi {
         mode    => '0644',
     }
 
-    file {'cron_nexa_lights':
-        ensure  => present,
-        path    => '/etc/cron.d/nexa-lights',
-        content => template("${module_name}/cron/nexa-lights.erb"),
-        require => [File['rfx_commands']],
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-    }
 
- 
     file {'cron_update_sun_rise_set':
         ensure  => present,
         path    => '/etc/cron.d/update-sun-rise-set',
@@ -106,17 +96,19 @@ class hallonet::rfxcmd::pi {
         group   => 'root',
         mode    => '0644',
     }
-  
-     file {'cron_schedule_lights_around_sunset':
+
+
+     file {'cron_schedule_nexa_from_db':
         ensure  => present,
-        path    => '/etc/cron.d/schedule-lights-around-sunset',
-        content => template("${module_name}/cron/schedule-lights-around-sunset.erb"),
+        path    => '/etc/cron.d/schedule-nexa-from-db',
+        content => template("${module_name}/cron/schedule-nexa-from-db.erb"),
         require => [File['rfx_commands']],
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
     }
- 
+
+
      file {'cron_check_apt_updates':
         ensure  => present,
         path    => '/etc/cron.d/check-apt-updates',
@@ -126,7 +118,7 @@ class hallonet::rfxcmd::pi {
         group   => 'root',
         mode    => '0644',
     }
-   
+
     #
     #	Stuff for /usr/local/bin
     #

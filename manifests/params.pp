@@ -1,9 +1,9 @@
 class hallonet::params {
 
     $base_packages = [
-        'nedit',
-        'lftp',
-        'multitail',
+    'nedit',
+    'lftp',
+    'multitail',
 	'apt-file',
 	'python-pip',
 	'mlocate',
@@ -22,12 +22,14 @@ class hallonet::params {
 
     $pip_packages = [
         'py-dateutil',
-	'python-nmap',
+        'python-nmap',
+        'astral',
+        'rethinkdb',
     ]
 
     $openhab_version = '1.6.2'
     $openhab_packages = ['openhab-runtime']
-    
+
     $openhab_bindings = [
         'openhab-addon-binding-exec',
         'openhab-addon-persistence-rrd4j'
