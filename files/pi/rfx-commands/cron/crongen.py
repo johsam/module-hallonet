@@ -91,8 +91,9 @@ def main():
     # Loop all cron entries
 
     for item in nexa:
+        if '_deleted' in item:
+            continue
         item['_sunriseset'] = result
-
         if item['name'] != lastItemName:
             lastItemName = banner(item['name'])
 
