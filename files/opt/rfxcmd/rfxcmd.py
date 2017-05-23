@@ -1052,9 +1052,9 @@ def decodePacket(message):
 		# CSV
 		if cmdarg.printout_csv == True:
 			if subtype == '00':
-				sys.stdout.write("%s;%s;%s;%s\n" % (timestamp, packettype, subtype, seqnbr ) )
+				sys.stdout.write("%s;%s;%s;%s;%s\n" % (timestamp, unixtime_utc, packettype, subtype, seqnbr ) )
 			else:
-				sys.stdout.write("%s;%s;%s;%s;%s\n" % (timestamp, packettype, subtype, seqnbr, id1 ) )
+				sys.stdout.write("%s;%s;%s;%s;%s;%s\n" % (timestamp, unixtime_utc, packettype, subtype, seqnbr, id1 ) )
 			sys.stdout.flush()
 		
 		# DATABASE
