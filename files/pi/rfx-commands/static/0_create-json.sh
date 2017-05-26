@@ -170,7 +170,7 @@ mysql rfx --skip-column-names -urfxuser -prfxuser1 < ${scriptDir}/sql/last-stamp
 # 	Public ip
 
 public_ip="???"
-curl -s --connect-timeout 5 --max-time 5 "https://api.ipify.org" > "${tmpfile}" 2>/dev/null
+curl -sk --connect-timeout 5 --max-time 5 "https://api.ipify.org" > "${tmpfile}" 2>/dev/null
 
 if [ -s "${tmpfile}" ] ; then
 	public_ip=$(cat "${tmpfile}")
