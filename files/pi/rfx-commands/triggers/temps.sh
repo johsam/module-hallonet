@@ -22,6 +22,7 @@ tmpfile="/tmp/`basename $0`-$$.tmp"
 
 # Just pass it along
 
+${scriptDir}/../scripts/to-influx-temps.sh $@
 ${scriptDir}/../scripts/to-graphite-temps.sh $@
 
 exit 0

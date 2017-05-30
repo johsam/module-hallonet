@@ -82,8 +82,9 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	to_webroot static ${statictempfile}
 
 	
-	#	Update graphite
+	#	Update influxdb and graphite 
 
+	${scriptDir}/to-influx-temps.sh '0000' ${number} '0' '0'
 	${scriptDir}/to-graphite-temps.sh '0000' ${number} '00' '0'
 
 
@@ -172,8 +173,9 @@ fi
 
 number="$(awk '{print $5}' ${tmpfile})"
 
-#	Update graphite
+#	Update influxdb and graphite
 
+${scriptDir}/to-influx-temps.sh '0001' ${number} '0' '0' >> ${UPDATE_REST_LOG}
 ${scriptDir}/to-graphite-temps.sh '0001' ${number} '00' '-1' >> ${UPDATE_REST_LOG}
 
 

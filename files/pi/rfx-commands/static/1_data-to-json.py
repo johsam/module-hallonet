@@ -654,6 +654,18 @@ sensorAliases = {
         "location": "outside",
         "order": 7
     },
+    
+    "230E": {
+        "alias":    "Tujan (n)",
+        "location": "outside",
+        "order": 8
+    },
+    
+    "250E": {
+        "alias":    "Tujan (g)",
+        "location": "outside",
+        "order": 9
+    },
 
     # Inside sensors
 
