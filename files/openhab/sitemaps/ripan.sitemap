@@ -30,7 +30,17 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_52_8700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=H_52_8700_last
    		}
-    		Frame label="Stuprännan" {
+
+   		Frame label="Tujan (n)" {
+        		Text item=T_52_230E_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_230E_last_stamp
+        		Text item=T_52_230E_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_230E_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=H_52_230E_last
+   		}
+    		
+    		
+		Frame label="Stuprännan" {
         		Text item=T_52_B700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_52_B700_last_stamp
         		Text item=T_52_B700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
@@ -90,6 +100,11 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_52_8700_max_stamp
 		}	
 
+		Frame label="Tujan (n)" {
+			Text item=T_52_230E_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_230E_max_stamp
+		}	
+
 		Frame label="Stuprännan" {
 			Text item=T_52_B700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_52_B700_max_stamp
@@ -130,6 +145,11 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_52_8700_min_stamp
 		}	
 		
+		Frame label="Tujan (n)" {
+			Text item=T_52_230E_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_230E_min_stamp
+		}	
+				
 		Frame label="Stuprännan" {
 			Text item=T_52_B700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
         		Text item=T_52_B700_min_stamp
@@ -180,6 +200,7 @@ sitemap ripan label="Ripstigen" {
         Text item=H_52_B700_last
 	Text item=H_52_8900_last
 	Text item=H_52_8700_last
+	Text item=H_52_230E_last
         Text item=H_52_A700_last
    }
 
@@ -225,7 +246,7 @@ sitemap ripan label="Ripstigen" {
    }
    
    Frame label="Sensorer" {
-	Text  item=M_0115A1F6_10
+	Text  item=M_01519A5E_10
 	Text  item=M_0253A7F2_16
    }
 

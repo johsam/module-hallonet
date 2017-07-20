@@ -25,7 +25,7 @@
 	<sensor>0B1100..0128ED32........</sensor>
 
 	<sensor>0B1100..010865CA0A......</sensor>
-	<sensor>0B1100..0115A1F60A......</sensor>
+	<sensor>0B1100..01519A5E0A......</sensor>
 	<sensor>0B1100..00EF07E60A......</sensor>
 	<sensor>0B1100..0253A7F210......</sensor>
 </whitelist>

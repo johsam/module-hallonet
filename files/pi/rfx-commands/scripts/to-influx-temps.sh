@@ -87,9 +87,9 @@ fi
 containsElement "${sensor}" "${hum[@]}" ; status=$?
 
 if [ ${status} -eq 0 ] ; then
-    curl -XPOST "http://${INFLUXDB_HOST}:8086/write?db=${INFLUXDB_DB}&precision=s" --data-binary "sensors,location=${sensor_location},id=${sensor},alias=${alias} tnu=${sensor_tnu},signal=${signal}i,temp=${value},humidity=${humidity}i ${now}"
+    curl -s -XPOST "http://${INFLUXDB_HOST}:8086/write?db=${INFLUXDB_DB}&precision=s" --data-binary "sensors,location=${sensor_location},id=${sensor},alias=${alias},tnu=${sensor_tnu} signal=${signal}i,temp=${value},humidity=${humidity}i ${now}"
 else
-    curl -XPOST "http://${INFLUXDB_HOST}:8086/write?db=${INFLUXDB_DB}&precision=s" --data-binary "sensors,location=${sensor_location},id=${sensor},alias=${alias} tnu=${sensor_tnu},signal=${signal}i,temp=${value} ${now}"
+    curl -s -XPOST "http://${INFLUXDB_HOST}:8086/write?db=${INFLUXDB_DB}&precision=s" --data-binary "sensors,location=${sensor_location},id=${sensor},alias=${alias},tnu=${sensor_tnu} signal=${signal}i,temp=${value} ${now}"
 fi
 
 exit 0

@@ -563,7 +563,7 @@ switchAliases = {
         "subtype": "ir",
         "order": -5
     },
-    "0115A1F6_10": {
+    "01519A5E_10": {
         "alias":   u"F\u00f6rr\u00e5det",
         "type":    "magnet",
         "subtype": "ir",
@@ -711,37 +711,44 @@ deviceAliases = {
         "order": 5
     },
 
+
+    "15": {
+        "alias": "Catarinas Air",
+        "order": 6
+    },
+
+
     "6": {
         "alias": "Ebbas iPhone",
-        "order": 6
+        "order": 7
     },
 
 
     "12": {
         "alias": "Ebbas iPhone 6",
-        "order": 7,
+        "order": 8,
         "hilite": True
     },
 
     "7": {
         "alias": "Ebbas Air",
-        "order": 8
+        "order": 9
     },
 
     "8": {
         "alias": "Ebbas iPad",
-        "order": 9
+        "order": 10
     },
 
     "9": {
         "alias": "Ebbas Surface",
-        "order": 10
+        "order": 11
     },
 
     "10": {
         "alias": "Sony Android TV",
         "dividerabove": True,
-        "order": 11
+        "order": 12
     },
 
     "13": {

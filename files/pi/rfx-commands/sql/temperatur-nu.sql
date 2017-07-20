@@ -13,26 +13,29 @@ set @sensors_outdoor := coalesce(@sensors_outdoor,'0000,XXXX');
 set @unix_now := UNIX_TIMESTAMP();
 
 create temporary table if not exists tmp_tnu_last as 
-	select
+	select distinct
 
 	i.datetime,
 	i.data1,
 	i.data8 as temperature
 
+	-- At least 15 values the last 30 min
+
 	from rfxcmd i
-	
 	join (
 	    select max(unixtime) as mu,
-	    data1
-	    from rfxcmd
-	    group by data1
+	    data1,
+	    count(unixtime) as cnt
+	    
+	    from rfxcmd where @unix_now - unixtime < 1800 
+	    group by data1 having cnt >= 5
 	) as maxt
 
 	on maxt.data1 = i.data1 and maxt.mu = i.unixtime
 
-	-- Only outdoor sensors and age < 60 min
+	-- Only outdoor sensors
 
-	where @unix_now - maxt.mu < 3600 and find_in_set(i.data1,@sensors_outdoor) 
+	where find_in_set(i.data1,@sensors_outdoor) 
 
 	order by temperature ASC limit 4
 	;

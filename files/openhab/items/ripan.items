@@ -50,6 +50,32 @@ Number H_52_8700_last
         <ripan_humidity4>
         (Outside)
 
+/*	Tujan (n)	*/
+
+Number T_52_230E_last
+        "Temperatur (T) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_52_230E_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,TujanNexaMinToday)
+
+Number T_52_230E_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,TujanNexaMaxToday)
+
+Number H_52_230E_last
+        "Tujan (n) [%d %%]"
+        <ripan_humidity4>
+        (Outside)
+
+
+
+
+
 /*	Komposten	*/
 
 Number T_52_A700_last
@@ -272,6 +298,13 @@ String T_52_8900_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_8900_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_8900_last_stamp "Klockan [%s]" <ripan_clock>
 
+
+String T_52_230E_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_230E_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_230E_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_230E_last_stamp "Klockan [%s]" <ripan_clock>
+
+
 /*	Grupper	*/
 
 Group:Number:AVG OutAvgLast
@@ -324,14 +357,25 @@ Group:Number:MAX TujanMaxToday
         (Outside)
 
 
+Group:Number:MIN TujanNexaMinToday
+        "Tujan (n) [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside)
+
+Group:Number:MAX TujanNexaMaxToday
+        "Tujan (n) [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside)
+
+
 
 Group:Number:MIN KompostenMinToday
-        "Tujan [%.1f °C]"
+        "Komposten [%.1f °C]"
         <ripan_small_blue_temp>
         (Outside)
 
 Group:Number:MAX KompostenMaxToday
-        "Tujan [%.1f °C]"
+        "Komposten [%.1f °C]"
         <ripan_small_red_temp>
         (Outside)
 
@@ -478,7 +522,7 @@ String M_00EF07E6_10
         <ripan_ir_sensor>
         (Magnets)
 
-String M_0115A1F6_10
+String M_01519A5E_10
         "IR Förrådet [%s]"
         <ripan_ir_sensor>
         (Magnets)
