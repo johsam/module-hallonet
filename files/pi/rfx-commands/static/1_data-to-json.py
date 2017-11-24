@@ -745,20 +745,26 @@ deviceAliases = {
         "order": 11
     },
 
+    "16": {
+        "alias": "Andreas",
+        "order": 12
+    },
+
+
     "10": {
         "alias": "Sony Android TV",
         "dividerabove": True,
-        "order": 12
+        "order": 13
     },
 
     "13": {
         "alias": "Edup Wifi Socket",
-        "order": 13
+        "order": 14
     },
 
     "14": {
         "alias": "Johans Lenovo",
-        "order": 14
+        "order": 15
     }
 
 }

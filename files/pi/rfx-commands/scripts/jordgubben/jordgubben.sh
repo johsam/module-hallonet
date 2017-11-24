@@ -62,6 +62,13 @@ if [ -r "${updates_file}" ] ; then
 	updates=$(awk 'END {print NR}' ${updates_file})
 fi
 
+# Warn if up more than 14/21 days
+
+prefix=""
+[[ ${uptimeseconds} -gt 1209600 ]] && prefix="|"
+[[ ${uptimeseconds} -gt 1814400 ]] && prefix="!"
+uptime="${prefix}${uptime}"
+
 #
 #	Done...
 #

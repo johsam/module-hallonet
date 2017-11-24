@@ -41,8 +41,6 @@ rethinkdb_host="$(uname -n)"
 rethinkdb_version=$(dpkg -s rethinkdb | awk '$1 ~ /Version/ {print $2}')
 [[ -r /var/run/rethinkdb/default/pid_file ]] && rethinkdb_status="runnig" || rethinkdb_status="stopped"
 
-not_yet="Inte klar"
-
 #       Any updates ?
 
 updates=0
@@ -52,6 +50,12 @@ if [ -r "${updates_file}" ] ; then
         updates=$(awk 'END {print NR}' ${updates_file})
 fi
 
+# Warn if up more than 14/21 days
+
+prefix=""
+[[ ${uptimeseconds} -gt 1209600 ]] && prefix="|"
+[[ ${uptimeseconds} -gt 1814400 ]] && prefix="!"
+uptime="${prefix}${uptime}"
 
 {
 printf "%s\t%s\t%s\n" "mintfuji" "core_temp" "${core_temp} ${degree}C"

@@ -230,7 +230,8 @@ formatSystemInfo "updates" "pi"	        "${updates}"
 cat "${stampfile}"
 
 #   Collect from mint-black
-curl -s --connect-timeout 5 --max-time 5 'http://mint-black:5000/collect/collect.php' 2> /dev/null
+
+ssh johsam@mint-black '~/bin/mint-black.sh'
 
 #Collect from smultronet
 

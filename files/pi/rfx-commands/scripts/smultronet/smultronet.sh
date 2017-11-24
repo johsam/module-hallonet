@@ -123,6 +123,14 @@ if [ -r "${updates_file}" ] ; then
 fi
 
 
+# Warn if up more than 14/21 days
+
+prefix=""
+[[ ${uptimeseconds} -gt 1209600 ]] && prefix="|"
+[[ ${uptimeseconds} -gt 1814400 ]] && prefix="!"
+uptime="${prefix}${uptime}"
+
+
 #
 #   Get data from influxdb
 #
