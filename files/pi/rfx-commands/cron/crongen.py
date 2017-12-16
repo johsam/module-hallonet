@@ -1,16 +1,17 @@
 #!/usr/bin/env python
+"""Generate crontab entries from rethinkdb json data"""
 
 import argparse
 import datetime
 import sys
 import os
-import json
-import astral
 import re
+import astral
 import rethinkdb as r
 
 
 def main():
+    """Main function"""
 
     #
     # Parse arguments
@@ -68,12 +69,13 @@ def main():
     # Connect to rethinkdb
     try:
         r.connect(args.rethinkdbhost, 28015, args.rethinkdb).repl()
-        nexa = r.table(args.rethinktable).order_by(r.asc('_item')).run()
-    except Exception as e:
+        nexa = r.table(args.rethinktable).order_by(r.asc('nexaid')).run()
+    except:
         sys.exit(1)
 
-    lastItemName = ""
+    last_item_name = ""
     today = datetime.date.today()
+    nexa_lookup = {}
 
     mylocation = astral.Location(info=("Myplace", "Mycountry", args.latitude, args.longitude, "Europe/Stockholm", args.altitude))
     mylocation.solar_depression = "civil"
@@ -94,24 +96,48 @@ def main():
         if '_deleted' in item:
             continue
         item['_sunriseset'] = result
-        if item['name'] != lastItemName:
-            lastItemName = banner(item['name'])
 
         for k in ['on1', 'off1', 'on2', 'off2', 'on3', 'off3']:
             if k in item or item['sunset'] is not None:
-                cronOnOff(k, item)
+                cron_on_off(k, item, nexa_lookup)
+
+    # Sort our  entries...
+
+    for k in nexa_lookup:
+        nexa_lookup[k] = sorted(nexa_lookup[k], key=lambda k: (k['hour'], k['minute']))
+
+    # Print banners and items
+
+    for item in nexa:
+        if '_deleted' in item:
+            continue
+        if item['name'] != last_item_name:
+            last_item_name = banner(item['name'])
+            for i in nexa_lookup[item['name']]:
+                print i['line']
 
     sys.exit(0)
 
 
+def add_item(key, obj, dst):
+    """Add entry to item hash"""
+
+    if key not in dst:
+        dst[key] = []
+    dst[key].append(obj)
+
+
 def banner(name):
+    """Print banner with name"""
     print "#"
     print "# {0}".format(name.encode('utf-8'))
     print "#"
     return name
 
 
-def cronOnOff(key, item):
+def cron_on_off(key, item, dst):
+    """Parse cron entry for item"""
+
     action = "off"
     active = ""
     days = item['days']
@@ -131,10 +157,10 @@ def cronOnOff(key, item):
 
     # Any clock defined ?
 
-    if len(item[key]):
+    if item[key]:
         clock = item[key].split(':')
 
-        print "{0}{1:0>2} {2:0>2} * * {3} pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh {4} {5}".format(
+        line = "{0}{1:0>2} {2:0>2} * * {3} pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh {4} {5}".format(
             active,
             clock[1],
             clock[0],
@@ -143,6 +169,8 @@ def cronOnOff(key, item):
             action
         )
 
+        add_item(item['name'], {'line': line, 'hour': int(clock[0]), 'minute': int(clock[1])}, dst)
+
     # Any sunset defined ?
 
     if item['sunset'] is not None:
@@ -150,7 +178,7 @@ def cronOnOff(key, item):
         offset = sunset + datetime.timedelta(minutes=item['sunset'])
 
         comment = "Sunset {0:0>2}:{1:0>2} {2} min".format(sunset.hour, sunset.minute, item['sunset'])
-        print "{0}{1:0>2} {2:0>2} * * {3} pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh {4} {5} # {6}".format(
+        line = "{0}{1:0>2} {2:0>2} * * {3} pi /home/pi/rfx-commands/commands/cmd-to-nexa.sh {4} {5} # {6}".format(
             active,
             offset.minute,
             offset.hour,
@@ -159,6 +187,8 @@ def cronOnOff(key, item):
             "on",
             comment
         )
+
+        add_item(item['name'], {'line': line, 'hour': int(offset.hour), 'minute': int(offset.minute)}, dst)
 
         # Reset this, We only want one per row
 
