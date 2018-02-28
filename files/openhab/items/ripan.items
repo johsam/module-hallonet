@@ -219,17 +219,17 @@ Number T_52_9700_max
         <ripan_temp>
         (Inside)
 
-Number T_50_8F00_last
+Number T_50_D800_last
         "Golv TV:n [%.1f °C]"
         <ripan_temp>
         (Inside)
 
-Number T_50_8F00_min
+Number T_50_D800_min
         "Kallast [%.1f °C]"
         <ripan_temp>
         (Inside)
 
-Number T_50_8F00_max
+Number T_50_D800_max
         "Varmast [%.1f °C]"
         <ripan_temp>
         (Inside)
@@ -299,10 +299,10 @@ String T_52_9700_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_9700_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_9700_last_stamp "Klockan [%s]" <ripan_clock>
 
-String T_50_8F00_last_stamp "Avläst [%s]" <ripan_clock>
-String T_50_8F00_min_stamp  "Klockan [%s]" <ripan_clock>
-String T_50_8F00_max_stamp  "Klockan [%s]" <ripan_clock>
-String H_50_8F00_last_stamp "Klockan [%s]" <ripan_clock>
+String T_50_D800_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_D800_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_D800_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_50_D800_last_stamp "Klockan [%s]" <ripan_clock>
 
 
 String T_52_A700_last_stamp "Avläst [%s]" <ripan_clock>

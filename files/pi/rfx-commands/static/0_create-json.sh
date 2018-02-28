@@ -161,6 +161,13 @@ uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
 
 
+# Warn if up more than 7/10 days
+
+prefix=""
+[[ ${uptimeseconds} -gt 604800 ]] && prefix="|"
+[[ ${uptimeseconds} -gt 864000 ]] && prefix="!"
+uptime="${prefix}${uptime}"
+
 
 #	Last stamp
 

@@ -57,23 +57,41 @@ if [ "${light_id}" = "GROUP ON" ] ; then
 fi
 
 
-#
-#	Get current state
-#
 
-last_state=$(${scriptDir}/../scripts/nexa-get-state.sh ${light_id})
 
 #
-#	Only send if state differs
+#	Use flock to prevent multiple cron jobs to send at the same time
 #
 
-if [ "${light_command}" != "${last_state^}" ] ; then
-	${scriptDir}/../triggers/lights.sh "${remote_nexa}" "${light_command}" "${light_id}"
-else
-	log "ignore (${light_id} -> ${light_command})" >> "${logfile}"
-	logger -t $(basename $0) "Skip nexa ${light_id} -> ${light_command}, State was already ${last_state^}"
 
-fi
+(
+	flock -x -w 30 200 || { logger -t "$(basename $0)" "Failed to aquire lock for ${light_id}->${light_command}"; exit 1; }
+	[ ${SECONDS} -gt 1 ] && logger -t "$(basename $0)" "$$ -> Aquired lock nexa ${light_id}->${light_command} -> ${SECONDS}"
+
+
+    	logger -t "$(basename $0)" "$$ -> Aquired lock nexa ${light_id}->${light_command}"
+
+	#
+	#	Get current state
+	#
+
+	last_state=$(${scriptDir}/../scripts/nexa-get-state.sh ${light_id})
+
+	#
+	#	Only send if state differs
+	#
+
+	if [ "${light_command}" != "${last_state^}" ] ; then
+		${scriptDir}/../triggers/lights.sh "${remote_nexa}" "${light_command}" "${light_id}"
+	else
+		log "ignore (${light_id} -> ${light_command})" >> "${logfile}"
+		logger -t $(basename $0) "Skip nexa ${light_id} -> ${light_command}, State was already ${last_state^}"
+
+	fi
+
+    	logger -t "$(basename $0)" "$$ -> Released lock nexa ${light_id}->${light_command}"
+
+) 200> /var/lock/nexa.lock
 
 
 exit 0

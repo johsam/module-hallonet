@@ -19,7 +19,7 @@ create temporary table if not exists tmp_tnu_last as
 	i.data1,
 	i.data8 as temperature
 
-	-- At least 15 values the last 30 min
+	-- At least 5 values the last 60 min
 
 	from rfxcmd i
 	join (
@@ -27,7 +27,7 @@ create temporary table if not exists tmp_tnu_last as
 	    data1,
 	    count(unixtime) as cnt
 	    
-	    from rfxcmd where @unix_now - unixtime < 1800 
+	    from rfxcmd where @unix_now - unixtime < 3600 
 	    group by data1 having cnt >= 5
 	) as maxt
 
