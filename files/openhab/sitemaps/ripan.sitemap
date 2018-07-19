@@ -183,11 +183,10 @@ sitemap ripan label="Ripstigen" {
 	Text  item=M_00123456_7
 	Text  item=M_00CFDEEA_10
 	Text  item=M_00CFD656_10
-	Text  item=M_0128ED32_10
+	Text  item=M_00CFDCEE_10
    }
 
    Frame label="Dörrar och skåp Inomhus" {
-	Text  item=M_00CFDCEE_10
 	Text  item=M_0128DCFA_10
    }
 

@@ -536,7 +536,7 @@ switchAliases = {
         "subtype": "door",
         "order": -9
     },
-    "0128ED32_10": {
+    "00CFDCEE_10": {
         "alias":   "Grinden",
         "type":    "magnet",
         "subtype": "door",
@@ -550,7 +550,7 @@ switchAliases = {
         "subtype": "door",
         "order": -7
     },
-    "00CFDCEE_10": {
+    "000_0128ED32_10": {
         "alias":   "Badrummet",
         "type":    "magnet",
         "subtype": "door",
@@ -725,7 +725,7 @@ deviceAliases = {
 
 
     "12": {
-        "alias": "Ebbas iPhone 6",
+        "alias": "Ebbas iPhone 8",
         "order": 8,
         "hilite": True
     },

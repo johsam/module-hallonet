@@ -114,9 +114,12 @@ if args.missing:
             end = row['end']
             seen = row['seen'].split(',')
 
-            for sensorid in all_sensors:
-                if sensorid not in seen:
-                    add2signal(key, day, sensorid, start, end, 0)
+            try:
+	    	for sensorid in all_sensors:
+                    if sensorid not in seen:
+                    	add2signal(key, day, sensorid, start, end, 0)
+    	    except:
+	    	pass
 
 result['type'] = 'signal'
 result['signal'] = signal

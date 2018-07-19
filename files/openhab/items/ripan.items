@@ -523,10 +523,6 @@ String M_00CFDEEA_10
         <ripan_door2>
         (Magnets)
 
-String M_00CFDCEE_10
-        "Badrummet [%s]"
-        <ripan_door2>
-        (Magnets)
 
 String M_00123456_7
         "Ytterdörren [%s]"
@@ -538,7 +534,7 @@ String M_00CFD656_10
         <ripan_door2>
         (Magnets)
 
-String M_0128ED32_10
+String M_00CFDCEE_10
         "Grinden [%s]"
         <ripan_door2>
         (Magnets)
