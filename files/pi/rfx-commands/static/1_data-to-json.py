@@ -620,7 +620,7 @@ sensorAliases = {
 
 
     "CF00": {
-        "alias": "Hammocken",
+        "alias": "Hammock Tak",
         "location": "outside",
         "order": 2
     },
@@ -643,8 +643,8 @@ sensorAliases = {
         "order": 5
     },
 
-    "AC00": {
-        "alias":    "Cyklarna",
+    "3D00": {
+        "alias":    "Hammock (2)",
         "location": "outside",
         "order": 6
     },

@@ -89,16 +89,18 @@ if [ ! -r "${has_version_file}" ] ; then
 fi
 
 if [ ! -r "${has_latest_file}" ] ; then
-	
-	echo "?" > ${has_latest_file}
-	
-	(
-	curl -s https://pypi.python.org/pypi/homeassistant/json | jq -r .info.version > ${tmpfile}
-	) 2> /dev/null ; status=$?
 
-	if [ ${status} -eq 0 ] ; then
-		cp ${tmpfile} ${has_latest_file}
-	fi
+	echo "${has_version}" > ${has_latest_file}
+
+	#echo "?" > ${has_latest_file}
+	
+	#(
+	#curl -s https://pypi.python.org/pypi/homeassistant/json | jq -r .info.version > ${tmpfile}
+	#) 2> /dev/null ; status=$?
+
+	#if [ ${status} -eq 0 ] ; then
+	#	cp ${tmpfile} ${has_latest_file}
+	#fi
 
 fi
 
