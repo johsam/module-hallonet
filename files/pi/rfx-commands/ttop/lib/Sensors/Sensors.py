@@ -70,8 +70,9 @@ class SensorList(object):
 
         for c in self.getsidsfromlocation(location):
             s = self.__getsensor(c)
-            sum = sum + s['temp']
-            count = count + 1
+            if s['stamp'] != '00:00:00':
+	    	sum = sum + s['temp']
+            	count = count + 1
             # print location, c, s['temp']
 
         if count != 0:
@@ -92,7 +93,8 @@ class SensorList(object):
 
         for c in self.getsidsfromlocation(location):
             s = self.__getsensor(c)
-            values.append(s['temp'])
+            if s['stamp'] != '00:00:00':
+            	values.append(s['temp'])
  
 	median = self.median(values)
 	
