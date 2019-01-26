@@ -159,6 +159,7 @@ wifi_level=$(cat /proc/net/wireless | awk '$1 ~ /wlan0/ {gsub(/\./,"");print $4}
 
 uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
+release="$(lsb_release -c -r -s | tr '\n' ' ')"
 
 
 # Warn if up more than 7/10 days
@@ -216,6 +217,7 @@ formatSystemInfo "openhab" "status"	"${openhab_status}"
 formatSystemInfo "openhab" "host"	"${openhab_host}"
 formatSystemInfo "openhab" "version"	"${openhab_version}"
 
+formatSystemInfo "pi" "release"	        "${release}"
 formatSystemInfo "pi" "uptime"	        "${uptime}"
 formatSystemInfo "pi" "core_temp"       "${core_temp}"
 formatSystemInfo "pi" "core_volts"      "${core_volts}"

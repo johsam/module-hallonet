@@ -133,18 +133,21 @@ sensorData = {}
 systemAliases = {
 
     # pi
-
+    "pi_release": {
+        "alias": "Pi Model 2B (1Gb)",
+        "order": 1
+    },
     "pi_core_temp": {
         "alias": "Cpu Temp",
-        "order": 1
+        "order": 2
     },
     "pi_loadavg": {
         "alias": "Cpu Medel",
-        "order": 2
+        "order": 3
     },
     "pi_uptime": {
         "alias": "Upptid",
-        "order": 3
+        "order": 4
     },
     "pi_last_boot": {
         "alias": "Bootad",
@@ -166,18 +169,22 @@ systemAliases = {
     },
 
     # smultronet
-
+    
+    "pib_release": {
+        "alias": "Pi Model 3B (1Gb)",
+        "order": 1
+    },
     "pib_core_temp": {
         "alias": "Cpu Temp",
-        "order": 1
+        "order": 2
     },
     "pib_loadavg": {
         "alias": "Cpu Medel",
-        "order": 2
+        "order": 3
     },
     "pib_uptime": {
         "alias": "Upptid",
-        "order": 3
+        "order": 4
     },
     "pib_last_boot": {
         "alias": "Bootad",
@@ -187,17 +194,21 @@ systemAliases = {
 
     # jordgubben
 
+    "pij_release": {
+        "alias": "Pi Model B+ (512Mb)",
+        "order": 1
+    },
     "pij_core_temp": {
         "alias": "Cpu Temp",
-        "order": 1
+        "order": 2
     },
     "pij_loadavg": {
         "alias": "Cpu Medel",
-        "order": 2
+        "order": 3
     },
     "pij_uptime": {
         "alias": "Upptid",
-        "order": 3
+        "order": 4
     },
     "pij_last_boot": {
         "alias": "Bootad",
@@ -312,18 +323,22 @@ systemAliases = {
 
 
     # Mint black
-
+    
+    "mintblack_release": {
+        "alias": "Release",
+        "order": 1
+    },
     "mintblack_core_temp": {
         "alias": "Cpu Temp",
-        "order": 1
+        "order": 2
     },
     "mintblack_loadavg": {
         "alias": "Cpu Medel",
-        "order": 2
+        "order": 3
     },
     "mintblack_uptime": {
         "alias": "Upptid",
-        "order": 3
+        "order": 4
     },
     "mintblack_last_boot": {
         "alias": "Bootad",
@@ -332,18 +347,23 @@ systemAliases = {
     },
 
     # Mint fuji
-
+    
+    "mintfuji_release": {
+        "alias": "Release",
+        "order": 1
+    },
+ 
     "mintfuji_core_temp": {
         "alias": "Cpu Temp",
-        "order": 1
+        "order": 2
     },
     "mintfuji_loadavg": {
         "alias": "Cpu Medel",
-        "order": 2
+        "order": 3
     },
     "mintfuji_uptime": {
         "alias": "Upptid",
-        "order": 3
+        "order": 4
     },
     "mintfuji_last_boot": {
         "alias": "Bootad",
@@ -513,7 +533,7 @@ switchAliases = {
         "alias": "Julgranen",
         "type":  "light",
         "nexaid": 4,
-        "fab": False,
+        "fab": True,
         "order": 6
     },
     "00123456_7": {
@@ -671,6 +691,12 @@ sensorAliases = {
 
     "9700": {
         "alias": "Bokhyllan",
+        "location": "inside",
+        "order": 8
+    },
+
+    "3902": {
+        "alias": "Datorhyllan",
         "location": "inside",
         "order": 8
     },
