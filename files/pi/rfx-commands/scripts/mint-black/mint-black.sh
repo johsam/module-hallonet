@@ -11,6 +11,8 @@ uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
 
 last_boot=$(who -b | awk '{print $3" "$4":00"}')
+release="$(lsb_release -c -r -s | tr '\n' ' ')"
+
 
 #	Any updates ?
 
@@ -32,6 +34,7 @@ printf "%s\t%s\t%s\n" "mintblack" "core_temp" "${core_temp} ${degree}C"
 printf "%s\t%s\t%s\n" "mintblack" "loadavg" "${loadavg}"
 printf "%s\t%s\t%s\n" "mintblack" "uptime" "${uptime}"
 printf "%s\t%s\t%s\n" "mintblack" "last_boot" "${last_boot}"
+printf "%s\t%s\t%s\n" "mintblack" "release" "${release}"
 
 printf "%s\t%s\t%s\n" "updates" "mintblack" "${updates}"
 }

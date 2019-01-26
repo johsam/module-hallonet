@@ -53,6 +53,7 @@ uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta
 
 last_boot=$(uptime -s)
 airmon_started=$(stat --printf=%z /var/run/airmonitor.pid | awk -F. '{print $1}')
+release="$(lsb_release -c -r -s | tr '\n' ' ')"
 
 #	Any updates ?
 
@@ -80,6 +81,7 @@ formatSystemInfo "pij"  "gpu_temp"            "${gpu_temp}"
 formatSystemInfo "pij"  "loadavg"             "${loadavg}"
 formatSystemInfo "pij"  "last_boot"           "${last_boot}"
 formatSystemInfo "misc" "airmon_last_restart" "${airmon_started}"
+formatSystemInfo "pij"  "release"             "${release}"
 formatSystemInfo "updates" "pij"              "${updates}"
 
 

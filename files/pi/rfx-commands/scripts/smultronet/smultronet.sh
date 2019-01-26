@@ -54,6 +54,8 @@ uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
 
 last_boot=$(uptime -s)
+release="$(lsb_release -c -r -s | tr '\n' ' ')"
+
 
 
 #
@@ -158,6 +160,7 @@ formatSystemInfo "pib" "core_volts"  "${core_volts}"
 formatSystemInfo "pib" "gpu_temp"    "${gpu_temp}"
 formatSystemInfo "pib" "loadavg"     "${loadavg}"
 formatSystemInfo "pib" "last_boot"   "${last_boot}"
+formatSystemInfo "pib" "release"     "${release}"
 formatSystemInfo "has" "started"     "${has_started}"
 formatSystemInfo "has" "status"      "${has_status}"
 formatSystemInfo "has" "version"     "${has_version}"

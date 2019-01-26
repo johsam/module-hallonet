@@ -22,6 +22,7 @@ uptimeseconds=$(awk -F'.' '{print $1}' /proc/uptime)
 uptime=`python -u -c "import sys;from datetime import timedelta; print timedelta(seconds = ${uptimeseconds})"`
 
 last_boot=$(who -b | awk '{print $3" "$4":00"}')
+release="$(lsb_release -c -r -s | tr '\n' ' ')"
 
 
 /usr/sbin/service influxdb status > ${tmpfile}
@@ -62,6 +63,7 @@ printf "%s\t%s\t%s\n" "mintfuji" "core_temp" "${core_temp} ${degree}C"
 printf "%s\t%s\t%s\n" "mintfuji" "loadavg" "${loadavg}"
 printf "%s\t%s\t%s\n" "mintfuji" "uptime" "${uptime}"
 printf "%s\t%s\t%s\n" "mintfuji" "last_boot" "${last_boot}"
+printf "%s\t%s\t%s\n" "mintfuji" "release" "${release}"
 
 printf "%s\t%s\t%s\n" "influxdb" "host" "${influxdb_host}"
 printf "%s\t%s\t%s\n" "influxdb" "status" "${influxdb_status}"
