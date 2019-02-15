@@ -80,7 +80,7 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	
 	echo ${number} > ${statictempfile}
 	to_webroot static ${statictempfile}
-
+    	to_static ${statictempfile}
 	
 	#	Update influxdb and graphite 
 

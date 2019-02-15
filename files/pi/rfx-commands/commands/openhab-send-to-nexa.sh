@@ -37,8 +37,8 @@ sensors="${scriptDir}/../sensors.cfg"
 ipaddress=127.0.0.1
 
 switch_id=${1}
-switch_command="$(echo "${2}" | tr '[:upper:]' '[:lower:]')"
-switch_command=${switch_command^}
+sw_command="$(echo "${2}" | tr '[:upper:]' '[:lower:]')"
+switch_command=${sw_command^}
 
 log "send  (${switch_id} -> ${switch_command})" >> /var/rfxcmd/nexa-setstate.log
 
@@ -56,5 +56,8 @@ ${scriptDir}/../triggers/pubnub/publish_switch.sh "${remote_nexa}_${switch_id}" 
 
 light_to_influxdb "${remote_nexa}_${switch_id}" "${switch_command}" "${influxtime}" >> ${UPDATE_REST_LOG}
 
+#   	Send it to home-assistant
+
+${scriptDir}/../triggers/hass/send_state.sh "${switch_id}" "${sw_command}"
 
 exit 0

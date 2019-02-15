@@ -57,8 +57,6 @@ if [ "${light_id}" = "GROUP ON" ] ; then
 fi
 
 
-
-
 #
 #	Use flock to prevent multiple cron jobs to send at the same time
 #

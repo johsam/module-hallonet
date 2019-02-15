@@ -3,24 +3,14 @@
 echo "Content-type: text/plain"
 echo ""
 
+# We need som functions here...
 
-#-------------------------------------------------------------------------------
-#
-#       Function get_query_string
-#
-#-------------------------------------------------------------------------------
+[ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
-get_query_string() {
-  local q="$QUERY_STRING"
-  local re1='^(\w+=\w+)&?'
-  local re2='^(\w+)=(\w+)$'
-  while [[ $q =~ $re1 ]]; do
-    q=${q##*${BASH_REMATCH[0]}}
-    [[ ${BASH_REMATCH[1]} =~ $re2 ]] && eval "$1+=([${BASH_REMATCH[1]}]=${BASH_REMATCH[2]})"
-  done
-}
+source ${scriptDir}/cgi.sh
 
-# Get params
+
+# Get params from QUERY_STRING
 
 declare -A params ; get_query_string params
 
