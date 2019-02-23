@@ -4,6 +4,9 @@ import argparse
 import json
 import syslog
 
+import sys
+sys.exit(0)
+
 from pubnub import Pubnub
 
 from dateutil.parser import *

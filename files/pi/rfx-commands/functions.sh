@@ -234,5 +234,68 @@ fi
 return 0
 }
 
+#-------------------------------------------------------------------------------
+#
+#	Function pn_gw_publish channel file
+#
+#-------------------------------------------------------------------------------
 
+function pn_gw_publish ()
+{
+local channel="${1}"
+local file="${2}"
+local status=0
+
+curl -s -k -XPOST "http://${PN_GW_HOST}:${PN_GW_PORT}/publish/${channel}" -d @${file} 2>> "${PUBNUB_ERROR_LOG}" ; status=$?
+
+return ${status}
+}
+
+#-------------------------------------------------------------------------------
+#
+#	Function pn_gw_message message
+#
+#-------------------------------------------------------------------------------
+
+function pn_gw_message ()
+{
+local message="${1}"
+
+curl -s -k -XPOST "http://${PN_GW_HOST}:${PN_GW_PORT}/send/message/${PUBNUB_CHANNEL_SENSORS}" \
+	-d "{\"message\": \"${message}\"}" > /dev/null 2>> "${PUBNUB_ERROR_LOG}" ; status=$?
+
+return ${status}
+}
+
+#-------------------------------------------------------------------------------
+#
+#	Function pn_gw_notice message
+#
+#-------------------------------------------------------------------------------
+
+function pn_gw_notice ()
+{
+local message="${1}"
+
+curl -s -k -XPOST "http://${PN_GW_HOST}:${PN_GW_PORT}/send/notify/${PUBNUB_CHANNEL_SENSORS}" \
+	-d "{\"message\": \"${message}\"}" > /dev/null 2>> "${PUBNUB_ERROR_LOG}" ; status=$?
+
+return ${status}
+}
+
+
+#-------------------------------------------------------------------------------
+#
+#	Function pn_gw_refresh 
+#
+#-------------------------------------------------------------------------------
+
+function pn_gw_refresh ()
+{
+
+curl -s -k -XPOST "http://${PN_GW_HOST}:${PN_GW_PORT}/send/refresh/${PUBNUB_CHANNEL_SENSORS}" \
+	-d '{}' > /dev/null 2>> "${PUBNUB_ERROR_LOG}" ; status=$?
+
+return ${status}
+}
 
