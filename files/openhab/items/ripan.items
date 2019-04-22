@@ -12,17 +12,17 @@ Number T_NU_last
 
 /*	Hammock	*/
 
-Number T_50_CF00_last
+Number T_50_C600_last
         "Temperatur (H) [%.1f °C]"
         <ripan_temp>
         (Outside,OutAvgLast,OutMinLast,OutMaxLast)
 
-Number T_50_CF00_min
+Number T_50_C600_min
         "Kallast [%.1f °C]"
         <ripan_small_blue_temp>
         (Outside,OutMinToday,HammockMinToday)
 
-Number T_50_CF00_max
+Number T_50_C600_max
         "Varmast [%.1f °C]"
         <ripan_small_red_temp>
         (Outside,OutMaxToday,HammockMaxToday)
@@ -30,22 +30,22 @@ Number T_50_CF00_max
 
 /*	Tujan	*/
 
-Number T_52_8700_last
+Number T_52_C700_last
         "Temperatur (T) [%.1f °C]"
         <ripan_temp>
         (Outside,OutAvgLast,OutMinLast,OutMaxLast)
 
-Number T_52_8700_min
+Number T_52_C700_min
         "Kallast [%.1f °C]"
         <ripan_small_blue_temp>
         (Outside,OutMinToday,TujanMinToday)
 
-Number T_52_8700_max
+Number T_52_C700_max
         "Varmast [%.1f °C]"
         <ripan_small_red_temp>
         (Outside,OutMaxToday,TujanMaxToday)
 
-Number H_52_8700_last
+Number H_52_C700_last
         "Tujan [%d %%]"
         <ripan_humidity4>
         (Outside)
@@ -236,12 +236,34 @@ Number T_50_D800_max
 
 
 
+Number T_52_3902_last
+        "Vid Datorn [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+Number T_52_3902_min
+        "Kallast [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+Number T_52_3902_max
+        "Varmast [%.1f °C]"
+        <ripan_temp>
+        (Inside)
+
+
 
 
 /*	Luftfuktighet inomhus */
 
 Number H_52_9700_last
         "Bokhyllan [%d %%]"
+        <ripan_humidity4>
+        (Inside)
+
+
+Number H_52_3902_last
+        "Vid Datorn [%d %%]"
         <ripan_humidity4>
         (Inside)
 
@@ -267,9 +289,9 @@ Number T_50_0001_max
 
 /*	Tid for max min	typ 50*/
 
-String T_50_CF00_last_stamp "Avläst [%s]" <ripan_clock>
-String T_50_CF00_min_stamp  "Klockan [%s]" <ripan_clock>
-String T_50_CF00_max_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_C600_last_stamp "Avläst [%s]" <ripan_clock>
+String T_50_C600_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_50_C600_max_stamp  "Klockan [%s]" <ripan_clock>
 
 String T_50_3D00_last_stamp "Avläst [%s]" <ripan_clock>
 String T_50_3D00_min_stamp  "Klockan [%s]" <ripan_clock>
@@ -289,10 +311,10 @@ String T_50_0001_max_stamp  "Klockan [%s]" <ripan_clock>
 
 /*	Tid for max min typ 52*/
 
-String T_52_8700_last_stamp "Avläst [%s]" <ripan_clock>
-String T_52_8700_min_stamp  "Klockan [%s]" <ripan_clock>
-String T_52_8700_max_stamp  "Klockan [%s]" <ripan_clock>
-String H_52_8700_last_stamp "Klockan [%s]" <ripan_clock>
+String T_52_C700_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_C700_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_C700_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_C700_last_stamp "Klockan [%s]" <ripan_clock>
 
 String T_52_9700_last_stamp "Avläst [%s]" <ripan_clock>
 String T_52_9700_min_stamp  "Klockan [%s]" <ripan_clock>
@@ -331,6 +353,11 @@ String T_52_250E_last_stamp "Avläst [%s]" <ripan_clock>
 String T_52_250E_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_250E_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_250E_last_stamp "Klockan [%s]" <ripan_clock>
+
+String T_52_3902_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_3902_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_3902_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_3902_last_stamp "Klockan [%s]" <ripan_clock>
 
 
 /*	Grupper	*/
@@ -495,6 +522,7 @@ String PI_wifi_restart "Wifi Restart [%s]" <ripan_pi>
 String PI_wifi_link    "Wifi link [%s]"    <ripan_pi>
 String PI_wifi_level   "Wifi Level [%s]"   <ripan_pi>
 String PI_last_boot    "Last Boot [%s]"    <ripan_pi>
+String PI_release      "Release [%s]"      <ripan_pi>
 
 String OPENHAB_load     "Load [%s]"        <ripan_openhab>
 String OPENHAB_started  "Startad [%s]"     <ripan_openhab>

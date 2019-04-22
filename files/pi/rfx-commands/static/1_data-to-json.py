@@ -639,13 +639,13 @@ sensorAliases = {
     },
 
 
-    "CF00": {
+    "C600": {
         "alias": "Hammock Tak",
         "location": "outside",
         "order": 2
     },
 
-    "8700": {
+    "C700": {
         "alias": "Tujan",
         "location": "outside",
         "order": 3

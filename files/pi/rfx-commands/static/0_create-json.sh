@@ -187,7 +187,7 @@ fi
  
 #	Last boot
 
-last_boot=$(who -b | awk '{print $3" "$4":00"}')
+last_boot=$(uptime -s)
 
 #	Last rfxcmd/pubnubmgr restart
 

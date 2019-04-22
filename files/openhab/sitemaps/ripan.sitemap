@@ -17,18 +17,18 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_0700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
  		Frame label="Hammocken" {
-        		Text item=T_50_CF00_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_CF00_last_stamp
-        		Text item=T_50_CF00_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_CF00_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_C600_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_C600_last_stamp
+        		Text item=T_50_C600_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_C600_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
 
    		Frame label="Tujan" {
-        		Text item=T_52_8700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_8700_last_stamp
-        		Text item=T_52_8700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_8700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=H_52_8700_last
+        		Text item=T_52_C700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_C700_last_stamp
+        		Text item=T_52_C700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_C700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=H_52_C700_last
    		}
 
    		Frame label="Tujan (n)" {
@@ -91,13 +91,13 @@ sitemap ripan label="Ripstigen" {
 		
 
 		Frame label="Hammocken" {
-			Text item=T_50_CF00_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_CF00_max_stamp
+			Text item=T_50_C600_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_C600_max_stamp
 		}	
 		
 		Frame label="Tujan" {
-			Text item=T_52_8700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_8700_max_stamp
+			Text item=T_52_C700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_C700_max_stamp
 		}	
 
 		Frame label="Tujan (n)" {
@@ -136,13 +136,13 @@ sitemap ripan label="Ripstigen" {
 		}	
 		
 		Frame label="Hammocken" {
-			Text item=T_50_CF00_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_CF00_min_stamp
+			Text item=T_50_C600_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_C600_min_stamp
 		}	
 		
 		Frame label="Tujan" {
-			Text item=T_52_8700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_8700_min_stamp
+			Text item=T_52_C700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_C700_min_stamp
 		}	
 		
 		Frame label="Tujan (n)" {
@@ -198,7 +198,7 @@ sitemap ripan label="Ripstigen" {
    Frame label="Luftfuktighet Utomhus" {
         Text item=H_52_B700_last
 	Text item=H_52_8900_last
-	Text item=H_52_8700_last
+	Text item=H_52_C700_last
 	Text item=H_52_230E_last
         Text item=H_52_A700_last
    }
@@ -214,6 +214,7 @@ sitemap ripan label="Ripstigen" {
    }
 
    Frame label="Pi system info" {
+        Text item=PI_release
         Text item=PI_core_temp
         Text item=PI_loadavg
         Text item=PI_uptime
@@ -251,7 +252,7 @@ sitemap ripan label="Ripstigen" {
 
 
    Frame label="Grafik" {
-        //Chart item=T_52_8700_last period=1d service=rrd4j refresh=300
+        //Chart item=T_52_C700_last period=1d service=rrd4j refresh=300
 	//Image url="http://192.168.1.48:8080/chart?items=OutAvgLast,OutMinLast&period=4h&random=1"
    	//Image url="http://192.168.1.48:8080/rrdchart.png?groups=OutAvgLast&period=4h"
 

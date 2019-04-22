@@ -151,7 +151,9 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 
 	to_openhab "T_NU_last_min" "${min_tnu}"
 	to_openhab "T_NU_last_max" "${max_tnu}"
-
+    	
+	curl --connect-timeout 2 --max-time 2 -XPOST http://192.168.1.225:3333/histogram -d "{\"temp\":${number}}" > /dev/null 2>&1
+    	
 	} >> ${UPDATE_REST_LOG}
 
 else 
