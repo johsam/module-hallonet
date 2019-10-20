@@ -15,35 +15,15 @@ trap "exit 2" 1 2 3 15
 #
 ######################################################################
 
-influxtime="$(date +%s)000000000"
-shortnow=$(date +"%T")
-
 tmpfile="/tmp/`basename $0`-$$.tmp"
 logfile="/var/rfxcmd/door-magnet.log"
-debounceFile="/tmp/debounce-switch.tmp"
 
 [ -h "$0" ] && scriptDir=$(dirname `readlink $0`) || scriptDir=$( cd `dirname $0` && pwd)
 
 umask 0011
 
-#
-#   Debounce, i.e If we're called with the same parameters, Just exit...
-#
 
-debounced="${1}->${2}"
-
-if [ -s "${debounceFile}" ] ; then
-
-    last=$(cat "${debounceFile}")
-    
-    if [ "${debounced}" = "${last}" ] ; then
-	logger -t "$(basename $0)" "Debounced parameters '$@'"
-	exit 0
-    fi
-fi
-
-echo "${debounced}" > "${debounceFile}"
-
+#logger -t "$(basename $0)" "$$ Call start $1_$4:$2"
 
 #
 #   Let's work
@@ -60,14 +40,6 @@ sensors=${scriptDir}/../sensors.cfg
 [ -r ${sensors} ]   && source ${sensors}   || { logger -t $(basename $0) "FATAL: Missing '${sensors}', Aborting" ; exit 1; }
 
 
-#	Create logfile if needed
-
-[ ! -r ${logfile} ] && touch ${logfile} && chown pi:pi ${logfile}
-
-#
-# Parameters
-#
-
 magnet_id=${1}
 magnet_command=${2}
 magnet_dimlevel=${3}
@@ -76,7 +48,57 @@ magnet_signal=${5}
 magnet_type=${swtype[${magnet_id}_${magnet_unitcode}]:='door'}
 
 id_id="ID_${magnet_id}_${magnet_unitcode}"
+
 magnet_alias="$(echo ${!id_id} | iconv -f ISO-8859-15 -t UTF-8)"
+magnet_verbose=$(command_verbose "${magnet_command}" "${magnet_type}")
+
+#
+#   Debounce, i.e If we're called with the same parameters, Just exit...
+#
+
+(
+flock -x -w 30 200 || { logger -t "$(basename $0)" "Failed to aquire lock for ${magnet_id}"; exit 1; }
+
+debounceFile="/tmp/debounce-${magnet_id}_${magnet_unitcode}.tmp"
+
+if [ -s "${debounceFile}" ] ; then
+
+    last=$(cat "${debounceFile}")
+
+    if [ "${magnet_command}" = "${last}" ] ; then
+	logger -t "$(basename $0)" "$$ Debounced ${magnet_alias} (${magnet_type}) = ${magnet_verbose} [${magnet_id}_${magnet_unitcode}:${magnet_command}]"
+	exit 1
+    fi
+fi
+
+echo "${magnet_command}" > "${debounceFile}"
+
+) 200> /var/lock/magnet-trigger.lock ; status=$?
+
+
+if [ ${status} -ne 0 ] ; then
+    #logger -t "$(basename $0)" "$$ Call early exit"
+    exit 0
+fi
+
+
+#
+#   Debounce done. Go ahead and publish
+#
+
+
+influxtime="$(date +%s)000000000"
+shortnow=$(date +"%T")
+
+
+#	Create logfile if needed
+
+[ ! -r ${logfile} ] && touch ${logfile} && chown pi:pi ${logfile}
+
+#
+# Parameters
+#
+
 
 # Log parameters to file
 
@@ -89,28 +111,14 @@ sw_to_influxdb "${magnet_id}_${magnet_unitcode}" "${magnet_command}" "${influxti
 
 #	Send it to pubnub
 
+#logger -t "$(basename $0)" "$$ Call publish_switch.sh"
 call "${scriptDir}/pubnub/publish_switch.sh" "${magnet_id}_${magnet_unitcode} ${magnet_command} ${magnet_signal}" >> ${UPDATE_REST_LOG}
 
 
 #	Send it to openhab
 
-if [[ "${magnet_command}" == "On" ]] ; then
-    if [[ "${magnet_type}" == "ir" ]] ; then
-    	utf8_str="Aktiv"
-    else
-    	utf8_str=$(echo "Öppen" | iconv -f ISO-8859-15 -t UTF-8)
-    fi
-else
-    if [[ "${magnet_type}" == "ir" ]] ; then
-    	utf8_str="Passiv"
-    else
-    	utf8_str=$(echo "Stängd" | iconv -f ISO-8859-15 -t UTF-8)
-    fi
-fi
+to_openhab "M_${magnet_id}_${magnet_unitcode}" "${magnet_verbose} ${shortnow}" >> ${UPDATE_REST_LOG}
 
-magnet_status="${utf8_str} ${shortnow}"
-
-to_openhab "M_${magnet_id}_${magnet_unitcode}" "${magnet_status}" >> ${UPDATE_REST_LOG}
-
+#logger -t "$(basename $0)" "$$ Call exit"
 
 exit 0

@@ -34,6 +34,57 @@ fi
 
 #-------------------------------------------------------------------------------
 #
+#	Function command_verbose
+#
+#-------------------------------------------------------------------------------
+
+function command_verbose ()
+{
+local magnet_command="${1}"
+local magnet_type="${2}"
+local utf8_str="${1}"
+
+case ${magnet_type} in
+    "door")
+    	if [ "${magnet_command}" = "Off" ] ; then
+    	    utf8_str="$(echo "Stängd" | iconv -f ISO-8859-15 -t UTF-8)"
+	else
+	    utf8_str="$(echo "Öppen" | iconv -f ISO-8859-15 -t UTF-8)"
+	fi
+    ;;
+    
+    "ir")
+     	if [ "${magnet_command}" = "Off" ] ; then
+    	    utf8_str="Passiv"
+	else
+	    utf8_str="Aktiv"
+	fi
+    ;;
+    
+    "light")
+      	if [ "${magnet_command}" = "Off" ] ; then
+    	    utf8_str="Av"
+	else
+	    utf8_str="$(echo "På" | iconv -f ISO-8859-15 -t UTF-8)"
+	fi
+    ;;
+ 
+    "duskdawn")
+     	if [ "${magnet_command}" = "Off" ] ; then
+    	    utf8_str="Dag"
+	else
+	    utf8_str="Natt"
+	fi
+    ;;
+
+
+esac
+ 
+echo "${utf8_str}"
+}
+
+#-------------------------------------------------------------------------------
+#
 #	Function call
 #
 #-------------------------------------------------------------------------------

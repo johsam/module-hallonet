@@ -70,15 +70,24 @@ now_full="$(date '+%F %T')"
 	
 	if [ ${status} -eq 0 ] ; then
 		
-		alias=$(jq -e -r '.switch.alias' < ${jqfile} 2>> "${PUBNUB_ERROR_LOG}")
+		switch_alias=$(jq -e -r '.switch.alias' < ${jqfile} 2>> "${PUBNUB_ERROR_LOG}")
+		switch_type=$(jq -e -r '.switch.type' < ${jqfile} 2>> "${PUBNUB_ERROR_LOG}")
+		
+		if [ "${switch_type}" = "magnet" ] ; then
+		    switch_type=$(jq -e -r '.switch.subtype' < ${jqfile} 2>> "${PUBNUB_ERROR_LOG}")
+		fi
+
+		verbose=$(command_verbose "${switch_state}" "${switch_type}")
+
 
 		# Send it to pubnub
 		
-		log "To PubNub ${alias} [${switch_id}] = ${switch_state}" >> ${UPDATE_REST_LOG} 2>&1
+		#log "To PubNub ${switch_alias} [${switch_id}] = ${switch_state}" >> ${UPDATE_REST_LOG} 2>&1
+		log "To PubNub ${switch_alias} (${switch_type}) = ${verbose} [${switch_id}:${switch_state}]" >> ${UPDATE_REST_LOG} 2>&1
 
 		pn_gw_publish "${PUBNUB_CHANNEL_SENSORS}" "${jqfile}" > /dev/null 2>&1
 		
-		logger -t "$(basename $0)" "Published ${alias} [${switch_id}] = ${switch_state}"
+		logger -t "$(basename $0)" "Published ${switch_alias} (${switch_type}) = ${verbose} [${switch_id}:${switch_state}]"
 		
 		cp ${tmpfile} "${JSON_FILE}"
 		to_webroot static ${JSON_FILE}
