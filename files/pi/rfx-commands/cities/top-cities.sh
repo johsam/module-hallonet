@@ -37,6 +37,8 @@ now=$(date '+%F %T')
 
 settings=${scriptDir}/../settings.cfg
 
+source "${BASH_SOURCE%/*}/.env"
+
 # Sanity checks
 
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
@@ -74,7 +76,7 @@ sun_azimuth=0
 curl -s "${NEARBY_URL}" > ${nearby_xml_file}
 curl -s "${ALL_URL}" > ${all_xml_file}
 curl -s "${FAVOURITES_URL}" > ${favourites_xml_file}
-curl -s --connect-timeout 15 --max-time 15 -XGET -H "Content-Type: application/json" ${HAS_SUN_URL} > ${hasfile} 2> /dev/null
+curl -s --connect-timeout 15 --max-time 15 -XGET -H "${AUTH}" -H "Content-Type: application/json" ${HAS_SUN_URL} > ${hasfile} 2> /dev/null
 
 
 perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${nearby_xml_file}'))" > ${nearby_json_file}

@@ -20,12 +20,14 @@ trap "exit 2" 1 2 3 15
 
 #echo "sensors.temperatures.$1 $2 $(date +%s)" | nc -q0 mint-black 2003
 
-now="$(date +%s)"
+#now="$(date +%s)"
 
 sensor="${1}"
 value="${2}"
 humidity="${3}"
 signal="${4}"
+now="${5}"
+now="${now:=$(date +%s)}"
 
 
 #	Get sensor variables and settings

@@ -1,4 +1,4 @@
-##!/bin/bash
+#!/bin/bash
 
 ######################################################################
 #
@@ -17,8 +17,9 @@ trap "exit 2" 1 2 3 15
 
 tmpfile="/tmp/`basename $0`-$$.tmp"
 
+source "${BASH_SOURCE%/*}/.env"
 
-curl -s --connect-timeout 10 --max-time 10 -XGET 'http://localhost:8123/api/states/sun.sun' > ${tmpfile} 2> /dev/null
+curl -s --connect-timeout 10 --max-time 10 -XGET -H "${AUTH}" 'http://localhost:8123/api/states/sun.sun' > ${tmpfile} 2> /dev/null
 
 
 if [ -s "${tmpfile}" ] ; then

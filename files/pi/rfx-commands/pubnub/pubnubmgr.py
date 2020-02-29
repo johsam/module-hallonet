@@ -86,7 +86,8 @@ class MyDaemon(Daemon):
 
             if action == 'restart':
                 if target == 'rfxcmd':
-                    command = "/usr/sbin/service rfxcmd restart"
+                    #command = "/usr/sbin/service rfxcmd restart"
+                    command = "/etc/init.d/rfxcmd restart"
 
                 if target == 'openhab':
                     command = "/usr/sbin/service openhab restart"

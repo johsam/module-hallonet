@@ -171,7 +171,7 @@ systemAliases = {
     # smultronet
     
     "pib_release": {
-        "alias": "Pi Model 3B (1Gb)",
+        "alias": "Pi Model 3B+ (1Gb)",
         "order": 1
     },
     "pib_core_temp": {
@@ -263,9 +263,14 @@ systemAliases = {
         "order": 4,
         "type": "date"
     },
+    "has_dbsize": {
+        "alias": "Databas",
+        "order": 5
+    }
+    ,
     "has_version": {
         "alias": "Version",
-        "order": 5
+        "order": 6
     },
 
     # rethinkdb
@@ -722,7 +727,7 @@ deviceAliases = {
     },
 
     "3": {
-        "alias": "Catarinas iPhone 6",
+        "alias": "Catarinas iPhone 8",
         "order": 3,
         "hilite": True
     },
@@ -791,8 +796,12 @@ deviceAliases = {
     "14": {
         "alias": "Johans Lenovo",
         "order": 15
-    }
+    },
 
+    "18": {
+        "alias": "Asus extender",
+        "order": 16
+    }
 }
 
 result = {'success': True, 'hoursmissingcount': 0, 'sensors': [], 'switches': [], 'devices': [], 'lasthour': [], 'tnu_trend': [], 'toplist': {'coldest': [], 'warmest': []}}

@@ -24,9 +24,10 @@ sensor="${1}"
 value="${2}"
 humidity="${3}"
 signal="${4}"
+now="${5}"
+now="${now:=$(date +%s)}"
 
 host=$(hostname)
-now="$(date +%s)"
 
 #	Get sensor variables and settings
 

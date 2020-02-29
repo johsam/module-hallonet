@@ -37,7 +37,13 @@ temperaturHash="443da56c96fc336d3ba366eb9e685f0f"
 
 
 temperaturUrl="${temperaturBaseUrl}?hash=${temperaturHash}&t="
-now="$(date '+%F %T')"
+
+epoch="$(date '+%s')"
+epoch=$((epoch - epoch % 60))
+
+now="$(date '+%F %T' -d@${epoch})"
+
+
 
 #
 #   Check if we could write our logs
@@ -76,6 +82,11 @@ tsensors="$(tail -1 ${sqltempfile})"
 
 if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	{
+    	
+	# Update timebox-evo
+	
+	curl --connect-timeout 2 --max-time 2 -XPOST http://192.168.1.225:3333/histogram -d "{\"temp\":${number}}" > /dev/null 2>&1
+
 	#	Save temp for web static
 	
 	echo ${number} > ${statictempfile}
@@ -84,8 +95,8 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	
 	#	Update influxdb and graphite 
 
-	${scriptDir}/to-influx-temps.sh '0000' ${number} '0' '0'
-	${scriptDir}/to-graphite-temps.sh '0000' ${number} '00' '0'
+	${scriptDir}/to-influx-temps.sh '0000' ${number} '0' '0' ${epoch}
+	${scriptDir}/to-graphite-temps.sh '0000' ${number} '00' '0' ${epoch}
 
 
 	#	Only 2 decimal to be safe...
@@ -127,8 +138,11 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	#	Insert into table tnu
 	
 	
-	/usr/bin/mysql tnu -urfxuser -prfxuser1 -e "insert into tnu values ('${now}',${curlstatus},${grepstatus},${number},'${tsensors}');"	
+	/usr/bin/mysql tnu -urfxuser -prfxuser1 \
+	    -e "insert into tnu values (${epoch},'${now}',${curlstatus},${grepstatus},${number},'${tsensors}');"	
 
+	/usr/bin/mysql --connect-timeout 5 -h mint-fuji ripan -utnu -ptnu \
+	    -e "insert into tnu (unixtime,datetime,temp) values (${epoch},'${now}',${number});" > /dev/null 2>&1	
 
 	#	Update openhab for graph
 	
@@ -152,7 +166,6 @@ if [[ "${number}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]] ; then
 	to_openhab "T_NU_last_min" "${min_tnu}"
 	to_openhab "T_NU_last_max" "${max_tnu}"
     	
-	curl --connect-timeout 2 --max-time 2 -XPOST http://192.168.1.225:3333/histogram -d "{\"temp\":${number}}" > /dev/null 2>&1
     	
 	} >> ${UPDATE_REST_LOG}
 
@@ -177,8 +190,8 @@ number="$(awk '{print $5}' ${tmpfile})"
 
 #	Update influxdb and graphite
 
-${scriptDir}/to-influx-temps.sh '0001' ${number} '0' '0' >> ${UPDATE_REST_LOG}
-${scriptDir}/to-graphite-temps.sh '0001' ${number} '00' '-1' >> ${UPDATE_REST_LOG}
+${scriptDir}/to-influx-temps.sh '0001' ${number} '0' '0' ${epoch} >> ${UPDATE_REST_LOG}
+${scriptDir}/to-graphite-temps.sh '0001' ${number} '00' '-1' ${epoch} >> ${UPDATE_REST_LOG}
 
 
 

@@ -7,7 +7,7 @@ select
 	concat(time(datetime)," -> ",format(temp,2))
 	from tnu 
 
-order by datetime desc limit 1;
+order by unixtime desc limit 1;
 
 select 
 	"t_nu",
@@ -15,7 +15,7 @@ select
 	datetime
 	from tnu 
 
-order by datetime desc limit 1;
+order by unixtime desc limit 1;
 
 select 
 	"t_nu",
@@ -23,7 +23,7 @@ select
 	temp
 	from tnu 
 
-order by datetime desc limit 1;
+order by unixtime desc limit 1;
 
 
 

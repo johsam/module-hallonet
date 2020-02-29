@@ -9,6 +9,6 @@ select
 
     from tnu 
 
-    order by datetime desc 
+    order by unixtime desc 
     limit  144
 ) as tmp
