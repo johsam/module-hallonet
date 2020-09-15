@@ -23,12 +23,12 @@ insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('250E','52','07','Tujan (g)',true,false);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('230E','52','07','Tujan (n)',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('B700','50','09','Stuprännan',true,true);
-insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('8900','52','07','Stuprännan (v)',true,true);
+insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('2900','52','07','Stuprännan (v)',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('A700','52','09','Komposten',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('BE01','52','0A','Okänd t/h',true,false);
 
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('9700','52','09','Bokhyllan',false,false);
-insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('3902','52','0A','Datorhyllan',false,false);
+insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('3002','52','0A','Datorhyllan',false,false);
 
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('C600','50','07','Hammocken Tak',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('3D00','50','07','Hammock Dyna',true,true);
@@ -41,7 +41,7 @@ insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`
 
 insert into `sensors` (`sensorid`,`subid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`,`type`) values('00123456','7','00','00','Ytter-dörr',false,false,'door');
 insert into `sensors` (`sensorid`,`subid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`,`type`) values('00CFDCEE','10','00','00','Grinden',false,false,'door');
-insert into `sensors` (`sensorid`,`subid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`,`type`) values('00CFDEEA','10','00','00','Altan-dörr',false,false,'door');
+insert into `sensors` (`sensorid`,`subid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`,`type`) values('01FD3C3A','1','00','00','Altan-dörr',false,false,'door');
 insert into `sensors` (`sensorid`,`subid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`,`type`) values('00CFD656','10','00','00','Förråds-dörr',false,false,'door');
 insert into `sensors` (`sensorid`,`subid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`,`type`) values('0128DCFA','10','00','00','Bokhyllan',false,false,'cabinet');
 insert into `sensors` (`sensorid`,`subid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`,`type`) values('00EF07E6','10','00','00','Vardagsrum ir',false,false,'ir');

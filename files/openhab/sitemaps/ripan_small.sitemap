@@ -20,7 +20,7 @@ sitemap ripan_small label="Ripstigen-Small" {
 
    Frame label="Dörrar Utomhus" {
 	Text  item=M_00123456_7
-	Text  item=M_00CFDEEA_10
+	Text  item=M_01FD3C3A_1
 	Text  item=M_00CFDCEE_10
    }
 

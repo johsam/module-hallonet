@@ -49,11 +49,11 @@ sitemap ripan label="Ripstigen" {
    		}
 
     		Frame label="Stuprännan (v)" {
-        		Text item=T_52_8900_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_8900_last_stamp
-        		Text item=T_52_8900_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_8900_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=H_52_8900_last
+        		Text item=T_52_2900_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_2900_last_stamp
+        		Text item=T_52_2900_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_2900_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=H_52_2900_last
    		}
   
   		Frame label="Komposten" {
@@ -111,8 +111,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Stuprännan (v)" {
-			Text item=T_52_8900_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_8900_max_stamp
+			Text item=T_52_2900_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_2900_max_stamp
 		}	
 
 		Frame label="Komposten" {
@@ -156,8 +156,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Stuprännan (v)" {
-			Text item=T_52_8900_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_8900_min_stamp
+			Text item=T_52_2900_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_2900_min_stamp
 		}	
 
 		Frame label="Komposten" {
@@ -181,7 +181,7 @@ sitemap ripan label="Ripstigen" {
 
    Frame label="Dörrar Utomhus" {
 	Text  item=M_00123456_7
-	Text  item=M_00CFDEEA_10
+	Text  item=M_01FD3C3A_1
 	Text  item=M_00CFD656_10
 	Text  item=M_00CFDCEE_10
    }
@@ -197,7 +197,7 @@ sitemap ripan label="Ripstigen" {
 
    Frame label="Luftfuktighet Utomhus" {
         Text item=H_52_B700_last
-	Text item=H_52_8900_last
+	Text item=H_52_2900_last
 	Text item=H_52_C700_last
 	Text item=H_52_230E_last
         Text item=H_52_A700_last
@@ -233,6 +233,7 @@ sitemap ripan label="Ripstigen" {
         Text item=HAS_status
         Text item=HAS_version
         Text item=HAS_host
+        Text item=HAS_dbsize
         Text item=HAS_started
    }
     

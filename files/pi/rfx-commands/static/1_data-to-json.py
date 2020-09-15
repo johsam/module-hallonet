@@ -548,7 +548,7 @@ switchAliases = {
         "badge":   True,
         "order": -11
     },
-    "00CFDEEA_10": {
+    "01FD3C3A_1": {
         "alias":   "Altanen",
         "type":    "magnet",
         "subtype": "door",
@@ -674,7 +674,7 @@ sensorAliases = {
         "order": 6
     },
 
-    "8900": {
+    "2900": {
         "alias":    u"Stupr\u00e4nnan (v)",
         "location": "outside",
         "order": 7
@@ -700,7 +700,7 @@ sensorAliases = {
         "order": 8
     },
 
-    "3902": {
+    "3002": {
         "alias": "Datorhyllan",
         "location": "inside",
         "order": 8

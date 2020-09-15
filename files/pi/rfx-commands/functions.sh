@@ -269,6 +269,7 @@ else
 	logger -t $(basename $0) "Could not write to '${STATIC_DIR}'"
 fi
 
+return 0
 
 #	NAS
 

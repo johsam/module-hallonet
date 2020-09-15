@@ -180,22 +180,22 @@ Number H_52_B700_last
 
 /*	Stuprännan (v)	*/
 
-Number T_52_8900_last
+Number T_52_2900_last
         "Temperatur (Stv) [%.1f °C]"
         <ripan_temp>
         (Outside,OutAvgLast,OutMinLast,OutMaxLast)
 
-Number T_52_8900_min
+Number T_52_2900_min
         "Kallast [%.1f °C]"
         <ripan_small_blue_temp>
         (Outside,OutMinToday,StuprannanVikingMinToday)
 
-Number T_52_8900_max
+Number T_52_2900_max
         "Varmast [%.1f °C]"
         <ripan_small_red_temp>
         (Outside,OutMaxToday,StuprannanVikingMaxToday)
 
-Number H_52_8900_last
+Number H_52_2900_last
         "Stuprännan (v)[%d %%]"
         <ripan_humidity4>
         (Outside)
@@ -236,17 +236,17 @@ Number T_50_D800_max
 
 
 
-Number T_52_3902_last
+Number T_52_3002_last
         "Vid Datorn [%.1f °C]"
         <ripan_temp>
         (Inside)
 
-Number T_52_3902_min
+Number T_52_3002_min
         "Kallast [%.1f °C]"
         <ripan_temp>
         (Inside)
 
-Number T_52_3902_max
+Number T_52_3002_max
         "Varmast [%.1f °C]"
         <ripan_temp>
         (Inside)
@@ -262,7 +262,7 @@ Number H_52_9700_last
         (Inside)
 
 
-Number H_52_3902_last
+Number H_52_3002_last
         "Vid Datorn [%d %%]"
         <ripan_humidity4>
         (Inside)
@@ -337,10 +337,10 @@ String T_52_B700_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_B700_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_B700_last_stamp "Klockan [%s]" <ripan_clock>
 
-String T_52_8900_last_stamp "Avläst [%s]" <ripan_clock>
-String T_52_8900_min_stamp  "Klockan [%s]" <ripan_clock>
-String T_52_8900_max_stamp  "Klockan [%s]" <ripan_clock>
-String H_52_8900_last_stamp "Klockan [%s]" <ripan_clock>
+String T_52_2900_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_2900_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_2900_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_2900_last_stamp "Klockan [%s]" <ripan_clock>
 
 
 String T_52_230E_last_stamp "Avläst [%s]" <ripan_clock>
@@ -354,10 +354,10 @@ String T_52_250E_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_250E_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_250E_last_stamp "Klockan [%s]" <ripan_clock>
 
-String T_52_3902_last_stamp "Avläst [%s]" <ripan_clock>
-String T_52_3902_min_stamp  "Klockan [%s]" <ripan_clock>
-String T_52_3902_max_stamp  "Klockan [%s]" <ripan_clock>
-String H_52_3902_last_stamp "Klockan [%s]" <ripan_clock>
+String T_52_3002_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_3002_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_3002_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_3002_last_stamp "Klockan [%s]" <ripan_clock>
 
 
 /*	Grupper	*/
@@ -513,6 +513,7 @@ String HAS_status     "Status [%s]"        <ripan_has>
 String HAS_version    "Version [%s]"       <ripan_has>
 String HAS_host       "Körs på [%s]"     <ripan_has>
 String HAS_influxdata "InfluxDB [%s]"      <ripan_has>
+String HAS_dbsize     "Databas [%s]"       <ripan_has>
 
 String PI_uptime       "Uptime [%s]"       <ripan_pi>
 String PI_loadavg      "Load Average [%s]" <ripan_pi>
@@ -546,7 +547,7 @@ String T_NU_last_max        "Varmast [%s]" <ripan_small_red_temp>
 String T_NU_last_min        "Kallast [%s]" <ripan_small_blue_temp>
 
 
-String M_00CFDEEA_10
+String M_01FD3C3A_1
         "Altanen [%s]"
         <ripan_door2>
         (Magnets)

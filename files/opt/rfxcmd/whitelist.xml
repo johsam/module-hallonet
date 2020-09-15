@@ -2,21 +2,23 @@
 <whitelist>
 	<sensor>0D01........................</sensor>
 	<sensor>0402010000</sensor>
-	<sensor>085007..CF00......</sensor>
-	<sensor>085007..AC00......</sensor>
+	<sensor>085007..C600......</sensor>
+	<sensor>085007..3D00......</sensor>
 	<sensor>085007..0700......</sensor>
 	<sensor>085007..D800......</sensor>
-	<sensor>0A5209..8700..........</sensor>
+	<sensor>0A5209..C700..........</sensor>
 	<sensor>0A5209..9700..........</sensor>
 	<sensor>0A5209..A700..........</sensor>
 	<sensor>0A5209..B700..........</sensor>
-	<sensor>0A5209..8900..........</sensor>
+	<sensor>0A5209..2900..........</sensor>
+	
+	<sensor>0A520A..3902..........</sensor>
 
 	<sensor>0A5207..230E..........</sensor>
 	<sensor>0A5207..250E..........</sensor>
 
 	<sensor>0B1100..00D81332........</sensor>
-	<sensor>0B1100..00CFDEEA........</sensor>
+	<sensor>0B1100..01FD3C3A........</sensor>
 	<sensor>0B1100..00CFDCEE........</sensor>
 	<sensor>0B1100..00CFD656........</sensor>
 	<sensor>0B1100..03D242AA........</sensor>

@@ -12,7 +12,7 @@
 	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "00" "$signal$"</action>
 </trigger>
 <trigger>
-        <message>0A5209..8700..........</message>
+        <message>0A5209..C700..........</message>
 	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
 </trigger>
 <trigger>
@@ -29,7 +29,7 @@
 </trigger>
 
 <trigger>
-        <message>0A5209..8900..........</message>
+        <message>0A5209..2900..........</message>
 	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
 </trigger>
 
@@ -43,7 +43,14 @@
 </trigger>
 
 <trigger>
-        <message>0B1100..00CFDEEA........</message>
+        <message>0A520A..3902..........</message>
+	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
+</trigger>
+
+
+
+<trigger>
+        <message>0B1100..01FD3C3A........</message>
 	<action>/home/pi/rfx-commands/triggers/magnets.sh "$id$" "$command$" "$dimlevel$" "$unitcode$" "$signal$"</action>
 </trigger>
 <trigger>
