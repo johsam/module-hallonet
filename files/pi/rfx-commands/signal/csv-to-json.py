@@ -72,14 +72,16 @@ for s in sensor_data['sensors']:
 
 
 def add2signal(key, day, sensorid, start, end, reports):
-    if key not in signal:
-        signal[key] = {'day': day, 'sensors': {}}
-    if sensorid not in signal[key]['sensors']:
-        signal[key]['sensors'][sensorid] = {'alias': aliases[sensorid], 'location': locations[sensorid], 'missed': []}
+    try:
+      if key not in signal:
+          signal[key] = {'day': day, 'sensors': {}}
+      if sensorid not in signal[key]['sensors']:
+          signal[key]['sensors'][sensorid] = {'alias': aliases[sensorid], 'location': locations[sensorid], 'missed': []}
 
-    signal[key]['sensors'][sensorid]['missed'].append({'reports': reports, 'start': start, 'end': end})
-    signal[key]['sensors'][sensorid]['missed'] = sorted(signal[key]['sensors'][sensorid]['missed'], key=lambda k: k['start'], reverse = True) 
-
+      signal[key]['sensors'][sensorid]['missed'].append({'reports': reports, 'start': start, 'end': end})
+      signal[key]['sensors'][sensorid]['missed'] = sorted(signal[key]['sensors'][sensorid]['missed'], key=lambda k: k['start'], reverse = True) 
+    except Exception:
+       pass
 #
 # Read file containing some missed values
 #

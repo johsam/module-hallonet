@@ -208,8 +208,9 @@ function to_webroot ()
 local dir="${1}"
 local file="${2}"
 
-lftp -c "my_upload; put -O ${dir} ${file}"
-log "Saved '$(basename ${file})' to webroot" >> ${UPDATE_REST_LOG}
+#lftp -c "my_upload; put -O ${dir} ${file}"
+scp -p ${file} mint-black:/var/www/html/static/${dir}/
+log "Saved '$(basename ${file})' to webroot '${dir}'" >> ${UPDATE_REST_LOG}
 }
 
 

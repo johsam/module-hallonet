@@ -64,6 +64,13 @@ sitemap ripan label="Ripstigen" {
         		Text item=H_52_A700_last
    		}
 
+  		Frame label="Dynlådan" {
+        		Text item=T_52_D503_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_D503_last_stamp
+        		Text item=T_52_D503_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_D503_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=H_52_D503_last
+   		}
 
    		Frame label="Hammock Dyna" {
         		Text item=T_50_3D00_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]

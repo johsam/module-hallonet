@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import json
 import re
@@ -6,23 +6,40 @@ import argparse
 
 
 def cleanup_city(city, kommun):
+
+    kommun = re.sub('s kommun', '', kommun)
+    kommun = re.sub('kommun', '', kommun)
+    kommun = kommun.strip()
+
     city = re.sub('_', ' ', city)
-    city = re.sub(kommun, '', city)
+    city = re.sub('kommun', '', city)
     city = re.sub('Sthlm', '', city)
+    city = city.strip()
     city = re.sub('^/|/$', '', city)
+    city = re.sub('/', '', city)
+    city = city.strip()
 
-    if (len(city)):
+    kommun = re.sub(city, '', kommun)
+    city = re.sub(kommun, '', city)
+
+    if city and city[0] == 's':
+        city = city[1:]
+
+    city = city.strip()
+    kommun = kommun.strip()
+
+    if (len(kommun) and len(city)):
         city = kommun + ' - ' + city
-    else:
+    elif len(kommun):
         city = kommun
-
+    
     return city
 
 
 def collect_cities(i, seen={}):
     dataset = []
 
-    for key, val in i.iteritems():
+    for key, val in enumerate(i):
         city = val['title']
         kommun = val['kommun']
         temp = val['temp']
@@ -50,7 +67,7 @@ def insert_cities(l, section):
             'city': val['city'],
             'temp': val['temp'],
             'section_key': section + '_' + str(idx)
-            }
+        }
         )
 
         if idx >= args.count:
@@ -58,7 +75,7 @@ def insert_cities(l, section):
 
 
 def no_data(section):
-    insert_cities([{'kommun': '?','city': 'Data saknas...','temp': 0}], section)
+    insert_cities([{'kommun': '?', 'city': 'Data saknas...', 'temp': 0}], section)
 
 
 #
@@ -132,12 +149,14 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+
 def formatFloat1(v):
     return "{:.1f}".format(round(float(v), 1))
 
 #
 # Start to work
 #
+
 
 cities = {'timestamp': 'N/A', 'warmest': [], 'coldest': [], 'nearby': [], 'favourites': [], 'bergshamra': []}
 
@@ -147,7 +166,8 @@ cities = {'timestamp': 'N/A', 'warmest': [], 'coldest': [], 'nearby': [], 'favou
 
 try:
     all_json = json.loads(open(args.all).read(), 'utf8')
-    items = all_json['channel']['item']
+    items = all_json['stations']
+
     citylist = collect_cities(items, seen={})
 
     #   Append coldest cities
@@ -170,8 +190,7 @@ except:
 
 try:
     nearby_json = json.loads(open(args.nearby).read(), 'utf8')
-    items = nearby_json['channel']['item']
-
+    items = nearby_json['stations']
     # Skip ourselves
     citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
     citylist = sorted(citylist, key=lambda k: (k['temp'], k['city']), reverse=True)
@@ -187,13 +206,13 @@ except:
 
 try:
     if args.fav:
-	favourites_json = json.loads(open(args.fav).read(), 'utf8')
-	items = favourites_json['channel']['item']
+        favourites_json = json.loads(open(args.fav).read(), 'utf8')
+        items = favourites_json['stations']
 
-	# We need at least 2 cities to get an array
-	#citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
-	citylist = collect_cities(items, seen={})
-	insert_cities(citylist, 'favourites')
+        # We need at least 2 cities to get an array
+        #citylist = collect_cities(items, seen={"Sthlm/Bergshamra": True})
+        citylist = collect_cities(items, seen={})
+        insert_cities(citylist, 'favourites')
 
 except:
     no_data('favourites')
@@ -204,20 +223,23 @@ if args.now:
     cities['timestamp'] = args.now
 
 if args.sun_rise:
-    cities['bergshamra'].append({'alias': u'Soluppg\u00E5ng', 'time': args.sun_rise, 'value': args.sun_rise, 'section_key': 'bergshamra_1'}) 
+    cities['bergshamra'].append({'alias': u'Soluppg\u00E5ng', 'time': args.sun_rise,
+                                'value': args.sun_rise, 'section_key': 'bergshamra_1'})
 
 if args.sun_set:
-    cities['bergshamra'].append({'alias': u'Solnedg\u00E5ng', 'time': args.sun_set, 'value': args.sun_set, 'section_key': 'bergshamra_2'}) 
-
+    cities['bergshamra'].append({'alias': u'Solnedg\u00E5ng', 'time': args.sun_set,
+                                'value': args.sun_set, 'section_key': 'bergshamra_2'})
 
 
 if args.sun_azimuth:
-    sun_azimuth=formatFloat1(args.sun_azimuth) + u'\u00B0'
-    cities['bergshamra'].append({'alias': u'Solens riktning', 'time': sun_azimuth ,'value': sun_azimuth, 'section_key': 'bergshamra_3'}) 
+    sun_azimuth = formatFloat1(args.sun_azimuth) + u'\u00B0'
+    cities['bergshamra'].append({'alias': u'Solens riktning', 'time': sun_azimuth,
+                                'value': sun_azimuth, 'section_key': 'bergshamra_3'})
 
 if args.sun_elevation:
-    sun_elevation=formatFloat1(args.sun_elevation) + u'\u00B0'
-    cities['bergshamra'].append({'alias': u'Solens h\u00F6jd', 'time': sun_elevation,'value': sun_elevation, 'section_key': 'bergshamra_4'}) 
+    sun_elevation = formatFloat1(args.sun_elevation) + u'\u00B0'
+    cities['bergshamra'].append({'alias': u'Solens h\u00F6jd', 'time': sun_elevation,
+                                'value': sun_elevation, 'section_key': 'bergshamra_4'})
 
 
-print json.dumps(cities, indent=2)
+print(json.dumps(cities, indent=2))

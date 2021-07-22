@@ -80,8 +80,8 @@ if [ ${status} -eq 0 ] ; then
 		#	Upload a file to force a restart of openhab the next time update-openhab.sh runs
 		#
 		
-		touch "${restartfile}"
-		to_webroot static ${restartfile}
+		#touch "${restartfile}"
+		#to_webroot static ${restartfile}
 
 		
 		reportStatus "offline"

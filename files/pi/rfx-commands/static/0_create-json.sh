@@ -254,6 +254,10 @@ ssh pi@jordgubben '~/bin/jordgubben.sh'
 
 ssh johsam@mint-fuji '~/bin/mint-fuji.sh'
 
+#Collect from silverpilen
+
+ssh johsam@silverpilen '~/bin/silverpilen.sh'
+
 } > "${systemfile}"
 cp ${systemfile} /tmp/systeminfo.log
 log "Collect from host(s) done..."

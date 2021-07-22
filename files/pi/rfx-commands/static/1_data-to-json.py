@@ -493,6 +493,12 @@ systemAliases = {
         "alias": "mint-black",
         "order": 5,
         "type": "hilite_non_zero"
+    },
+
+    "updates_silverpilen": {
+        "alias": "silverpilen",
+        "order": 6,
+        "type": "hilite_non_zero"
     }
 
 }
@@ -521,7 +527,7 @@ switchAliases = {
         "order": 3
     },
     "00D81332_6": {
-        "alias": u"Ebbas Lampa",
+        "alias": u"Ebbas Fönster",
         "type":  "light",
         "nexaid": 6,
         "fab": True,
@@ -692,6 +698,12 @@ sensorAliases = {
         "order": 9
     },
 
+    "D503": {
+        "alias":     u"Dynl\u00e5dan",
+        "location": "outside",
+        "order": 10
+    },
+
     # Inside sensors
 
     "9700": {
@@ -700,7 +712,7 @@ sensorAliases = {
         "order": 8
     },
 
-    "3002": {
+    "7802": {
         "alias": "Datorhyllan",
         "location": "inside",
         "order": 8
@@ -1044,7 +1056,8 @@ with open(args.last_file, 'rb') as csvfile:
             alias = sensorAliases[sensorid]['alias']
             location = sensorAliases[sensorid]['location']
             order = sensorAliases[sensorid]['order']
-
+    	else:
+	    print('Bork',sensorid)
         # Check if datetime is stale
 
         delta = relativedelta(now, parse(datetime))

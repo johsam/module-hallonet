@@ -120,6 +120,29 @@ Number H_52_A700_last
         <ripan_humidity4>
         (Outside)
 
+/*	Dynlådan	*/
+
+Number T_52_D503_last
+        "Temperatur (K) [%.1f °C]"
+        <ripan_temp>
+        (Outside,OutAvgLast,OutMinLast,OutMaxLast)
+
+Number T_52_D503_min
+        "Kallast [%.1f °C]"
+        <ripan_small_blue_temp>
+        (Outside,OutMinToday,KompostenMinToday)
+
+Number T_52_D503_max
+        "Varmast [%.1f °C]"
+        <ripan_small_red_temp>
+        (Outside,OutMaxToday,KompostenMaxToday)
+
+Number H_52_D503_last
+        "Komposten [%d %%]"
+        <ripan_humidity4>
+        (Outside)
+
+
 
 /*	Hammock Dyna	*/
 
@@ -236,17 +259,17 @@ Number T_50_D800_max
 
 
 
-Number T_52_3002_last
+Number T_52_7802_last
         "Vid Datorn [%.1f °C]"
         <ripan_temp>
         (Inside)
 
-Number T_52_3002_min
+Number T_52_7802_min
         "Kallast [%.1f °C]"
         <ripan_temp>
         (Inside)
 
-Number T_52_3002_max
+Number T_52_7802_max
         "Varmast [%.1f °C]"
         <ripan_temp>
         (Inside)
@@ -262,7 +285,7 @@ Number H_52_9700_last
         (Inside)
 
 
-Number H_52_3002_last
+Number H_52_7802_last
         "Vid Datorn [%d %%]"
         <ripan_humidity4>
         (Inside)
@@ -354,11 +377,15 @@ String T_52_250E_min_stamp  "Klockan [%s]" <ripan_clock>
 String T_52_250E_max_stamp  "Klockan [%s]" <ripan_clock>
 String H_52_250E_last_stamp "Klockan [%s]" <ripan_clock>
 
-String T_52_3002_last_stamp "Avläst [%s]" <ripan_clock>
-String T_52_3002_min_stamp  "Klockan [%s]" <ripan_clock>
-String T_52_3002_max_stamp  "Klockan [%s]" <ripan_clock>
-String H_52_3002_last_stamp "Klockan [%s]" <ripan_clock>
+String T_52_7802_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_7802_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_7802_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_7802_last_stamp "Klockan [%s]" <ripan_clock>
 
+String T_52_D503_last_stamp "Avläst [%s]" <ripan_clock>
+String T_52_D503_min_stamp  "Klockan [%s]" <ripan_clock>
+String T_52_D503_max_stamp  "Klockan [%s]" <ripan_clock>
+String H_52_D503_last_stamp "Klockan [%s]" <ripan_clock>
 
 /*	Grupper	*/
 
@@ -504,7 +531,7 @@ Switch Nexa_5
     {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 5 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 5 off"}
 
 Switch Nexa_6
-    "Ebbas lampa"
+    "Ebbas fönster"
     (Lights)
     {exec="ON:/usr/local/bin/openhab-send-to-nexa.sh 6 on, OFF:/usr/local/bin/openhab-send-to-nexa.sh 6 off"}
 

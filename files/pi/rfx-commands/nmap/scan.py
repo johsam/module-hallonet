@@ -35,7 +35,7 @@ def do_scan(cfg):
     result = nm.scan(hosts='192.168.1.0/24', arguments=cfg)
 
     for ip, entry in result['scan'].iteritems():
-        hostname = '?'
+	hostname = '?'
         if 'hostnames' in entry:
             if len(entry['hostnames']) == 0:
                 try:

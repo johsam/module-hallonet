@@ -80,6 +80,7 @@ python -mjson.tool "${jsontmpfile}" > /dev/null 2>&1; status=$?
 
 if [ ${status} -ne 0 ] ; then
     logger -t $(basename $0) "Invalid json data in '${jsontmpfile}' detected, Skipping upload..."
+    cp "${jsontmpfile}" /tmp/invalid.json
     exit 1
 fi
 

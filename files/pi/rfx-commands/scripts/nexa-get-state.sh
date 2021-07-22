@@ -30,6 +30,7 @@ settings=${scriptDir}/../settings.cfg
 [ -r ${settings} ]  && source ${settings}  || { logger -t $(basename $0) "FATAL: Missing '${settings}', Aborting" ; exit 1; }
 
 light_id="${1}"
+remote_nexa="00D81332"
 
 
 #
@@ -39,7 +40,6 @@ light_id="${1}"
 sql=${scriptDir}/../static/sql/last-switches.sql
 
 /usr/bin/mysql rfx --skip-column-names -urfxuser -prfxuser1 < ${sql} > ${tmpfile}
-
-awk -v "light_id=${light_id}" '$5==light_id  {print $NF}' ${tmpfile}
+awk -v "light_id=${light_id}" -v "remote_nexa=${remote_nexa}" '$4==remote_nexa && $5==light_id  {print $NF}' ${tmpfile}
 
 exit 0

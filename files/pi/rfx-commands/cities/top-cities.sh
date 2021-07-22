@@ -30,7 +30,7 @@ favourites_xml_file="/tmp/favourites.xml"
 favourites_json_file="/tmp/favourites.json"
 
 favourites="bergshamra,akersbergac"
-count=5
+count=6
 
 now=$(date '+%F %T')
 
@@ -60,9 +60,9 @@ shift `expr ${OPTIND} - 1` ; OPTIND=1
 
 
 
-NEARBY_URL="http://api.temperatur.nu/tnu_1.15.php?cli=hallonet&lat=${RIPAN_LAT}&lon=${RIPAN_LON}&num=$((${count}+1))&verbose"
-ALL_URL="http://api.temperatur.nu/tnu_1.15.php?cli=hallonet&verbose"
-FAVOURITES_URL="http://api.temperatur.nu/tnu_1.15.php?cli=hallonet&p=${favourites}&verbose"
+NEARBY_URL="http://api.temperatur.nu/tnu_1.17.php?cli=hallonet&lat=${RIPAN_LAT}&lon=${RIPAN_LON}&num=$((${count}+1))&verbose"
+ALL_URL="http://api.temperatur.nu/tnu_1.17.php?cli=hallonet&verbose"
+FAVOURITES_URL="http://api.temperatur.nu/tnu_1.17.php?cli=hallonet&p=${favourites}&verbose"
 HAS_SUN_URL="http://smultronet:8123/api/states/sun.sun"
 
 #	Sunrise/Set
@@ -73,15 +73,15 @@ sun_set=$(awk 'END {print $3}' /var/rfxcmd/sun-rise-set.log)
 sun_elevation=0
 sun_azimuth=0
 
-curl -s "${NEARBY_URL}" > ${nearby_xml_file}
-curl -s "${ALL_URL}" > ${all_xml_file}
-curl -s "${FAVOURITES_URL}" > ${favourites_xml_file}
+curl -s "${NEARBY_URL}" > ${nearby_json_file}
+curl -s "${ALL_URL}" > ${all_json_file}
+curl -s "${FAVOURITES_URL}" > ${favourites_json_file}
 curl -s --connect-timeout 15 --max-time 15 -XGET -H "${AUTH}" -H "Content-Type: application/json" ${HAS_SUN_URL} > ${hasfile} 2> /dev/null
 
 
-perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${nearby_xml_file}'))" > ${nearby_json_file}
-perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${all_xml_file}'))" > ${all_json_file}
-perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${favourites_xml_file}'))" > ${favourites_json_file}
+#perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${nearby_xml_file}'))" > ${nearby_json_file}
+#perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${all_xml_file}'))" > ${all_json_file}
+#perl -MJSON::Any -MXML::Simple -le "print JSON::Any->new(indent=>1)->objToJson(XMLin('${favourites_xml_file}'))" > ${favourites_json_file}
 
 python -mjson.tool "${hasfile}" > /dev/null 2>&1; status=$?
 
