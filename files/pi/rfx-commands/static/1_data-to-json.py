@@ -376,6 +376,13 @@ systemAliases = {
         "type": "date"
     },
 
+    # Silverpilen
+    
+    "silverpilen_uptime": {
+        "alias": "Upptid",
+        "order": 4
+    },  
+
     # Influxdb
 
     "influxdb_host": {
@@ -650,7 +657,7 @@ sensorAliases = {
     },
 
 
-    "C600": {
+    "6900": {
         "alias": "Hammock Tak",
         "location": "outside",
         "order": 2
@@ -674,7 +681,7 @@ sensorAliases = {
         "order": 5
     },
 
-    "3D00": {
+    "9300": {
         "alias":    "Hammock (2)",
         "location": "outside",
         "order": 6
@@ -729,10 +736,11 @@ sensorAliases = {
 
 deviceAliases = {
     "1": {
-        "alias": "Johans Galaxy S6",
+        "alias": "Johans Galaxy S20",
         "order": 1,
         "hilite": True
     },
+
     "2": {
         "alias": "Johans Samsung",
         "order": 2
@@ -813,7 +821,13 @@ deviceAliases = {
     "18": {
         "alias": "Asus extender",
         "order": 16
-    }
+    },
+
+    "19": {
+        "alias": "Johans Galaxy S6",
+        "order": 17,
+        "hilite": True
+    },
 }
 
 result = {'success': True, 'hoursmissingcount': 0, 'sensors': [], 'switches': [], 'devices': [], 'lasthour': [], 'tnu_trend': [], 'toplist': {'coldest': [], 'warmest': []}}

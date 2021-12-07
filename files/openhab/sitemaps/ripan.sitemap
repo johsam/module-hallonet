@@ -17,10 +17,10 @@ sitemap ripan label="Ripstigen" {
         		Text item=T_50_0700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
  		Frame label="Hammocken" {
-        		Text item=T_50_C600_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_C600_last_stamp
-        		Text item=T_50_C600_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_C600_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_6900_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_6900_last_stamp
+        		Text item=T_50_6900_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_6900_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
 
    		Frame label="Tujan" {
@@ -73,10 +73,10 @@ sitemap ripan label="Ripstigen" {
    		}
 
    		Frame label="Hammock Dyna" {
-        		Text item=T_50_3D00_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_3D00_last_stamp
-        		Text item=T_50_3D00_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_3D00_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_9300_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_9300_last_stamp
+        		Text item=T_50_9300_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_9300_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
 
 	}
@@ -98,8 +98,8 @@ sitemap ripan label="Ripstigen" {
 		
 
 		Frame label="Hammocken" {
-			Text item=T_50_C600_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_C600_max_stamp
+			Text item=T_50_6900_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_6900_max_stamp
 		}	
 		
 		Frame label="Tujan" {
@@ -128,8 +128,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Hammock Dyna" {
-			Text item=T_50_3D00_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_3D00_max_stamp
+			Text item=T_50_9300_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_9300_max_stamp
 		}	
 		
 	}
@@ -143,8 +143,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 		
 		Frame label="Hammocken" {
-			Text item=T_50_C600_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_C600_min_stamp
+			Text item=T_50_6900_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_6900_min_stamp
 		}	
 		
 		Frame label="Tujan" {
@@ -173,8 +173,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Hammock Dyna" {
-			Text item=T_50_3D00_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_3D00_min_stamp
+			Text item=T_50_9300_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_9300_min_stamp
 		}	
 	}
    }
