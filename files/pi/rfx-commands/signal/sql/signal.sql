@@ -1,6 +1,6 @@
 
 
-set @sensors_all := coalesce(@sensors_all,'3B00,0700,6900,C700,9300,A700,B700,9700');
+set @sensors_all := coalesce(@sensors_all,'3B00,0700,3600,C700,9300,A700,B700,9700');
 set @threshold := coalesce(@threshold,40);
 set @days := coalesce(@days,2);
 

@@ -527,18 +527,11 @@ switchAliases = {
         "order": 2
     },
     "00D81332_3": {
-        "alias": "Ebbas rum",
+        "alias": u"Ebbas F\u00f6nster",
         "type":  "light",
         "nexaid": 3,
         "fab": True,
         "order": 3
-    },
-    "00D81332_6": {
-        "alias": u"Ebbas Fönster",
-        "type":  "light",
-        "nexaid": 6,
-        "fab": True,
-        "order": 4
     },
     "00D81332_5": {
         "alias": "Hallen",
@@ -644,20 +637,8 @@ sensorAliases = {
 
     # Outside sensors
 
-    "3B00": {
-        "alias": "Anna:s",
-        "location": "outside",
-        "order": 0
-    },
 
-    "0700": {
-        "alias": u"F\u00f6rr\u00e5d Tak",
-        "location": "outside",
-        "order": 1
-    },
-
-
-    "6900": {
+    "3600": {
         "alias": "Hammock Tak",
         "location": "outside",
         "order": 2
@@ -687,26 +668,26 @@ sensorAliases = {
         "order": 6
     },
 
-    "2900": {
+    "D700": {
         "alias":    u"Stupr\u00e4nnan (v)",
         "location": "outside",
         "order": 7
     },
     
-    "230E": {
+    "220E": {
         "alias":    "Tujan (n)",
         "location": "outside",
         "order": 8
     },
     
-    "250E": {
+    "3F0E": {
         "alias":    "Tujan (g)",
         "location": "outside",
         "order": 9
     },
 
     "D503": {
-        "alias":     u"Dynl\u00e5dan",
+        "alias":     u"Gran Ute",
         "location": "outside",
         "order": 10
     },

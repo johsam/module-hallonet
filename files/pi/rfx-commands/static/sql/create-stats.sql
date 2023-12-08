@@ -20,8 +20,8 @@ insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`
 
 
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('C700','52','09','Tujan',true,true);
-insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('250E','52','07','Tujan (g)',true,false);
-insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('230E','52','07','Tujan (n)',true,true);
+insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('3F0E','52','07','Tujan (g)',true,false);
+insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('220E','52','07','Tujan (n)',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('B700','50','09','Stuprännan',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('2900','52','07','Stuprännan (v)',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('A700','52','09','Komposten',true,true);
@@ -30,7 +30,7 @@ insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('9700','52','09','Bokhyllan',false,false);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('3002','52','0A','Datorhyllan',false,false);
 
-insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('6900','50','07','Hammocken Tak',true,true);
+insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('3600','50','07','Hammocken Tak',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('9300','50','07','Hammock Dyna',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('0700','50','07','Förråd Tak',true,true);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('DA00','50','01','Okänd t',true,false);
