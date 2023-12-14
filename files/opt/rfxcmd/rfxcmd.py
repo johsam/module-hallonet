@@ -3333,6 +3333,8 @@ def read_rfx():
 		except IOError, err:
 			print("Error: " + str(err))
 			logger.error("Serial read error: %s, Line: %s" % (str(err),_line()))
+			sys.stdout.flush()
+			sys.exit(1)
 		
 		if byte:
 			message = byte + readbytes( ord(byte) )

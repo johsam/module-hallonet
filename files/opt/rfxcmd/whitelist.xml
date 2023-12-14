@@ -5,17 +5,19 @@
 	<sensor>085007..C600......</sensor>
 	<sensor>085007..3D00......</sensor>
 	<sensor>085007..0700......</sensor>
-	<sensor>085007..D800......</sensor>
+	<sensor>085007..4F00......</sensor>
 	<sensor>0A5209..C700..........</sensor>
 	<sensor>0A5209..9700..........</sensor>
 	<sensor>0A5209..A700..........</sensor>
 	<sensor>0A5209..B700..........</sensor>
-	<sensor>0A5209..2900..........</sensor>
+	<sensor>0A5209..D700..........</sensor>
 	
 	<sensor>0A520A..3902..........</sensor>
+	<sensor>0A520A..7802..........</sensor>
 
 	<sensor>0A5207..230E..........</sensor>
 	<sensor>0A5207..250E..........</sensor>
+	<sensor>0A5207..D503..........</sensor>
 
 	<sensor>0B1100..00D81332........</sensor>
 	<sensor>0B1100..01FD3C3A........</sensor>

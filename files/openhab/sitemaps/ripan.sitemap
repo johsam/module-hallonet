@@ -49,11 +49,11 @@ sitemap ripan label="Ripstigen" {
    		}
 
     		Frame label="Stuprännan (v)" {
-        		Text item=T_52_2900_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_2900_last_stamp
-        		Text item=T_52_2900_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_2900_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=H_52_2900_last
+        		Text item=T_52_D700_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_D700_last_stamp
+        		Text item=T_52_D700_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_D700_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=H_52_D700_last
    		}
   
   		Frame label="Komposten" {
@@ -73,10 +73,10 @@ sitemap ripan label="Ripstigen" {
    		}
 
    		Frame label="Hammock Dyna" {
-        		Text item=T_50_9300_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_9300_last_stamp
-        		Text item=T_50_9300_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_9300_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_3600_last valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_3600_last_stamp
+        		Text item=T_50_3600_max  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_3600_min  valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
    		}
 
 	}
@@ -118,8 +118,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Stuprännan (v)" {
-			Text item=T_52_2900_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_2900_max_stamp
+			Text item=T_52_D700_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_D700_max_stamp
 		}	
 
 		Frame label="Komposten" {
@@ -128,8 +128,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Hammock Dyna" {
-			Text item=T_50_9300_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_9300_max_stamp
+			Text item=T_50_3600_max valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_3600_max_stamp
 		}	
 		
 	}
@@ -163,8 +163,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Stuprännan (v)" {
-			Text item=T_52_2900_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_52_2900_min_stamp
+			Text item=T_52_D700_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_52_D700_min_stamp
 		}	
 
 		Frame label="Komposten" {
@@ -173,8 +173,8 @@ sitemap ripan label="Ripstigen" {
 		}	
 
 		Frame label="Hammock Dyna" {
-			Text item=T_50_9300_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
-        		Text item=T_50_9300_min_stamp
+			Text item=T_50_3600_min valuecolor=[>=20="#FE0000",>=15="#FF6633",>=10="#CC9966",<=0="#4068E0"]
+        		Text item=T_50_3600_min_stamp
 		}	
 	}
    }
@@ -183,7 +183,7 @@ sitemap ripan label="Ripstigen" {
 
    Frame label="Inomhus" {
         Text  item=T_52_9700_last
-        Text  item=T_50_D800_last
+        Text  item=T_50_4F00_last
    }
 
    Frame label="Dörrar Utomhus" {
@@ -204,7 +204,7 @@ sitemap ripan label="Ripstigen" {
 
    Frame label="Luftfuktighet Utomhus" {
         Text item=H_52_B700_last
-	Text item=H_52_2900_last
+	Text item=H_52_D700_last
 	Text item=H_52_C700_last
 	Text item=H_52_230E_last
         Text item=H_52_A700_last
@@ -215,7 +215,6 @@ sitemap ripan label="Ripstigen" {
         Switch item=Nexa_1
         Switch item=Nexa_2
         Switch item=Nexa_3
-        Switch item=Nexa_6
         Switch item=Nexa_4
         Switch item=Nexa_5
    }

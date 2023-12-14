@@ -36,7 +36,7 @@ insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('DA00','50','01','Okänd t',true,false);
 insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('BE80','50','01','Okänd ?',false,false);
 
-insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('D800','50','07','Golv TV:n',false,false);
+insert into `sensors` (`sensorid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`) values('4F00','50','07','Golv TV:n',false,false);
 
 
 insert into `sensors` (`sensorid`,`subid`,`packettype`,`subtype`,`alias`,`outdoor`,`tnu`,`type`) values('00123456','7','00','00','Ytter-dörr',false,false,'door');

@@ -43,7 +43,7 @@
 	
 	<!-- Logging -->
 	<loglevel>error</loglevel>
-	<logfile>rfxcmd.log</logfile>
+	<logfile>/var/rfxcmd/rfxcmd.log</logfile>
 	
 	<!-- Graphite -->
 	<graphite_active>no</graphite_active>
@@ -62,7 +62,7 @@
 	<socketport>55000</socketport>
 	
 	<!-- Whitelist -->
-	<whitelist_active>yes</whitelist_active>
+	<whitelist_active>no</whitelist_active>
 	<whitelist_file>/opt/rfxcmd/whitelist.xml</whitelist_file>
 	
 	<!-- Weewx -->

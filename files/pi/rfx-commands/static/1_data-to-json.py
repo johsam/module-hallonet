@@ -706,7 +706,7 @@ sensorAliases = {
         "order": 8
     },
 
-    "D800": {
+    "4F00": {
         "alias": "Golv TV:n",
         "location": "inside",
         "order": 8

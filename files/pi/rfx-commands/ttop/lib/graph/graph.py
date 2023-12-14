@@ -207,6 +207,15 @@ class Graph(object):
                 self.canvas.set_text(x - 4, self.ph - 4, stamp)
             self._drawxtick(x)
 
+    def getlaststamp(self):
+    	laststamp = 0
+	sl = len(self.stamps)
+	
+	if sl > 0:
+	    laststamp = self.stamps[sl - 1]
+	return laststamp
+
+
     def box(self):
         rw = self.pw - 1
         rh = self.ph - 1

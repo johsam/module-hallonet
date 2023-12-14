@@ -29,25 +29,37 @@
 </trigger>
 
 <trigger>
-        <message>0A5209..2900..........</message>
+        <message>0A5209..250E..........</message>
 	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
 </trigger>
+
+<trigger>
+        <message>0A5209..D700..........</message>
+	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
+</trigger>
+
+
 
 <trigger>
         <message>0A5207..230E..........</message>
 	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
 </trigger>
-<trigger>
-        <message>0A5207..250E..........</message>
-	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
-</trigger>
+
 
 <trigger>
         <message>0A520A..3902..........</message>
 	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
 </trigger>
 
+<trigger>
+        <message>0A520A..7802..........</message>
+	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
+</trigger>
 
+<trigger>
+        <message>0A52....D503.........</message>
+	<action>/home/pi/rfx-commands/triggers/temps.sh "$id$" "$temperature$" "$humidity$" "$signal$"</action>
+</trigger>
 
 <trigger>
         <message>0B1100..01FD3C3A........</message>
